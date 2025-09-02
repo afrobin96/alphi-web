@@ -30,7 +30,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "src/scss/main.scss"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -93,7 +94,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "src/scss/main.scss"
             ]
           }
         }

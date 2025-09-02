@@ -1,0 +1,16 @@
+@use "../utils/variables";
+
+.alp-cards{
+  border-radius: .75rem;
+  border-width: 1px;
+  background-color: variables.$white;
+  padding: 1.5rem;
+  box-shadow: variables.$shadow-soft;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-duration: .3s;
+  animation-duration: .3s;
+  &:hover{
+    box-shadow: variables.$shadow-medium;
+  }
+}

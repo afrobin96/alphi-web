@@ -1,0 +1,21 @@
+@use "../utils/variables";
+@use "../utils/helpers";
+
+.navigation{
+    a{
+      color: variables.$main-gray;
+      margin: 0 1rem;
+      font-weight: 600;
+      &:not([href]){
+        color: variables.$main-gray;
+        &:hover{
+          color: variables.$main-blue;
+          cursor: pointer;
+        }
+      }
+      &:hover{
+        color: variables.$main-blue;
+        cursor: pointer;
+      }
+    }
+}

@@ -1,0 +1,12 @@
+@use "../utils/variables";
+
+.alp-btn-principal{
+    color: variables.$white;
+    background-image: variables.$main-linear-gradient;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    border-radius: .5rem;
+    &.alp-btn-gradient-2{
+      background-image: variables.$main-linear-gradient-2;
+    }
+}

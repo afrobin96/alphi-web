@@ -1,0 +1,20 @@
+/* Colors */
+$white: #fff;
+$black: #3a3f43;
+$light-white: #f4f8f9;
+$background-section: #fcfdfc;
+$main-gray: #78808c;
+$main-blue: #00407f;
+$secondary-blue: #3b83f5;
+$light-blue: #eaf5f5;
+$secondary-blue: #3a84eb;
+$main-green: #136c42;
+$secondary-green: #16a04d;
+
+/* Box shadow */
+$shadow-soft: 0 4px 6px -1px rgb(0 0 0 / .3), 0 2px 4px -2px rgb(0 0 0 / .2);
+$shadow-medium: 0 10px 15px -3px rgb(0 0 0 / .4), 0 4px 6px -4px rgb(0 0 0 / .3);
+
+/* degrade */
+$main-linear-gradient: linear-gradient(135deg, $main-blue, $main-green);
+$main-linear-gradient-2: linear-gradient(135deg, $secondary-blue, $secondary-green);

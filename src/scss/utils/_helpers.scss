@@ -1,0 +1,90 @@
+@use "variables";
+
+/* width*/
+.alp-max-content-width{
+    max-width: 56rem;
+}
+.alp-max-content-width-paragraph{
+  max-width: 48rem;
+}
+
+/* colors*/
+.alp-bg-white{
+  background-color: variables.$light-white;
+}
+
+.alp-bg-section{
+  background-color: variables.$background-section;
+}
+
+.alp-bg-main-gradient{
+  background-image: variables.$main-linear-gradient;
+}
+
+.alp-text-main-white{
+  color: variables.$white;
+}
+
+.alp-text-main-black{
+  color: variables.$black;
+}
+
+.alp-text-main-color{
+  color: variables.$main-gray;
+}
+
+.alp-text-main-blue{
+  color: variables.$main-blue;
+}
+
+
+/* shadows */
+.alp-box-shadow-soft{
+  box-shadow: variables.$shadow-soft;
+}
+
+/* text */
+.alp-text-center{
+  text-align: center;
+}
+.alp-semibold{
+  font-weight: 500;
+}
+
+.alp-bold{
+  font-weight: bold;
+}
+
+.alp-text-sm {
+    font-size: .875rem;
+    line-height: 1.25rem;
+}
+
+.alp-text-md {
+    font-size: 1rem;
+    line-height: 1.2rem;
+}
+
+.alp-text-xl{
+  font-size: 1.2rem;
+}
+
+.alp-text-2xl{
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.alp-text-4xl{
+  font-size: 2.25rem;
+  line-height: 2.5rem;;
+}
+
+.alp-text-6xl{
+  font-size: 3.75rem;
+  line-height: 1.2;
+}
+
+/* borders */
+.alp-rounded-full{
+  border-radius: 9999px;
+}

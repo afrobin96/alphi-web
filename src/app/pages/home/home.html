@@ -74,3 +74,21 @@
     </div>
   </div>
 </section>
+
+<!-- servicios  -->
+
+<section class="alp-servicios-container alp-bg-section">
+  <div class="container mx-auto px-4">
+      <div class="text-center mb-5">
+        <h2 class="alp-text-4xl font-bold alp-text-main-black mb-3">Nuestros Servicios</h2>
+        <p class="alp-text-xl alp-max-content-width-paragraph mx-auto alp-text-main-color">Ofrecemos soluciones integrales para la transformación digital en el sector educativo, desde el desarrollo hasta la implementación y mantenimiento.</p>
+      </div>
+      <div class="alp-servicios-grid">
+        @for( service of alphiServices; track $index){
+          <app-services [services]="service"></app-services>
+        }
+      </div>
+
+  </div>
+
+</section>

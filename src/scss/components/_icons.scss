@@ -1,0 +1,47 @@
+@use "../utils/variables";
+
+.alp-icon{
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+  flex-shrink: 0;
+  i{
+    font-size: 1.5rem;
+  }
+}
+.alp-icon-size{
+  font-size: 1.5rem;
+}
+.alp-icon-blue{
+  background-color: variables.$light-blue;
+}
+.alp-icon-green{
+  background-color: variables.$light-green;
+}
+.alp-icon-purple{
+  background-color: variables.$light-purple;
+}
+.alp-icon-orange{
+  background-color: variables.$light-orange;
+}
+.alp-icon-white{
+  background-color: variables.$black;
+}
+.alp-icon-color-blue{
+  color: variables.$secondary-blue;
+}
+.alp-icon-color-green{
+  color: variables.$secondary-green;
+}
+.alp-icon-color-purple{
+  color: variables.$purple;
+}
+.alp-icon-color-orange{
+  color: variables.$orange;
+}
+.alp-icon-color-white{
+  color: variables.$white;
+}

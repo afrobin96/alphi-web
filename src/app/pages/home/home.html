@@ -76,11 +76,11 @@
 </section>
 
 <!-- servicios  -->
-
 <section class="alp-servicios-container alp-bg-section">
   <div class="container mx-auto px-4">
-      <div class="text-center mb-5">
-        <h2 class="alp-text-4xl font-bold alp-text-main-black mb-3">Nuestros Servicios</h2>
+      <div class="text-center mb-5 d-flex flex-column align-items-center">
+        <h2 class="alp-text-4xl alp-bold alp-text-main-black mb-3">Nuestros Servicios</h2>
+        <div class="alp-bg-main-gradient mb-4" style="height: .3rem; width: 10rem;border-radius:10px"></div>
         <p class="alp-text-xl alp-max-content-width-paragraph mx-auto alp-text-main-color">Ofrecemos soluciones integrales para la transformación digital en el sector educativo, desde el desarrollo hasta la implementación y mantenimiento.</p>
       </div>
       <div class="alp-servicios-grid">
@@ -88,7 +88,65 @@
           <app-services [services]="service"></app-services>
         }
       </div>
-
   </div>
+</section>
 
+<!-- Comentarios de clientes  -->
+<section class="alp-clientes-comentarios-container alp-bg-section">
+  <div class="container mx-auto px-4">
+      <div class="text-center mb-5 d-flex flex-column align-items-center">
+        <h2 class="alp-text-4xl alp-bold alp-text-main-black mb-3">Algunos de Nuestros Clientes</h2>
+        <div class="alp-bg-main-gradient mb-4" style="height: .3rem; width: 10rem;border-radius:10px"></div>
+        <p class="alp-text-xl alp-max-content-width-paragraph mx-auto alp-text-main-color">La confianza de nuestros clientes respalda nuestro trabajo. Estas son algunas de las instituciones que han transformado su educación digital con nuestras soluciones.</p>
+      </div>
+      <div class="alp-clientes-comentarios-grid">
+          <div class="alp-cards">
+            <div class="d-flex align-items-center mb-3 alp-text-main-yellow alp-text-xl">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <p class="mb-4 fst-italic">"La plataforma desarrollada ha transformado completamente la experiencia educativa en nuestra institución. Los estudiantes están más comprometidos y el proceso de enseñanza es mucho más eficiente."</p>
+            <div class="border-top pt-3">
+              <h4 class="alp-semibold">María González</h4>
+              <p class="alp-text-sm">Directora Académica</p>
+              <p class="alp-text-sm alp-text-main-blue">Instituto Tecnológico Superior</p>
+            </div>
+          </div>
+
+          <div class="alp-cards">
+            <div class="d-flex align-items-center mb-3 alp-text-main-yellow alp-text-xl">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <p class="mb-4 fst-italic">"Excelente trabajo en el desarrollo de nuestra plataforma LMS. El equipo fue muy profesional y el resultado superó nuestras expectativas. La capacitación del personal fue excepcional."</p>
+            <div class="border-top pt-3">
+              <h4 class="alp-semibold">Carlos Herrera</h4>
+              <p class="alp-text-sm">Coordinador Digital</p>
+              <p class="alp-text-sm alp-text-main-blue">Universidad Privada</p>
+            </div>
+          </div>
+
+          <div class="alp-cards">
+            <div class="d-flex align-items-center mb-3 alp-text-main-yellow alp-text-xl">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <p class="mb-4 fst-italic">"La consultoría especializada nos ayudó a definir una estrategia digital clara. Los resultados han sido extraordinarios, mejorando significativamente la satisfacción de nuestros estudiantes."</p>
+            <div class="border-top pt-3">
+              <h4 class="alp-semibold">Ana Rodríguez</h4>
+              <p class="alp-text-sm">Decana de Innovación</p>
+              <p class="alp-text-sm alp-text-main-blue">Escuela de Negocios Avanzada</p>
+            </div>
+          </div>
+      </div>
+  </div>
 </section>

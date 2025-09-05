@@ -52,3 +52,14 @@
     gap: 2rem;
   }
 }
+
+.alp-clientes-comentarios-container{
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  .alp-clientes-comentarios-grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+}

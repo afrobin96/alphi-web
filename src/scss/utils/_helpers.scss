@@ -93,7 +93,18 @@
   border-radius: 9999px;
 }
 
+.alp-rounded-1{
+  border-radius: 1rem;
+}
+
 /* flex */
 .alp-flex-full{
   flex: 1 1 0%;
+}
+
+/* stat numbers */
+.alp-stat-number {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
 }

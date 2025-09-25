@@ -13,6 +13,14 @@
   background-color: variables.$light-white;
 }
 
+.alp-bg-white-opacity{
+  background-color: variables.$white-opacity;
+}
+
+.alp-bg-black{
+  background-color: variables.$light-black;
+}
+
 .alp-bg-section{
   background-color: variables.$background-section;
 }
@@ -45,6 +53,10 @@
 /* shadows */
 .alp-box-shadow-soft{
   box-shadow: variables.$shadow-soft;
+}
+
+.alp-box-shadow-contact{
+  box-shadow: variables.$shadow-contact;
 }
 
 /* text */
@@ -95,6 +107,9 @@
 
 .alp-rounded-1{
   border-radius: 1rem;
+}
+.alp-rounded-05{
+  border-radius: .5rem;
 }
 
 /* flex */

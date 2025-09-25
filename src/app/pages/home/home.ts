@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { Header } from '../../components/header/header';
 import { alphiServices } from '../../alphiService.interface';
 import { Services } from '../../components/services/services';
+import { Contact } from "../../components/contact/contact";
+import { Footer } from "../../components/footer/footer";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Services],
+  imports: [Header, Services, Contact, Footer],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

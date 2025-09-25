@@ -1,1 +1,80 @@
-<p>contact works!</p>
+
+<div class="alp-rounded-05 alp-bg-white alp-text-main-color alp-box-shadow-contact ">
+  <div class="p-5">
+      <h3 class="alp-text-2xl alp-semibold mb-5 alp-text-main-black"> Solicita tu Consultoría Gratuita</h3>
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+        <div class="alp-field-grid">
+           <!-- Nombre -->
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input id="nombre" type="text" class="form-control" formControlName="nombre" placeholder="Tu nombre completo">
+            @if( contactForm.get('nombre')?.touched && contactForm.get('nombre')?.invalid ) {
+              <div class="text-danger small">
+                El nombre es obligatorio y debe tener al menos 3 caracteres.
+              </div>
+            }
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="email" class="form-control" formControlName="email" placeholder="Tu@email.com">
+            @if( contactForm.get('email')?.touched && contactForm.get('email')?.invalid ) {
+              <div class="text-danger small">
+                Ingresa un email válido.
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="alp-field-grid">
+          <!-- Teléfono -->
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input id="telefono" type="tel" class="form-control" formControlName="telefono" placeholder="(+57) 31666826">
+            @if( contactForm.get('telefono')?.touched && contactForm.get('telefono')?.invalid ) {
+              <div class="text-danger small">
+                El teléfono debe contener entre 7 y 15 dígitos.
+              </div>
+            }
+          </div>
+
+          <!-- Servicio -->
+          <div class="mb-3">
+            <label for="servicio" class="form-label">Servicio</label>
+            <select id="servicio" class="form-select" formControlName="servicio">
+              <option value="" disabled selected>Selecciona un servicio</option>
+              @for( servicio of servicios; track $index){
+                  <option [value]="servicio">{{servicio}}</option>
+                }
+            </select>
+            @if( contactForm.get('servicio')?.touched && contactForm.get('servicio')?.invalid ) {
+              <div class="text-danger small">
+                Debes seleccionar un servicio.
+              </div>
+            }
+          </div>
+        </div>
+
+
+        <!-- Mensaje -->
+        <div class="mb-3">
+          <label for="mensaje" class="form-label">Mensaje</label>
+          <textarea id="mensaje" rows="4" class="form-control" formControlName="mensaje" placeholder="Cuentanos sobre tu proyecto y como poedmos ayudarte"></textarea>
+          @if( contactForm.get('mensaje')?.touched && contactForm.get('mensaje')?.invalid ) {
+            <div class="text-danger small">
+              El mensaje es obligatorio y debe tener al menos 10 caracteres.
+            </div>
+          }
+        </div>
+
+        <!-- Botón -->
+        <button type="submit" class="btn alp-btn-principal w-100" [disabled]="contactForm.invalid">
+          Enviar Solicitud
+        </button>
+      </form>
+  </div>
+</div>
+
+

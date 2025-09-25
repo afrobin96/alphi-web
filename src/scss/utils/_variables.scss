@@ -1,6 +1,8 @@
 /* Colors */
 $white: #fff;
+$white-opacity: #ffffff1a;
 $black: #3a3f43;
+$light-black: #1f2937;
 $light-white: #f4f8f9;
 $background-section: #fcfdfc;
 $main-gray: #78808c;
@@ -20,7 +22,7 @@ $yellow: #facc15;
 /* Box shadow */
 $shadow-soft: 0 4px 6px -1px rgb(0 0 0 / .3), 0 2px 4px -2px rgb(0 0 0 / .2);
 $shadow-medium: 0 10px 15px -3px rgb(0 0 0 / .4), 0 4px 6px -4px rgb(0 0 0 / .3);
-
+$shadow-contact: 0 1px 2px 0 rgb(0 0 0 / .05);
 /* degrade */
 $main-linear-gradient: linear-gradient(135deg, $main-blue, $main-green);
 $main-linear-gradient-2: linear-gradient(135deg, $secondary-blue, $secondary-green);

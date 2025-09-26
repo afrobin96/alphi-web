@@ -21,6 +21,10 @@
   background-color: variables.$light-black;
 }
 
+.alp-bg-dark-black{
+  background-color: variables.$black;
+}
+
 .alp-bg-section{
   background-color: variables.$background-section;
 }
@@ -73,7 +77,7 @@
 
 .alp-text-sm {
     font-size: .875rem;
-    line-height: 1.25rem;
+    line-height: 0.875rem;
 }
 
 .alp-text-md {
@@ -82,7 +86,7 @@
 }
 
 .alp-text-xl{
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
 
 .alp-text-2xl{

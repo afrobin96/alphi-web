@@ -1,0 +1,5 @@
+.alp-grid-footer{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0px, 1fr));
+  gap: 2rem;
+}

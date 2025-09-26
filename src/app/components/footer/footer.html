@@ -1,1 +1,69 @@
-<p>footer works!</p>
+<footer class="alp-bg-black border-top">
+  <div class="container mx-auto px-2 py-5">
+    <div class="alp-grid-footer">
+      <!-- descipcion y redes sociales  -->
+      <div>
+        <div class="d-flex align-items-center mb-4">
+          <div class="alp-bg-main-gradient d-flex align-items-center justify-content-center alp-rounded-05 px-2">
+            <i class="bi bi-incognito alp-icon-size mt-1 alp-text-main-white"></i>
+          </div>
+          <span class="ms-2 alp-text-main-white alp-bold alp-text-xl">Alphi</span>
+        </div>
+        <p class="mb-4 alp-text-main-color">Transformamos a través de tecnología innovadora, creando experiencias excepcionales para clientes de todo tipo.</p>
+        <div class="d-flex gap-3">
+          <a href="" class="alp-bg-dark-black alp-text-main-white px-3 py-1 alp-rounded-05"><i class="bi bi-envelope alp-icon-size mt-1"></i></a>
+          <a href="" class="alp-bg-dark-black alp-text-main-white px-3 py-1 alp-rounded-05"><i class="bi bi-telephone alp-icon-size mt-1"></i></a>
+          <a href="" class="alp-bg-dark-black alp-text-main-white px-3 py-1 alp-rounded-05"><i class="bi bi-whatsapp alp-icon-size mt-1"></i></a>
+        </div>
+      </div>
+
+      <!-- servicios  -->
+      <div>
+        <h3 class="alp-text-md alp-semibold mb-4 alp-text-main-white">Nuestros Servicios</h3>
+        <ul>
+          @for( service of alphiServices; track $index){
+            <li class="my-4 alp-text-main-color alp-text-sm">{{service}}.</li>
+          }
+        </ul>
+      </div>
+
+      <!-- enlaces rapidos  -->
+      <div>
+        <h3 class="alp-text-md alp-semibold mb-4 alp-text-main-white">Enlaces Rápidos</h3>
+        <ul>
+          @for( links of alphiQuickLinks; track $index){
+            <li class="my-4"><a href={{links[1]}} class="alp-text-main-color alp-text-sm">{{links[0]}}</a></li>
+          }
+        </ul>
+      </div>
+
+
+      <!-- contacto  -->
+      <div>
+        <h3 class="alp-text-md alp-semibold mb-4 alp-text-main-white">Contacto</h3>
+        <div class="alp-text-sm">
+          <div class="d-flex align-items-start mt-3">
+            <i class="bi bi-envelope alp-icon-size alp-text-main-white"></i>
+            <div class="ms-3">
+              <p class="alp-text-main-color">Email</p>
+              <p class="alp-text-main-white mt-2">contacto@alphidigital.com</p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start mt-3">
+            <i class="bi bi-telephone alp-icon-size alp-text-main-white"></i>
+            <div class="ms-3">
+              <p class="alp-text-main-color">Teléfono</p>
+              <p class="alp-text-main-white mt-2">+1 (555) 123-4567</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center mt-4 alp-text-main-color border-top border-secondary-subtle ">
+      <p class="alp-text-sm mt-3">© 2024 Educación Digital. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>

@@ -1,8 +1,11 @@
 
+<!-- Loader -->
+<app-loader [isLoading]="isLoading"></app-loader>
+
 <div class="alp-rounded-05 alp-bg-white alp-text-main-color alp-box-shadow-contact ">
   <div class="p-5">
       <h3 class="alp-text-2xl alp-semibold mb-5 alp-text-main-black"> Solicita tu Consultoría Gratuita</h3>
-      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" >
 
         <div class="alp-field-grid">
            <!-- Nombre -->

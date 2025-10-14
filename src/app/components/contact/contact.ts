@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ContactService } from '../../services/contact';
+import { Loader } from '../shared/loader/loader';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, Loader],
   templateUrl: './contact.html',
   styleUrl: './contact.scss'
 })
 export class Contact {
   contactForm: FormGroup;
+  isLoading = false;
 
   // Lista de servicios disponibles (puede venir de BD o API en el futuro)
   servicios: string[] = [
@@ -19,7 +22,8 @@ export class Contact {
     'Consultoría especializada',
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private contactservice: ContactService) {
+    this.isLoading = false;
     this.contactForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -30,8 +34,18 @@ export class Contact {
   }
 
   onSubmit() {
+    this.isLoading= true;
     if (this.contactForm.valid) {
-      console.log('Datos enviados:', this.contactForm.value);
+      this.contactservice.SendMessage(this.contactForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          console.log('Datos enviados:', this.contactForm.value);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.log('Error al enviar los datos:', error);
+        }
+      })
       this.contactForm.reset();
     } else {
       this.contactForm.markAllAsTouched();

@@ -1,17 +1,20 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from '../../services/contact';
 import { Loader } from '../shared/loader/loader';
+import { AlertService } from '../../services/shared/alert';
+import { Alert } from '../shared/alert/alert';
 
 @Component({
   selector: 'app-contact',
-  imports: [ReactiveFormsModule, Loader],
+  imports: [ReactiveFormsModule, Loader, Alert],
   templateUrl: './contact.html',
   styleUrl: './contact.scss'
 })
 export class Contact {
   contactForm: FormGroup;
   isLoading = false;
+  private alertService = inject(AlertService);
 
   // Lista de servicios disponibles (puede venir de BD o API en el futuro)
   servicios: string[] = [
@@ -39,10 +42,12 @@ export class Contact {
       this.contactservice.SendMessage(this.contactForm.value).subscribe({
         next: () => {
           this.isLoading = false;
+          this.alertService.show('success', 'Datos enviados correctamente. ¡Gracias por contactarnos!');
           console.log('Datos enviados:', this.contactForm.value);
         },
         error: (error) => {
           this.isLoading = false;
+          this.alertService.show('danger', 'Error al enviar el mensaje. Intenta más tarde', );
           console.log('Error al enviar los datos:', error);
         }
       })

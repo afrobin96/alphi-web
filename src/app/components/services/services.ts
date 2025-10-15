@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { alphiServices } from '../../alphiService.interface';
+import { alphiServices } from '../../interfaces/alphiService.interface';
 
 @Component({
   selector: 'app-services',

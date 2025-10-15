@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Header } from '../../components/shared/header/header';
-import { alphiServices } from '../../alphiService.interface';
+import { alphiServices } from '../../interfaces/alphiService.interface';
 import { Services } from '../../components/services/services';
 import { Contact } from "../../components/contact/contact";
 import { Footer } from "../../components/shared/footer/footer";

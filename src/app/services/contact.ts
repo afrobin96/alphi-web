@@ -15,7 +15,7 @@ export interface ContactForm {
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = `${environment.apiUrl}/contact`;
+  private readonly apiUrl = `${environment.apiUrl}/contact`;
 
   constructor(private http: HttpClient){}
 

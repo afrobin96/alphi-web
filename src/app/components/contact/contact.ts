@@ -15,6 +15,7 @@ export class Contact {
   contactForm: FormGroup;
   isLoading = false;
   private alertService = inject(AlertService);
+  private contactservice = inject(ContactService);
 
   // Lista de servicios disponibles (puede venir de BD o API en el futuro)
   servicios: string[] = [
@@ -25,7 +26,7 @@ export class Contact {
     'Consultoría especializada',
   ];
 
-  constructor(private fb: FormBuilder, private contactservice: ContactService) {
+  constructor(private fb: FormBuilder) {
     this.isLoading = false;
     this.contactForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],

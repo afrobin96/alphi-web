@@ -1,1 +1,51 @@
-<p>login works!</p>
+<!-- Alerts -->
+<app-alert></app-alert>
+<!-- Loader -->
+<app-loader [isLoading]="isLoading"></app-loader>
+
+<div class="container-fluid alp-bg-main-gradient d-flex justify-content-center align-items-center vh-100">
+    <div class="w-30">
+        <div class="alp-text-main-white text-center">
+          <h1 class="mb-2 alp-bold alp-text-4xl">Alphi</h1>
+          <p> Transformamos la Educación Digital </p>
+        </div>
+        <div class="alp-bg-white p-4 rounded-3 shadow mt-4">
+          <div class="d-flex flex-column">
+            <h2 class="alp-semibold alp-text-2xl">Accede a tu cuenta</h2>
+            <p class="alp-text-sm mt-2"> Ingresa tus credenciales para continuar </p>
+          </div>
+          <div class="my-4">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <!-- Usuario -->
+              <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input id="username" type="text" class="form-control" formControlName="username" placeholder="Usuario">
+                @if( loginForm.get('username')?.touched && loginForm.get('username')?.invalid ) {
+                  <div class="text-danger small">
+                    El usuario es obligatorio
+                  </div>
+                }
+              </div>
+
+              <!-- Contraseña -->
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input id="password" type="password" class="form-control" formControlName="password" placeholder="Contraseña">
+                @if( loginForm.get('password')?.touched && loginForm.get('password')?.invalid ) {
+                  <div class="text-danger small">
+                    La contraseña es obligatoria
+                  </div>
+                }
+              </div>
+
+              <!-- Envío -->
+              <button type="submit" class="btn alp-btn-principal login-button alp-btn-gradient-2 w-100" [disabled]="loginForm.invalid">
+                Iniciar Sesión
+              </button>
+            </form>
+          </div>
+        </div>
+    </div>
+</div>
+
+

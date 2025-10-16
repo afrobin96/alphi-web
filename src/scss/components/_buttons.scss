@@ -9,4 +9,11 @@
     &.alp-btn-gradient-2{
       background-image: variables.$main-linear-gradient-2;
     }
+    &:disabled{
+      border: none;
+      color: variables.$black;
+    }
+    &.login-button{
+      padding: .5rem 1.5rem;
+    }
 }

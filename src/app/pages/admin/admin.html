@@ -1,3 +1,29 @@
-<p>admin works!</p>
+<mat-sidenav-container class="sidenav-container container-fluid">
+  <mat-sidenav #drawer class="sidenav" mode="side" [opened]="true">
+    <div class="p-3">
+      <h5 class="mb-4">Menú</h5>
+      <a mat-button routerLink="dashboard" routerLinkActive="active">Dashboard</a><br />
+      <a mat-button routerLink="projects" routerLinkActive="active">Proyectos</a><br />
+      <a mat-button routerLink="clients" routerLinkActive="active">Clientes</a><br />
+      <a mat-button routerLink="teams" routerLinkActive="active">Equipos</a><br />
+      <a mat-button routerLink="members" routerLinkActive="active">Miembros</a><br />
+      <a mat-button routerLink="tasks" routerLinkActive="active">Tareas</a><br />
+      <a mat-button routerLink="payments" routerLinkActive="active">Pagos</a>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary d-flex justify-content-between">
+      <button mat-icon-button (click)="drawer.toggle()" class="">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Panel de Administración</span>
+      <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
+    </mat-toolbar>
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
-<button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
+
+

@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <h2>Panel de Control</h2>
+  @if(summary()){
+    <div class="row mt-4">
+        @for (item of [
+      {label: 'Proyectos Activos', value: summary().projectsActive},
+      {label: 'Clientes', value: summary().clients},
+      {label: 'Miembros del Equipo', value: summary().members},
+      {label: 'Tareas Pendientes', value: summary().tasksPending},
+      {label: 'Tareas Completadas', value: summary().tasksCompleted},
+      {label: 'Pagos Pendientes', value: summary().paymentsPending}
+    ]; track $index) {
+        <div class="col-md-4">
+        <div class="card text-center mb-3 shadow-sm">
+            <div class="card-body">
+            <h5>{{ item.label }}</h5>
+            <h2 class="text-primary">{{ item.value }}</h2>
+            </div>
+        </div>
+        </div>
+    }
+    
+  </div>
+  }
+  
+</div>

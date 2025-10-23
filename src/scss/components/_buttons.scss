@@ -17,3 +17,16 @@
       padding: .5rem 1.5rem;
     }
 }
+
+.alp-btn-menu{
+  border: none;
+  background-color: transparent;
+  color: variables.$black;
+  padding: .5rem;
+  border-radius: .5rem;
+  &:hover{
+    background-color: variables.$purple;
+    transition: all .3s ease-in-out;
+    color: variables.$white;
+  }
+}

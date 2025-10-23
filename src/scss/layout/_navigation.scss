@@ -19,3 +19,29 @@
       }
     }
 }
+
+.alp-navigation-menu{
+  a{
+    color: variables.$white;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    font-size: .875rem;
+    line-height: 0.875rem;
+    padding: 1rem.5rem;
+    border-radius: .5rem;
+    overflow: hidden;
+    margin: .5rem 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    &:hover{
+      color: variables.$white;
+      background-color: variables.$white-opacity;
+      cursor: pointer;
+    }
+    &.active{
+      color: variables.$white;
+      background-color: variables.$white-opacity;
+    }
+  }
+}

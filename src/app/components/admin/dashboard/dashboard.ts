@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { dashboardData } from '../../interfaces/dashboard.interface';
-import { DashboardService } from '../../services/dashboard';
+import { dashboardData } from '../../../interfaces/dashboard.interface';
+import { DashboardService } from '../../../services/dashboard';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +9,7 @@ import { DashboardService } from '../../services/dashboard';
   styleUrl: './dashboard.scss'
 })
 export class Dashboard implements OnInit {
-  
+
   summary = signal<dashboardData>({
     projectsActive: 12,
     clients: 8,

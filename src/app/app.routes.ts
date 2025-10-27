@@ -3,7 +3,7 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Admin } from './pages/admin/admin';
 import { authGuard } from './guards/auth.guard';
-import { Dashboard } from './components/dashboard/dashboard';
+import { Dashboard } from './components/admin/dashboard/dashboard';
 
 export const routes: Routes = [
   { path: '', component: Home },

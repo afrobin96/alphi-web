@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Proyectos</h3>
+    <a class="btn btn-primary" routerLink="/admin/projects/new">+ Nuevo proyecto</a>
+  </div>
+
+  @if(loading()){
+    <app-loader></app-loader>
+  }
+
+
+  <div class="list-group">
+    @for( project of projects(); track project.id){
+      <div class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <h5>{{ project.name }}</h5>
+        <small>{{ project.client?.name || 'Sin cliente' }} • {{ project.team?.name || 'Sin equipo' }}</small>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-success" (click)="complete(project.id!)">Completar</button>
+        <button class="btn btn-sm btn-secondary" (click)="edit(project)">Editar</button>
+        <button class="btn btn-sm btn-danger" (click)="remove(project.id!)">Eliminar</button>
+      </div>
+    </div>
+    } @empty {
+      <h4>There are no items.</h4>
+    }
+
+  </div>
+</div>

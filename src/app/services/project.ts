@@ -7,7 +7,7 @@ import { ProjectData } from '../interfaces/project.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class Project {
+export class ProjectService {
   private readonly apiUrl = `${environment.apiUrl}/project`;
   injectedHttp = inject(HttpClient);
 
@@ -20,7 +20,7 @@ export class Project {
   }
 
   get(id: number){
-    return this.injectedHttp.get<Project>(`${this.apiUrl}/${id}`);
+    return this.injectedHttp.get<ProjectData>(`${this.apiUrl}/${id}`);
   }
 
   update(id: number, payload: Partial<ProjectData>){

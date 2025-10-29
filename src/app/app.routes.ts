@@ -5,6 +5,7 @@ import { Admin } from './pages/admin/admin';
 import { authGuard } from './guards/auth.guard';
 import { Dashboard } from './components/admin/dashboard/dashboard';
 import { ProjectsList } from './components/admin/projects/projects-list/projects-list';
+import { ProjectsForm } from './components/admin/projects/projects-form/projects-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -13,7 +14,7 @@ export const routes: Routes = [
     children:[
       { path: 'dashboard', component: Dashboard },
       { path: 'projects', component: ProjectsList},
-      { path: 'projects/new', component: Dashboard},
+      { path: 'projects/new', component: ProjectsForm},
       { path: 'clients', component: Dashboard },
       { path: 'teams', component: Dashboard },
       { path: 'members', component: Dashboard },

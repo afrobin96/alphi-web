@@ -1,0 +1,42 @@
+<div class="container mt-4" style="max-width:800px">
+  <h3>{{ editing ? 'Editar' : 'Nuevo' }} proyecto</h3>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="mb-3">
+      <label>Nombre</label>
+      <input class="form-control" formControlName="name">
+    </div>
+    <div class="mb-3">
+      <label>Descripción</label>
+      <textarea class="form-control" formControlName="description"></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Cliente</label>
+        <select class="form-select" formControlName="clientId">
+          <option [value]="null">-- Sin cliente --</option>
+          @for(client of clients; track $index){
+            <option [value]="client.id">{{ client.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="col">
+        <label>Equipo</label>
+        <select class="form-select" formControlName="teamId">
+          <option [value]="null">-- Sin equipo --</option>
+          @for(team of teams; track $index){
+            <option [value]="team.id">{{ team.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Guardar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="assignClient()" [disabled]="!projectId">Asignar cliente</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="assignTeam()" [disabled]="!projectId">Asignar equipo</button>
+      <a class="btn btn-link" routerLink="/admin/projects">Cancelar</a>
+    </div>
+  </form>
+</div>

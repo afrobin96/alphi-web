@@ -1,4 +1,4 @@
-export interface Login {
+export interface LoginData {
   access_token: string,
   user: {
     id: number,

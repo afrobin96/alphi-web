@@ -1,6 +1,6 @@
 import { computed, effect, inject, Injectable, PLATFORM_ID, signal } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
-import { User } from "../interfaces/user.interface";
+import { UserData } from "../interfaces/user.interface";
 
 
 @Injectable({
@@ -9,7 +9,7 @@ import { User } from "../interfaces/user.interface";
 export class AuthStore {
   private platformId = inject(PLATFORM_ID);
   private tokenSig = signal<string | null>(null);
-  private usersig = signal<User | null>(null);
+  private usersig = signal<UserData | null>(null);
 
   constructor(){
     effect(() => {
@@ -27,7 +27,7 @@ export class AuthStore {
   readonly user = computed(()=> this.usersig());
 
 
-  setAuth(token: string, user: User){
+  setAuth(token: string, user: UserData){
     if(isPlatformBrowser(this.platformId)){
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));

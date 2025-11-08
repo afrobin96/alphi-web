@@ -5,6 +5,8 @@ import { ProjectStore } from '../../../../stores/project.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { subscribe } from 'diagnostics_channel';
+import { ClientService } from '../../../../services/client';
+import { TeamService } from '../../../../services/team';
 
 @Component({
   selector: 'app-projects-form',
@@ -20,6 +22,8 @@ export class ProjectsForm implements OnInit{
   route = inject(ActivatedRoute);
   router = inject(Router);
   httpClient = inject(HttpClient);
+  clientsService = inject(ClientService);
+  teamService = inject(TeamService);
 
   // inicialize form
   form = this.fb.group({
@@ -31,12 +35,12 @@ export class ProjectsForm implements OnInit{
 
   editing = false;
   projectId?: number;
-  clients: any[] = [];
-  teams: any[] = [];
+  clients = this.clientsService.clients;
+  teams= this.teamService.teams;
 
   ngOnInit(): void {
-    this.httpClient.get<any[]>('/clients').subscribe(r => this.clients = r);
-    this.httpClient.get<any[]>('/teams').subscribe(r => this.teams = r);
+    this.clientsService.loadAll();
+    this.teamService.loadAll();
 
     const id = +this.route.snapshot.paramMap.get('id')!;
 

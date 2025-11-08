@@ -16,7 +16,7 @@
         <label>Cliente</label>
         <select class="form-select" formControlName="clientId">
           <option [value]="null">-- Sin cliente --</option>
-          @for(client of clients; track $index){
+          @for(client of clients(); track $index){
             <option [value]="client.id">{{ client.name }}</option>
           }
         </select>
@@ -25,7 +25,7 @@
         <label>Equipo</label>
         <select class="form-select" formControlName="teamId">
           <option [value]="null">-- Sin equipo --</option>
-          @for(team of teams; track $index){
+          @for(team of teams(); track $index){
             <option [value]="team.id">{{ team.name }}</option>
           }
         </select>

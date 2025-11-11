@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../enviroments/enviroment.develop';
 import { HttpClient } from '@angular/common/http';
 import { TeamData } from '../interfaces/team.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,19 @@ export class TeamService {
 
   teams = signal<TeamData[]>([]);
 
-  loadAll(){
-    return this.injectedHttp.get<TeamData[]>(this.apiUrl).subscribe((res)=> this.teams.set(res));
+  loadAll(): Observable<TeamData[]>{
+    return this.injectedHttp.get<TeamData[]>(this.apiUrl);
   }
 
-  create(data: Partial<TeamData>){
+  create(data: Partial<TeamData>): Observable<TeamData>{
     return this.injectedHttp.post<TeamData>(this.apiUrl, data);
   }
 
-  update(id: number, data: Partial<TeamData>){
+  update(id: number, data: Partial<TeamData>): Observable<TeamData>{
     return this.injectedHttp.put<TeamData>(`${this.apiUrl}/${id}`, data);
   }
 
-  delete(id: number){
-    return this.injectedHttp.delete(`${this.apiUrl}/${id}`);
+  delete(id: number): Observable<void>{
+    return this.injectedHttp.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

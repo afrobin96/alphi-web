@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClientService } from '../../../../services/client';
 import { ClientData } from '../../../../interfaces/client.interface';
+import { ClientStore } from '../../../../stores/client.store';
 
 @Component({
   selector: 'app-client-form',
@@ -11,9 +11,9 @@ import { ClientData } from '../../../../interfaces/client.interface';
 })
 export class ClientForm {
   private fb = inject(FormBuilder);
-  private clientService = inject(ClientService);
+  private clientStore = inject(ClientStore);
 
-  form = this.fb.group({
+  form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: [''],
@@ -22,7 +22,8 @@ export class ClientForm {
 
   onSubmit(){
     if(this.form.valid){
-      this.clientService.create(this.form.value as ClientData)
+      this.clientStore.create(this.form.value);
+      this.form.reset();
     }
   }
 }

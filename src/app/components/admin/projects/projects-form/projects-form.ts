@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../../../../services/project';
 import { ProjectStore } from '../../../../stores/project.store';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { subscribe } from 'diagnostics_channel';
 import { ClientService } from '../../../../services/client';
@@ -10,7 +10,7 @@ import { TeamService } from '../../../../services/team';
 
 @Component({
   selector: 'app-projects-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './projects-form.html',
   styleUrl: './projects-form.scss'
 })

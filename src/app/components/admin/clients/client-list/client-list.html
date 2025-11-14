@@ -1,1 +1,37 @@
-<p>client-list works!</p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Clientes</h3>
+    <a class="btn btn-primary" routerLink="/admin/clients/new">+ Nuevo Cliente</a>
+  </div>
+
+@if(loading()){
+    <app-loader></app-loader>
+  }
+
+<!-- Lista -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Teléfono</th>
+      <th>Empresa</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(client of clients(); track client.id) {
+      <tr>
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.phone }}</td>
+        <td>{{ client.company }}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-warning me-2" (click)="edit(client)">Editar</button>
+          <button class="btn btn-sm btn-danger" (click)="remove(client.id!)">Eliminar</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+</div>

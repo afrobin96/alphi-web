@@ -2,60 +2,48 @@ import { inject, Injectable, signal } from "@angular/core";
 import { ClientData } from "../interfaces/client.interface";
 import { TeamData } from "../interfaces/team.interface";
 import { TeamService } from "../services/team";
+import { tap } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeamStore{
-  teams = signal<TeamData[]>([]);
+  private _teams = signal<TeamData[]>([]);
+  teams = this._teams.asReadonly();
 
   private _loading = signal(false);
   loading = this._loading.asReadonly();
-
-  error = signal<string | null>(null);
 
   teamService = inject(TeamService);
 
   loadAll(){
     this._loading.set(true);
-    this.teamService.loadAll().subscribe({
-      next: (data) => {
-        this.teams.set(data);
-        this._loading.set(false);
-      },
-      error: (err) => {
-        this.error.set('Error cargando los equipos');
-        console.log(err);
-        this._loading.set(false);
-      }
-    });
+    this.teamService.loadAll().pipe(
+      tap({
+        next: (res) => {
+          this._teams.set(res);
+          this._loading.set(false);
+        },
+        error: () => this._loading.set(false),
+      })
+    ).subscribe();
   }
 
-  create(client: Partial<ClientData>){
-    this._loading.set(true);
-    this.teamService.create(client).subscribe({
-      next: ()=> {
-        this.loadAll();
-      },
-      error: (err) => {
-        this.error.set('Error creando el equipo');
-        console.log(err);
-        this._loading.set(false);
-      }
-    });
+  create(team: Partial<TeamData>){
+    return this.teamService.create(team).pipe(
+      tap((team)=> this._teams.update(curr => [team, ...curr]))
+    );
+  }
+
+  update(id: number, payload: Partial<TeamData>){
+      return this.teamService.update(id, payload).pipe(
+        tap((team)=> this._teams.update(curr => curr.map(c => c.id === team.id ? team : c)))
+      );
   }
 
   delete(id: number){
-    this._loading.set(true);
-    this.teamService.delete(id).subscribe({
-      next: ()=> {
-        this.loadAll();
-      },
-      error: (err) => {
-        this.error.set('Error eliminando el equipo');
-        console.log(err);
-        this._loading.set(false);
-      }
-    })
+    return this.teamService.delete(id).pipe(
+      tap(()=> this._teams.update(curr=> curr.filter(c => c.id !== id)))
+    )
   }
 }

@@ -1,17 +1,27 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClientData } from '../../../../interfaces/client.interface';
 import { ClientStore } from '../../../../stores/client.store';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ClientService } from '../../../../services/client';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-client-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './client-form.html',
   styleUrl: './client-form.scss'
 })
-export class ClientForm {
+export class ClientForm implements OnInit{
   private fb = inject(FormBuilder);
-  private clientStore = inject(ClientStore);
+  clientStore = inject(ClientStore);
+  clientService = inject(ClientService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  httpClient = inject(HttpClient);
+
+  editing = false;
+  clientId?: number;
+  clients = this.clientService.clients;
 
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -20,10 +30,33 @@ export class ClientForm {
     company: [''],
   });
 
-  onSubmit(){
-    if(this.form.valid){
-      this.clientStore.create(this.form.value);
-      this.form.reset();
+  ngOnInit(): void {
+    const id = +this.route.snapshot.paramMap.get('id')!;
+
+    if(id){
+      this.editing = true;
+      this.clientId = id;
     }
   }
+
+  onSubmit(){
+    if (this.form.invalid) return;
+
+    const formValue = this.form.value;
+
+    if (this.clientId) {
+      this.clientStore.update(this.clientId, formValue).subscribe();
+      this.router.navigateByUrl('admin/clients');
+    } else {
+      this.clientStore.create(formValue).subscribe();
+      this.router.navigateByUrl('admin/clients');
+    }
+
+    this.form.reset();
+
+
+  }
+
+
+
 }

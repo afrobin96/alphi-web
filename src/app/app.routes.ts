@@ -10,6 +10,8 @@ import { ClientList } from './components/admin/clients/client-list/client-list';
 import { ClientForm } from './components/admin/clients/client-form/client-form';
 import { TeamsList } from './components/admin/teams/teams-list/teams-list';
 import { TeamsForm } from './components/admin/teams/teams-form/teams-form';
+import { MembersList } from './components/admin/members/members-list/members-list';
+import { MembersForm } from './components/admin/members/members-form/members-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -23,7 +25,8 @@ export const routes: Routes = [
       { path: 'clients/new', component: ClientForm},
       { path: 'teams', component: TeamsList },
       { path: 'teams/new', component: TeamsForm},
-      { path: 'members', component: Dashboard },
+      { path: 'members', component: MembersList },
+      { path: 'members/new', component: MembersForm },
       { path: 'tasks', component: Dashboard },
       { path: 'payments', component: Dashboard },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

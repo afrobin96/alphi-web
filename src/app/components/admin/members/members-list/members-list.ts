@@ -1,17 +1,21 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MemberStore } from '../../../../stores/member.store';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MemberData } from '../../../../interfaces/members.interface';
+import { Loader } from "../../../shared/loader/loader";
+import { TeamStore } from '../../../../stores/team.store';
+import { TeamData } from '../../../../interfaces/team.interface';
 
 @Component({
   selector: 'app-members-list',
-  imports: [],
+  imports: [Loader, RouterLink],
   templateUrl: './members-list.html',
   styleUrl: './members-list.scss'
 })
 export class MembersList implements OnInit{
 
   memberStore = inject(MemberStore);
+  teamStore = inject(TeamStore);
   router = inject(Router);
 
 
@@ -20,6 +24,7 @@ export class MembersList implements OnInit{
 
   ngOnInit(): void {
     this.memberStore.load()
+    this.teamStore.loadAll()
   }
 
   edit(member: MemberData) {
@@ -30,5 +35,6 @@ export class MembersList implements OnInit{
     if (!confirm('¿Eliminar miembro?')) return;
     this.memberStore.remove(id).subscribe();
   }
+
 
 }

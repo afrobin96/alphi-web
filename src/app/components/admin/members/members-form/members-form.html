@@ -1,1 +1,35 @@
-<p>members-form works!</p>
+<div class="container mt-4" style="max-width:800px">
+  <h3>{{ editing ? 'Editar' : 'Nuevo' }} Miembro</h3>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label>Nombre</label>
+      <input class="form-control" formControlName="name" type="text">
+    </div>
+
+    <div class="mb-3">
+      <label>Email</label>
+      <input class="form-control" formControlName="email" type="email">
+    </div>
+
+    <div class="mb-3">
+      <label>Rol</label>
+      <input class="form-control" formControlName="rol" type="text">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Equipo</label>
+      <select class="form-select" formControlName="teamId">
+        <option [value]="null">-- Sin equipo --</option>
+          @for(team of teams(); track $index){
+            <option [value]="team.id">{{ team.name }}</option>
+          }
+      </select>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Guardar</button>
+      <a class="btn btn-link" routerLink="/admin/members">Cancelar</a>
+    </div>
+  </form>
+</div>

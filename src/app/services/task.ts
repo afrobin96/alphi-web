@@ -8,7 +8,7 @@ import { TaskData } from '../interfaces/task.interface';
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly apiUrl = `${environment.apiUrl}/tasks`;
+  private readonly apiUrl = `${environment.apiUrl}/task`;
   injectedHttp = inject(HttpClient);
 
   list(): Observable<TaskData[]>{

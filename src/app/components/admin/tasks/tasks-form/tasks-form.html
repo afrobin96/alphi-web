@@ -1,1 +1,57 @@
-<p>tasks-form works!</p>
+<div class="container mt-4" style="max-width:800px">
+  <h3>{{ editing ? 'Editar' : 'Nuevo' }} Miembro</h3>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="border p-3 rounded mb-3">
+  <div class="mb-3">
+    <label>Título</label>
+    <input class="form-control" formControlName="title" />
+  </div>
+
+  <div class="mb-3">
+    <label>Descripción</label>
+    <textarea class="form-control" formControlName="description"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label>Valor</label>
+    <input type="number" class="form-control" formControlName="value" />
+  </div>
+
+  <div class="mb-3">
+    <label>Proyecto (opcional)</label>
+    <select class="form-select" formControlName="projectId">
+      <option [value]="null">-- Sin proyecto --</option>
+      @for(project of projects(); track $index){
+            <option [value]="project.id">{{ project.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Miembro (opcional)</label>
+    <select class="form-select" formControlName="memberId">
+      <option [value]="null">-- Sin miembro --</option>
+      @for(member of members(); track $index){
+            <option [value]="member.id">{{ member.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Estado</label>
+    <select class="form-select" formControlName="status">
+      <option value="to_do">Por hacer</option>
+      <option value="in_review">En revisión</option>
+      <option value="reopened">Reabierta</option>
+      <option value="completed">Completada</option>
+      <option value="payment_pending">En proceso de pago</option>
+      <option value="paid">Pagada</option>
+    </select>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <a class="btn btn-link" routerLink="/admin/tasks">Cancelar</a>
+  </div>
+</form>
+</div>

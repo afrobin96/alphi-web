@@ -11,11 +11,12 @@ import { Loader } from '../../../shared/loader/loader';
 })
 export class TasksList implements OnInit {
 
-  tasks = signal<any | null>(null);
+  // tasks = signal<any | null>(null);
   taksStore = inject(TaskStore);
   router = inject(Router);
 
   loading = this.taksStore.loading;
+  tasks = this.taksStore.tasks;
 
   ngOnInit(): void {
     this.taksStore.load();

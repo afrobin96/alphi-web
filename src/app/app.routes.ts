@@ -14,6 +14,8 @@ import { MembersList } from './components/admin/members/members-list/members-lis
 import { MembersForm } from './components/admin/members/members-form/members-form';
 import { TasksList } from './components/admin/tasks/tasks-list/tasks-list';
 import { TasksForm } from './components/admin/tasks/tasks-form/tasks-form';
+import { PaymentsList } from './components/admin/payments/payments-list/payments-list';
+import { PaymentsForm } from './components/admin/payments/payments-form/payments-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -31,7 +33,8 @@ export const routes: Routes = [
       { path: 'members/new', component: MembersForm },
       { path: 'tasks', component: TasksList },
       { path: 'tasks/new', component: TasksForm },
-      { path: 'payments', component: Dashboard },
+      { path: 'payments', component: PaymentsList },
+      { path: 'payments/new', component: PaymentsForm },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
     canActivate: [authGuard]

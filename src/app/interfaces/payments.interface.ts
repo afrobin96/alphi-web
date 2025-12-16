@@ -4,7 +4,7 @@ import { TaskData } from "./task.interface";
 
 
 export interface PaymentData {
-  id?: number,
+  id: number,
   member: MemberData,
   project: ProjectData,
   task?: TaskData[],

@@ -1,1 +1,43 @@
-<p>payments-list works!</p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Pagos</h3>
+    <a class="btn btn-primary" routerLink="/admin/payments/new">+ Nuevo pago</a>
+  </div>
+
+  @if(loading()){
+    <app-loader></app-loader>
+  }
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Miembro</th>
+        <th>Proyecto</th>
+        <th>Valor</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (payment of payments(); track payment.id) {
+      <tr>
+        <td>{{ payment.member.name }}</td>
+        <td>{{ payment.project.name }}</td>
+        <td>{{ payment.total | number:'1.2-2' }}</td>
+        <td>{{ payment.status }}</td>
+        <td>{{ payment.createdAt | date:'short' }}</td>
+        <td class="text-end">
+          @if(payment.status === 'pending'){
+            <button class="btn btn-sm btn-success me-2" (click)="markPaid(payment.id)">Marcar pagado</button>
+          }
+          <button class="btn btn-sm btn-danger" (click)="delete(payment.id)">Eliminar</button>
+        </td>
+      </tr>
+      } @empty {
+        <h4>No hay pagos registrados.</h4>
+      }
+    </tbody>
+  </table>
+
+</div>

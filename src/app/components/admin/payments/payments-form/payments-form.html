@@ -1,1 +1,53 @@
-<p>payments-form works!</p>
+
+<div class="container mt-4" style="max-width:800px">
+  <h3>{{ editing ? 'Editar' : 'Nuevo' }} Pago</h3>
+
+<form [formGroup]="form" (ngSubmit)="OnSubmit()" class="border p-3 rounded mb-3">
+  <h5>Crear pago</h5>
+
+  <div class="mb-3">
+    <label>Proyecto</label>
+    <select class="form-select" formControlName="projectId">
+      <option [ngValue]="null">-- Seleccione proyecto --</option>
+      <option *ngFor="let p of projects()" [ngValue]="p.id">{{ p.name }}</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Miembro</label>
+    <select class="form-select" formControlName="memberId">
+      <option [ngValue]="null">-- Seleccione miembro --</option>
+      <option *ngFor="let m of members()" [ngValue]="m.id">{{ m.name }}</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Valor calculado</label>
+    <input class="form-control" [value]="amounts() !== null ? (amounts() | number:'1.2-2') : ''" disabled />
+    <div class="form-text">Se suman todas las tareas completadas del miembro en el proyecto.</div>
+  </div>
+
+  <div class="mb-3">
+    <label>Nota (opcional)</label>
+    <input class="form-control" formControlName="note" />
+  </div>
+  @if(tasksPreview()!.length > 0) {
+  <div  class="mb-3">
+    <label>Tareas incluidas</label>
+    <ul class="list-group">
+      @for (item of tasksPreview(); track $index) {
+        <li class="list-group-item">
+          {{ item.title }} — {{ item.value | number:'1.2-2' }}
+        </li>
+      }
+    </ul>
+  </div>
+  }
+
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Crear Pago</button>
+    <a class="btn btn-link" routerLink="/admin/payments">Cancelar</a>
+  </div>
+</form>
+
+</div>

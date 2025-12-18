@@ -6,6 +6,10 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProjectService } from '../../../../services/project';
 import { N } from '@angular/cdk/keycodes';
 import { DecimalPipe } from '@angular/common';
+import { ProjectStore } from '../../../../stores/project.store';
+import { MemberStore } from '../../../../stores/member.store';
+import { TaskStore } from '../../../../stores/task.store';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-payments-form',
@@ -18,6 +22,9 @@ export class PaymentsForm {
 
   private fb = inject(FormBuilder);
   private paymentStore = inject(PaymentStore);
+  private projectStore = inject(ProjectStore);
+  private membersStore = inject(MemberStore);
+  private tasksStore = inject(TaskStore);
   private paymentService = inject(PaymentService);
   private projectService = inject(ProjectService);
   route = inject(ActivatedRoute);
@@ -25,10 +32,11 @@ export class PaymentsForm {
 
   editing = false;
 
-  projects = signal<any[]>([]);
+  projects = this.projectStore.projects;
   members = signal<any[]>([]);
   amounts = signal<number | null>(null);
   tasksPreview = signal<any[]>([]);
+
 
   form = this.fb.group({
     memberId: [null, Validators.required],
@@ -36,56 +44,67 @@ export class PaymentsForm {
     note: [''],
   });
 
-  constructor() {
-    this.projectService.list().subscribe((project) => this.projects.set(project));
+  projectIdSig = toSignal(
+    this.form.controls.projectId.valueChanges,
+    { initialValue: null }
+  );
 
+  memberIdSig = toSignal(
+    this.form.controls.memberId.valueChanges,
+    { initialValue: null }
+  );
+
+  constructor() {
+    this.projectStore.load();
+    this.membersStore.load();
+    this.tasksStore.load();
+
+    // Cuando cambia el proyecto → filtrar miembros por equipo
     effect(() => {
-      const projectId = this.form.value.projectId;
+      const projectId = this.projectIdSig();
+      const allMembers = this.membersStore.members(); // Dependencia para re-ejecutar cuando cargan los miembros
+      console.log('Project changed:', projectId);
       if (!projectId) {
         this.members.set([]);
-        this.amounts.set(null);
-        this.tasksPreview.set([]);
         return;
       }
 
-      this.paymentService.getProjectMembers(Number(projectId)).subscribe((members) => this.members.set(members));
+      const project = this.projectStore.projects()
+        .find(p => p.id === Number(projectId));
 
+      if (!project?.team?.id) {
+        this.members.set([]);
+        return;
+      }
+
+      const teamId = project.team.id;
+
+      const filteredMembers = allMembers
+        .filter(m => m.teamId?.id === teamId);
+
+      this.members.set(filteredMembers);
       this.form.patchValue({ memberId: null });
-      this.amounts.set(null);
-      this.tasksPreview.set([]);
     });
 
+    // Cuando cambia el miembro → calcular total
     effect(() => {
-      const projectid = this.form.value.projectId;
-      const memberId = this.form.value.memberId;
+      const projectId = Number(this.form.value.projectId);
+      const memberId = Number(this.form.value.memberId);
 
-      if (!projectid || !memberId) {
-        this.amounts.set(null);
-        this.tasksPreview.set([]);
-        return;
-      }
-      this.paymentService.calcAmount(Number(projectid), Number(memberId)).subscribe(amount => {
-        this.amounts.set(Number(amount.total));
-        this.tasksPreview.set(amount.tasks || []);
-      });
-    });
-
-    effect(() => {
-      const slected = this.selectedPayment();
-      if(!slected){
-        this.form.reset();
-        this.amounts.set(null);
-        this.tasksPreview.set([]);
+      if (!projectId || !memberId) {
+        this.amounts.set(0);
         return;
       }
 
-      this.form.patchValue({
-        memberId: slected.member.id ?? null,
-        projectId: slected.project.id ?? null,
-        note: slected.note ?? '',
-      });
+      const total = this.tasksStore.tasks()
+        .filter(t =>
+          t.project?.id === projectId &&
+          t.member?.id === memberId &&
+          t.status === 'completed'
+        )
+        .reduce((sum, t) => sum + Number(t.value), 0);
 
-      this.amounts.set(slected.total ?? null);
+      this.amounts.set(total);
     });
   }
 

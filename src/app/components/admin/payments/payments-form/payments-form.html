@@ -9,7 +9,9 @@
     <label>Proyecto</label>
     <select class="form-select" formControlName="projectId">
       <option [ngValue]="null">-- Seleccione proyecto --</option>
-      <option *ngFor="let p of projects()" [ngValue]="p.id">{{ p.name }}</option>
+      @for (project of projects(); track $index) {
+        <option [ngValue]="project.id">{{ project.name }}</option>
+      }
     </select>
   </div>
 
@@ -17,7 +19,9 @@
     <label>Miembro</label>
     <select class="form-select" formControlName="memberId">
       <option [ngValue]="null">-- Seleccione miembro --</option>
-      <option *ngFor="let m of members()" [ngValue]="m.id">{{ m.name }}</option>
+      @for (member of members(); track $index) {
+        <option [ngValue]="member.id">{{ member.name }}</option>
+      }
     </select>
   </div>
 

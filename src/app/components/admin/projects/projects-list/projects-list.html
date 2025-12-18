@@ -1,30 +1,50 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Proyectos</h3>
-    <a class="btn btn-primary" routerLink="/admin/projects/new">+ Nuevo proyecto</a>
+<div class="container py-5">
+  <div class="mb-4">
+    <h2 class="display-4 font-weight-bold">Proyectos</h2>
+    <p class="text-muted">Visión general de los proyectos</p>
+    <a class="btn btn-primary my-4" routerLink="/admin/projects/new">+ Nuevo proyecto</a>
   </div>
 
   @if(loading()){
     <app-loader></app-loader>
   }
+  <div class="alp-table-main">
+    <table mat-table [dataSource]="projects()" class="mat-elevation-z8 alp-text-sm">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+      </ng-container>
 
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef>Cliente</th>
+        <td mat-cell *matCellDef="let project">{{ project.client?.name || 'Sin cliente' }}</td>
+      </ng-container>
 
-  <div class="list-group">
-    @for( project of projects(); track project.id){
-      <div class="list-group-item d-flex justify-content-between align-items-center">
-      <div>
-        <h5>{{ project.name }}</h5>
-        <small>{{ project.client?.name || 'Sin cliente' }} • {{ project.team?.name || 'Sin equipo' }}</small>
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-sm btn-success" (click)="complete(project.id!)">Completar</button>
-        <button class="btn btn-sm btn-secondary" (click)="edit(project)">Editar</button>
-        <button class="btn btn-sm btn-danger" (click)="remove(project.id!)">Eliminar</button>
-      </div>
-    </div>
-    } @empty {
-      <h4>There are no items.</h4>
-    }
+      <ng-container matColumnDef="team">
+        <th mat-header-cell *matHeaderCellDef>Equipo</th>
+        <td mat-cell *matCellDef="let project">{{ project.team?.name || 'Sin equipo' }}</td>
+      </ng-container>
 
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let project">{{ project.status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let project">
+          <button mat-button (click)="complete(project.id!)" class="alp-table-main-buttons alp-table-success-btn">Completar</button>
+          <button mat-button (click)="edit(project)" class="alp-table-main-buttons">Editar</button>
+          <button mat-button (click)="remove(project.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
+
+  @if(projects().length === 0 && !loading()){
+    <h4>No hay proyectos.</h4>
+  }
 </div>

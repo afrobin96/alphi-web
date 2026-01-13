@@ -5,10 +5,13 @@ import { MemberData } from '../../../../interfaces/members.interface';
 import { Loader } from "../../../shared/loader/loader";
 import { TeamStore } from '../../../../stores/team.store';
 import { TeamData } from '../../../../interfaces/team.interface';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-members-list',
-  imports: [Loader, RouterLink],
+  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './members-list.html',
   styleUrl: './members-list.scss'
 })
@@ -21,6 +24,8 @@ export class MembersList implements OnInit{
 
   members = this.memberStore.members;
   loading = this.memberStore.loading;
+
+  displayedColumns: string[] = ['name', 'rol', 'email', 'team', 'actions'];
 
   ngOnInit(): void {
     this.memberStore.load()

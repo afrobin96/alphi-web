@@ -3,10 +3,13 @@ import { TeamStore } from '../../../../stores/team.store';
 import { TeamData } from '../../../../interfaces/team.interface';
 import { Router, RouterLink } from '@angular/router';
 import { Loader } from "../../../shared/loader/loader";
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-teams-list',
-  imports: [Loader, RouterLink],
+  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './teams-list.html',
   styleUrl: './teams-list.scss'
 })
@@ -17,7 +20,7 @@ export class TeamsList implements OnInit{
   loading = this.teamStore.loading;
   router = inject(Router);
 
-
+  displayedColumns: string[] = ['name', 'description', 'actions'];
 
   ngOnInit(): void {
     this.teamStore.loadAll();

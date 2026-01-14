@@ -2,10 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { TaskStore } from '../../../../stores/task.store';
 import { Router, RouterLink } from '@angular/router';
 import { Loader } from '../../../shared/loader/loader';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-tasks-list',
-  imports: [Loader, RouterLink],
+  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './tasks-list.html',
   styleUrl: './tasks-list.scss'
 })
@@ -17,6 +20,8 @@ export class TasksList implements OnInit {
 
   loading = this.taksStore.loading;
   tasks = this.taksStore.tasks;
+
+  displayedColumns: string[] = ['title', 'value', 'state', 'project', 'member', 'actions'];
 
   ngOnInit(): void {
     this.taksStore.load();

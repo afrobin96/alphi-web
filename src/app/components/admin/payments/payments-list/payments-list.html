@@ -1,43 +1,56 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Pagos</h3>
-    <a class="btn btn-primary" routerLink="/admin/payments/new">+ Nuevo pago</a>
+<div class="container py-5">
+  <div class="mb-4">
+    <h2 class="display-4 font-weight-bold">Pagos</h2>
+    <p class="text-muted">Visión general de los pagos</p>
+    <a class="btn btn-primary my-4" routerLink="/admin/payments/new">+ Nuevo pago</a>
   </div>
 
   @if(loading()){
     <app-loader></app-loader>
   }
+   <div class="alp-table-main">
+    <table mat-table [dataSource]="payments()" class="mat-elevation-z8 alp-text-sm">
+      <ng-container matColumnDef="member">
+        <th mat-header-cell *matHeaderCellDef>Miembro</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.member.name }}</td>
+      </ng-container>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Miembro</th>
-        <th>Proyecto</th>
-        <th>Valor</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (payment of payments(); track payment.id) {
-      <tr>
-        <td>{{ payment.member.name }}</td>
-        <td>{{ payment.project.name }}</td>
-        <td>{{ payment.total | number:'1.2-2' }}</td>
-        <td>{{ payment.status }}</td>
-        <td>{{ payment.createdAt | date:'short' }}</td>
-        <td class="text-end">
+      <ng-container matColumnDef="project">
+        <th mat-header-cell *matHeaderCellDef>Proyecto</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.project.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef>Valor</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.total | number:'1.2-2' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.createdAt | date:'short' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let payment">
           @if(payment.status === 'pending'){
-            <button class="btn btn-sm btn-success me-2" (click)="markPaid(payment.id)">Marcar pagado</button>
+            <button mat-button (click)="markPaid(payment.id)" class="alp-table-main-buttons">Marcar pagado</button>
           }
-          <button class="btn btn-sm btn-danger" (click)="delete(payment.id)">Eliminar</button>
+          <button mat-button (click)="delete(payment.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
         </td>
-      </tr>
-      } @empty {
-        <h4>No hay pagos registrados.</h4>
-      }
-    </tbody>
-  </table>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  @if(payments().length === 0 && !loading()){
+    <h4>No hay pagos registrados.</h4>
+  }
 
 </div>

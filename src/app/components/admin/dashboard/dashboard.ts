@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { dashboardData } from '../../../interfaces/dashboard.interface';
 import { DashboardService } from '../../../services/dashboard';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })

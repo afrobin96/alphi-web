@@ -5,8 +5,8 @@ import { ProjectStore } from '../../../../stores/project.store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { subscribe } from 'diagnostics_channel';
-import { ClientService } from '../../../../services/client';
-import { TeamService } from '../../../../services/team';
+import { ClientStore } from '../../../../stores/client.store';
+import { TeamStore } from '../../../../stores/team.store';
 
 @Component({
   selector: 'app-projects-form',
@@ -22,25 +22,25 @@ export class ProjectsForm implements OnInit{
   route = inject(ActivatedRoute);
   router = inject(Router);
   httpClient = inject(HttpClient);
-  clientsService = inject(ClientService);
-  teamService = inject(TeamService);
+  clientStore = inject(ClientStore);
+  teamStore = inject(TeamStore);
 
   // inicialize form
   form = this.fb.group({
     name:['', Validators.required],
     description: [''],
-    clientId: [0],
-    teamId: [0]
+    clientId: [null as number | null],
+    teamId: [null as number | null]
   });
 
   editing = false;
   projectId?: number;
-  clients = this.clientsService.clients;
-  teams= this.teamService.teams;
+  clients = this.clientStore.clients;
+  teams = this.teamStore.teams;
 
   ngOnInit(): void {
-    this.clientsService.loadAll();
-    this.teamService.loadAll();
+    this.clientStore.loadAll();
+    this.teamStore.loadAll();
 
     const id = +this.route.snapshot.paramMap.get('id')!;
 

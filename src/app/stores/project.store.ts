@@ -36,6 +36,7 @@ export class ProjectStore {
   }
 
   update(id: number, payload: Partial<ProjectData>){
+    console.log('ProjectStore update', id, payload);
     return this.projectService.update(id, payload).pipe(
       tap((project)=> this._projects.update(curr => curr.map(c => c.id === project.id ? project : c)))
     )

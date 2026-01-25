@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, computed } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../../../../services/project';
 import { ProjectStore } from '../../../../stores/project.store';
@@ -35,8 +35,8 @@ export class ProjectsForm implements OnInit{
 
   editing = false;
   projectId?: number;
-  clients = this.clientStore.clients;
-  teams = this.teamStore.teams;
+  clients = computed(() => this.clientStore.clients());
+  teams = computed(() => this.teamStore.teams());
 
   ngOnInit(): void {
     this.clientStore.loadAll();
@@ -61,12 +61,19 @@ export class ProjectsForm implements OnInit{
 
   save(){
     const formValue = this.form.value;
+    const payload = {
+      ...formValue,
+      name: formValue.name || '',
+      clientId: formValue.clientId ? Number(formValue.clientId) : null,
+      teamId: formValue.teamId ? Number(formValue.teamId) : null
+    };
+    
     if(this.editing && this.projectId){
-      this.projectStore.update(this.projectId, {...formValue, name: formValue.name || ''}).subscribe(()=>{
+      this.projectStore.update(this.projectId, payload).subscribe(()=>{
         this.router.navigateByUrl('admin/projects');
       });
     } else {
-      this.projectStore.add({...formValue, name: formValue.name || ''}).subscribe(() => {
+      this.projectStore.add(payload).subscribe(() => {
         this.router.navigateByUrl('admin/projects');
       })
     }
@@ -83,7 +90,7 @@ export class ProjectsForm implements OnInit{
     if(!this.projectId) return;
 
     const teamId = this.form.value.teamId;
-    this.projectStore.assignClient(this.projectId, teamId!).subscribe();
+    this.projectStore.assignTeam(this.projectId, teamId!).subscribe();
   }
 
 }

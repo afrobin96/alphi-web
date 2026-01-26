@@ -33,8 +33,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let project">
-          <button mat-button (click)="complete(project.id!)" class="alp-table-main-buttons alp-table-success-btn">Completar</button>
-          <button mat-button (click)="edit(project)" class="alp-table-main-buttons">Editar</button>
+          @if(project.status !== 'completed'){
+            <button mat-button (click)="complete(project.id!)" class="alp-table-main-buttons alp-table-success-btn">Completar</button>
+            <button mat-button (click)="edit(project)" class="alp-table-main-buttons">Editar</button>
+          }
           <button mat-button (click)="remove(project.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
         </td>
       </ng-container>

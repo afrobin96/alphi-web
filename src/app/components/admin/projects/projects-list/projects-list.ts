@@ -33,12 +33,12 @@ export class ProjectsList implements OnInit{
 
   remove(id: number){
     if (!confirm('¿Deseas eliminar el proyecto?')) return;
-    this.projectStore.remove(id).subscribe;
+    this.projectStore.remove(id).subscribe();
   }
 
   complete(id:number){
     if (!confirm('¿Deseas marcar el proyecto como completado?')) return;
-    this.projectStore.complete(id).subscribe;
+    this.projectStore.complete(id).subscribe();
   }
 
 }

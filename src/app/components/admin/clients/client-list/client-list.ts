@@ -32,7 +32,7 @@ export class ClientList implements OnInit{
 
   remove(id: number){
     if (!confirm('¿Deseas eliminar el cliente?')) return;
-    this.clientStore.delete(id).subscribe;
+    this.clientStore.delete(id).subscribe();
   }
 
 }

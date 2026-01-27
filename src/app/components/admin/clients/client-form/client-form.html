@@ -1,5 +1,5 @@
 <div class="container mt-4" style="max-width:800px">
-  <h3>{{ editing ? 'Editar' : 'Nuevo' }} Cliente</h3>
+  <h2 class="display-4 font-weight-bold mb-4">{{ editing ? 'Editar' : 'Nuevo' }} Cliente</h2>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="mb-3">

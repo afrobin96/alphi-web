@@ -5,16 +5,43 @@
     <div class="mb-3">
       <label>Nombre</label>
       <input class="form-control" formControlName="name" type="text">
+      @if (form.get('name')?.invalid && form.get('name')?.touched){
+        <div class="text-danger mt-1 small">
+          @if (form.get('name')?.hasError('required')){
+            <span>El nombre es obligatorio</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="mb-3">
       <label>Email</label>
       <input class="form-control" formControlName="email" type="email">
+      @if(form.get('email')?.invalid && form.get('email')?.touched){
+        <div class="text-danger mt-1 small">
+          @if (form.get('email')?.hasError('required')){
+            <span>El email es obligatorio</span>
+          }
+          @if (form.get('email')?.hasError('email')){
+            <span>El email no es válido</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="mb-3">
       <label>Teléfono</label>
-      <input class="form-control" formControlName="phone" type="phone">
+      <input class="form-control" formControlName="phone" type="text">
+      @if(form.get('phone')?.invalid && form.get('phone')?.touched){
+        <div class="text-danger mt-1 small">
+          @if (form.get('phone')?.hasError('required')){
+            <span>El teléfono es obligatorio</span>
+          }
+          @if (form.get('phone')?.hasError('numbersOnly')){
+            <span>El teléfono solo debe contener números</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="mb-3">

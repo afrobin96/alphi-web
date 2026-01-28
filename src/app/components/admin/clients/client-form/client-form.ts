@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ClientStore } from '../../../../stores/client.store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ClientService } from '../../../../services/client';
@@ -23,10 +23,17 @@ export class ClientForm implements OnInit{
   clientId?: number;
   clients = this.clientService.clients;
 
+  // Validador personalizado para solo números en el teléfono
+  private numbersOnlyValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const isNumeric = /^[0-9]*$/.test(control.value);
+    return isNumeric ? null : { numbersOnly: true };
+  }
+
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    phone: [''],
+    phone: ['', [Validators.required,this.numbersOnlyValidator.bind(this)]],
     company: [''],
   });
 

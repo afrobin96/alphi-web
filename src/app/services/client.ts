@@ -17,6 +17,10 @@ export class ClientService {
     return this.injectedHttp.get<ClientData[]>(this.apiUrl);
   }
 
+  get(id: number){
+      return this.injectedHttp.get<ClientData>(`${this.apiUrl}/${id}`);
+  }
+
   create(data: Partial<ClientData>): Observable<ClientData>{
     return this.injectedHttp.post<ClientData>(this.apiUrl, data);
   }

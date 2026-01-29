@@ -27,7 +27,7 @@ export class ClientList implements OnInit{
   }
 
   edit(client: ClientData){
-      this.router.navigateByUrl(`/admin/client/edit/${client.id}`);
+      this.router.navigateByUrl(`/admin/clients/edit/${client.id}`);
   }
 
   remove(id: number){

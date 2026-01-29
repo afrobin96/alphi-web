@@ -43,6 +43,15 @@ export class ClientForm implements OnInit{
     if(id){
       this.editing = true;
       this.clientId = id;
+      this.clientService.get(id).subscribe(client =>{
+          this.form.patchValue({
+            name: client.name,
+            email: client.email,
+            phone: client.phone,
+            company: client.company
+
+          });
+      });
     }
   }
 
@@ -51,19 +60,16 @@ export class ClientForm implements OnInit{
 
     const formValue = this.form.value;
 
-    if (this.clientId) {
-      this.clientStore.update(this.clientId, formValue).subscribe();
-      this.router.navigateByUrl('admin/clients');
+    if (this.editing && this.clientId) {
+      this.clientStore.update(this.clientId, formValue).subscribe(() => {
+        this.router.navigateByUrl('admin/clients');
+      });
+
+
     } else {
-      this.clientStore.create(formValue).subscribe();
-      this.router.navigateByUrl('admin/clients');
+      this.clientStore.create(formValue).subscribe(() => {
+        this.router.navigateByUrl('admin/clients');
+      });
     }
-
-    this.form.reset();
-
-
   }
-
-
-
 }

@@ -44,6 +44,6 @@ export class TeamStore{
   delete(id: number){
     return this.teamService.delete(id).pipe(
       tap(()=> this._teams.update(curr=> curr.filter(c => c.id !== id)))
-    )
+    );
   }
 }

@@ -31,6 +31,7 @@ export const routes: Routes = [
       { path: 'clients/edit/:id', component: ClientForm},
       { path: 'teams', component: TeamsList },
       { path: 'teams/new', component: TeamsForm},
+      { path: 'teams/edit/:id', component: TeamsForm},
       { path: 'members', component: MembersList },
       { path: 'members/new', component: MembersForm },
       { path: 'tasks', component: TasksList },

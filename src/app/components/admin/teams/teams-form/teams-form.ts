@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TeamStore } from '../../../../stores/team.store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TeamService } from '../../../../services/team';
 
 @Component({
   selector: 'app-teams-form',
@@ -12,6 +13,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 export class TeamsForm implements OnInit{
   private fb = inject(FormBuilder);
   private teamStore = inject(TeamStore);
+  teamService = inject(TeamService);
+
   route = inject(ActivatedRoute);
   router = inject(Router);
 
@@ -29,6 +32,12 @@ export class TeamsForm implements OnInit{
     if(id){
       this.editing = true;
       this.teamId = id;
+      this.teamService.get(id).subscribe(team =>{
+          this.form.patchValue({
+            name: team.name,
+            description: team.description
+          });
+      });
     }
   }
 

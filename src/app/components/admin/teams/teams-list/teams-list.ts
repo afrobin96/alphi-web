@@ -33,7 +33,7 @@ export class TeamsList implements OnInit{
 
   deleteTeam(id: number){
     if (!confirm('¿Deseas eliminar el equipo?')) return;
-    this.teamStore.delete(id);
+    this.teamStore.delete(id).subscribe();
   }
 
 }

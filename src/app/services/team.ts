@@ -17,6 +17,10 @@ export class TeamService {
     return this.injectedHttp.get<TeamData[]>(this.apiUrl);
   }
 
+  get(id: number){
+    return this.injectedHttp.get<TeamData>(`${this.apiUrl}/${id}`);
+  }
+
   create(data: Partial<TeamData>): Observable<TeamData>{
     return this.injectedHttp.post<TeamData>(this.apiUrl, data);
   }

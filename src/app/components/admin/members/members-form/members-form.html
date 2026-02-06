@@ -1,20 +1,44 @@
 <div class="container mt-4" style="max-width:800px">
-  <h3>{{ editing ? 'Editar' : 'Nuevo' }} Miembro</h3>
+  <h2 class="display-4 font-weight-bold mb-4">{{ editing ? 'Editar' : 'Nuevo' }} Miembro</h2>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label>Nombre</label>
       <input class="form-control" formControlName="name" type="text">
+      @if (form.get('name')?.invalid && form.get('name')?.touched){
+        <div class="text-danger mt-1 small">
+          @if (form.get('name')?.hasError('required')){
+            <span>El nombre es obligatorio</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="mb-3">
       <label>Email</label>
       <input class="form-control" formControlName="email" type="email">
+      @if(form.get('email')?.invalid && form.get('email')?.touched){
+        <div class="text-danger mt-1 small">
+          @if (form.get('email')?.hasError('required')){
+            <span>El email es obligatorio</span>
+          }
+          @if (form.get('email')?.hasError('email')){
+            <span>El email no es válido</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="mb-3">
       <label>Rol</label>
       <input class="form-control" formControlName="rol" type="text">
+      @if (form.get('rol')?.invalid && form.get('rol')?.touched){
+        <div class="text-danger mt-1 small">
+          @if (form.get('rol')?.hasError('required')){
+            <span>El rol es obligatorio</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="mb-3">

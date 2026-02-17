@@ -2,7 +2,7 @@ import { MemberData } from "./members.interface";
 import { ProjectData } from "./project.interface";
 
 
-export type TaskStatus = 'to_do' | 'in_review' | 'reopened' | 'completed' | 'payment_pending' | 'paid';
+export type TaskStatus = 'to_do' | 'in_course' | 'in_review' | 'reopened' | 'completed' | 'payment_pending' | 'paid';
 
 export interface TaskData {
   id?: number;

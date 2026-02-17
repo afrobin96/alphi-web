@@ -1,0 +1,179 @@
+//  :host { display: block; }
+
+    // Bootstrap utility classes that might be missing
+    .overflow-x-auto {
+      overflow-x: auto !important;
+      overflow-y: hidden;
+    }
+
+    // Scrollbar hide styles
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    // Bubble mask animations for images
+    .bubble-mask {
+      border-radius: 43% 57% 70% 30% / 30% 45% 55% 70%;
+      animation: morph 12s ease-in-out infinite alternate;
+    }
+
+    .bubble-mask-alt {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: morph-alt 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes morph {
+      0% { border-radius: 43% 57% 70% 30% / 30% 45% 55% 70%; }
+      50% { border-radius: 60% 40% 40% 60% / 40% 60% 40% 60%; }
+      100% { border-radius: 70% 30% 46% 54% / 30% 29% 71% 70%; }
+    }
+
+    @keyframes morph-alt {
+      0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      100% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    }
+
+    // Reveal animation on scroll
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    // Smooth scrolling
+    html { scroll-behavior: smooth; }
+
+    // Bootstrap overrides and custom styles
+    .display-3 {
+      font-size: 3.5rem;
+    }
+
+    .display-5 {
+      font-size: 2.5rem;
+    }
+
+    .rounded-4 {
+      border-radius: 1.5rem !important;
+    }
+
+    .rounded-5 {
+      border-radius: 3rem !important;
+    }
+
+    .rounded-3 {
+      border-radius: 0.75rem !important;
+    }
+
+    .gap-3 {
+      gap: 1rem !important;
+    }
+
+    .gap-4 {
+      gap: 1.5rem !important;
+    }
+
+    .gap-5 {
+      gap: 3rem !important;
+    }
+
+    .object-cover {
+      object-fit: cover;
+    }
+
+    // Form styles for contact section
+    .form-control {
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        box-shadow: none;
+      }
+    }
+
+    // Navbar smooth transitions
+    .navbar {
+      transition: background-color 0.3s ease;
+
+      .nav-link {
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #10b981 !important;
+        }
+      }
+    }
+
+    // Card hover effects
+    .card {
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(-5px);
+      }
+    }
+
+    // Pulse animation for logo
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    // Container adjustments
+    .container-lg {
+      max-width: 1280px;
+    }
+
+    // Min height screen
+    .min-vh-100 {
+      min-height: 100vh;
+    }
+
+    // Utility classes
+    .position-relative {
+      position: relative;
+    }
+
+    .position-absolute {
+      position: absolute;
+    }
+
+    .z-1 {
+      z-index: 2;
+    }
+
+    .lh-lg {
+      line-height: 1.75;
+    }
+
+    // Transition utilities
+    .transition-all {
+      transition: all 0.3s ease;
+    }
+
+    .transition-transform {
+      transition: transform 0.3s ease;
+    }
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      .display-3 {
+        font-size: 2rem;
+      }
+
+      .display-5 {
+        font-size: 1.75rem;
+      }
+
+      .rounded-5 {
+        border-radius: 2rem !important;
+      }
+    }
+

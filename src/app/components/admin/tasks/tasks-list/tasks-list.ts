@@ -33,7 +33,7 @@ export class TasksList implements OnInit {
 
   delete(id: number){
     if (!confirm('¿Deseas eliminar la tarea?')) return;
-    this.taksStore.delete(id).subscribe;
+    this.taksStore.delete(id).subscribe();
   }
 
   assignMember(taskId: number, memberId: number){

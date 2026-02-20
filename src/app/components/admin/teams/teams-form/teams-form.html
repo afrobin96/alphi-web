@@ -13,7 +13,7 @@
     </div>
 
     <div class="mt-3 d-flex gap-2">
-      <button class="btn btn-primary" type="submit">Guardar</button>
+      <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Guardar</button>
       <a class="btn btn-link" routerLink="/admin/teams">Cancelar</a>
     </div>
   </form>

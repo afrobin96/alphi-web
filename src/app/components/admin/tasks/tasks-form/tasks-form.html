@@ -46,19 +46,15 @@
 
   <div class="mb-3">
     <label>Estado</label>
-    <select class="form-select" formControlName="status">
-      <option value="to_do">Por hacer</option>
-      <option value="in_course">En curso</option>
-      <option value="in_review">En revisión</option>
-      <option value="reopened">Reabierta</option>
-      <option value="completed">Completada</option>
-      <option value="payment_pending">En proceso de pago</option>
-      <option value="paid">Pagada</option>
+    <select class="form-select" id="status" formControlName="status">
+      @for (s of availableStatuses(); track s.value) {
+        <option [value]="s.value">{{ s.label }}</option>
+      }
     </select>
   </div>
 
   <div class="d-flex gap-2">
-    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Guardar</button>
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid || loading()">Guardar</button>
     <a class="btn btn-link" routerLink="/admin/tasks">Cancelar</a>
   </div>
 </form>

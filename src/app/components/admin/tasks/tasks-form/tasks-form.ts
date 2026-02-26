@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TaskStore } from '../../../../stores/task.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../../../services/task';
@@ -6,7 +6,18 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ProjectService } from '../../../../services/project';
 import { MemberService } from '../../../../services/member';
-import { TaskStatus } from '../../../../interfaces/task.interface';
+import { TaskData, TaskStatus, TaskStatusMap, TaskStatusOption } from '../../../../interfaces/task.interface';
+import { switchMap, of } from 'rxjs';
+
+const TASK_STATUS_MAP: TaskStatusMap = {
+  to_do:           { label: 'Por hacer',          transitions: ['in_course'] },
+  in_course:       { label: 'En progreso',         transitions: ['in_review'] },
+  in_review:       { label: 'En revisión',         transitions: ['completed', 'reopened'] },
+  reopened:        { label: 'Reabierta',           transitions: ['in_course'] },
+  completed:       { label: 'Completada',          transitions: ['payment_pending'] },
+  payment_pending: { label: 'En proceso de pago',  transitions: ['paid'] },
+  paid:            { label: 'Pagada',              transitions: [] },
+};
 
 @Component({
   selector: 'app-tasks-form',
@@ -32,13 +43,26 @@ export class TasksForm implements OnInit {
   editing = false;
   taskId?: number;
 
+  currentStatus = signal<TaskStatus>('to_do');
+
   form = this.fb.group({
     title: ['', Validators.required],
     description: [''],
     value: [0, Validators.required],
-    projectId: null,
-    memberId: null,
-    status: ['to_do'],
+    projectId: [null as number | null],
+    memberId: [null as number | null],
+    status: ['to_do' as TaskStatus],
+  });
+
+  availableStatuses = computed<TaskStatusOption[]>(() => {
+    if (!this.editing) {
+      return [{ value: 'to_do', label: TASK_STATUS_MAP['to_do'].label }];
+    }
+
+    const current = this.currentStatus();
+    const allowed: TaskStatus[] = [current, ...TASK_STATUS_MAP[current].transitions];
+
+    return allowed.map((status) => ({ value: status, label: TASK_STATUS_MAP[status].label }));
   });
 
   ngOnInit(): void {
@@ -54,6 +78,7 @@ export class TasksForm implements OnInit {
       this.editing = true;
       this.taskId = id;
       this.taskService.get(id).subscribe((task) => {
+        this.currentStatus.set(task.status as TaskStatus);
         this.form.patchValue({
           title: task.title,
           description: task.description,
@@ -62,7 +87,7 @@ export class TasksForm implements OnInit {
             this.projects().find((p) => p.id === task.project?.id)?.id ?? null,
           memberId:
             this.members().find((m) => m.id === task.member?.id)?.id ?? null,
-          status: task.status,
+          status: task.status as TaskStatus,
         });
       });
     }
@@ -72,48 +97,57 @@ export class TasksForm implements OnInit {
     if (this.form.invalid) return;
 
     const value = this.form.value;
-    console.log(value);
+
     const projectId = value.projectId ? Number(value.projectId) : null;
     const memberId = value.memberId ? Number(value.memberId) : null;
+    const newStatus = value.status as TaskStatus;
 
     if (this.editing && this.taskId) {
 
+      const taskId = this.taskId;
+
       this.taskService
-        .update(this.taskId, {
+        .update(taskId, {
           title: value.title!,
           description: value.description!,
           value: Number(value.value) || 0,
-          status: value.status as TaskStatus,
-        })
-        .subscribe({
-          next: () => {
-            if (projectId !== null) {
-              this.taskStore.assignProject(this.taskId!, projectId).subscribe();
+        }).pipe(
+          switchMap(() => {
+            if (newStatus !== this.currentStatus()) {
+              return this.taskStore.changeStatus(taskId, newStatus);
             }
+            return of(null);
+          }),
+          switchMap(() => {
+               if (projectId !== null) {
+                return this.taskStore.assignProject(taskId, projectId);
+              }
+              return of(null);
+          }),
+          switchMap(() => {
             if (memberId !== null) {
-              this.taskStore.assignMember(this.taskId!, memberId).subscribe();
+              return this.taskStore.assignMember(taskId, memberId);
             }
-            this.router.navigateByUrl('admin/tasks');
-          },
+            return of(null);
+          }),
+        ).subscribe({
+          next: () => this.router.navigateByUrl('admin/tasks'),
+          error: (err) => console.error('Error al actualizar la tarea', err),
         });
-
-      // this.router.navigateByUrl('admin/tasks');
     } else {
-      const payload: any = {
-        title: value.title,
-        description: value.description,
+      const payload: TaskData = {
+        title: value.title!,
+        description: value.description!,
         value: Number(value.value) || 0,
-        projectId: projectId,
-        memberId: memberId,
-        status: (value.status as TaskStatus) || 'to_do',
+        project: this.projects().find((p) => p.id === projectId) ?? null,
+        member: this.members().find((m) => m.id === memberId) ?? null,
+        status: 'to_do' as TaskStatus,
       };
 
       this.taskStore.add(payload).subscribe(() => {
+        this.form.reset();
         this.router.navigateByUrl('admin/tasks');
       });
-
-      this.form.reset();
-      this.router.navigateByUrl('admin/tasks');
     }
   }
 }

@@ -8,6 +8,8 @@ import { ProjectService } from '../../../../services/project';
 import { MemberService } from '../../../../services/member';
 import { TaskData, TaskStatus, TaskStatusMap, TaskStatusOption } from '../../../../interfaces/task.interface';
 import { switchMap, of } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AlertService } from '../../../../services/shared/alert';
 
 const TASK_STATUS_MAP: TaskStatusMap = {
   to_do:           { label: 'Por hacer',          transitions: ['in_course'] },
@@ -34,6 +36,7 @@ export class TasksForm implements OnInit {
   httpClient = inject(HttpClient);
   projectService = inject(ProjectService);
   memberService = inject(MemberService);
+  private alertService = inject(AlertService);
 
   loading = this.taskStore.loading;
 
@@ -54,12 +57,26 @@ export class TasksForm implements OnInit {
     status: ['to_do' as TaskStatus],
   });
 
+  formValues = toSignal(this.form.valueChanges, { initialValue: this.form.value });
+
+  canChangeStatus = computed(() => {
+    const values = this.formValues();
+    const hasProject = values.projectId !== null && values.projectId !== undefined;
+    const hasMember  = values.memberId  !== null && values.memberId  !== undefined;
+    return hasProject && hasMember;
+  });
+
   availableStatuses = computed<TaskStatusOption[]>(() => {
     if (!this.editing) {
       return [{ value: 'to_do', label: TASK_STATUS_MAP['to_do'].label }];
     }
 
     const current = this.currentStatus();
+
+    if (!this.canChangeStatus()) {
+      return [{ value: current, label: TASK_STATUS_MAP[current].label }];
+    }
+
     const allowed: TaskStatus[] = [current, ...TASK_STATUS_MAP[current].transitions];
 
     return allowed.map((status) => ({ value: status, label: TASK_STATUS_MAP[status].label }));
@@ -105,6 +122,11 @@ export class TasksForm implements OnInit {
     if (this.editing && this.taskId) {
 
       const taskId = this.taskId;
+
+      if (newStatus !== this.currentStatus() && !this.canChangeStatus()) {
+        this.alertService.show('danger', 'No se puede cambiar el estado sin proyecto y miembro asignados');
+        return;
+      }
 
       this.taskService
         .update(taskId, {

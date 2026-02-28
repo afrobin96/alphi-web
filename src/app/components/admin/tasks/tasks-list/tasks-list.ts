@@ -48,4 +48,8 @@ export class TasksList implements OnInit {
     this.taksStore.changeStatus(taskId, status).subscribe();
   }
 
+  goToPayment(taskId: number): void {
+    this.router.navigateByUrl(`/admin/payments/view/${taskId}`);
+  }
+
 }

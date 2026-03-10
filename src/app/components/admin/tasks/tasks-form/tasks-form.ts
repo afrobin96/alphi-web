@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { ProjectService } from '../../../../services/project';
 import { MemberService } from '../../../../services/member';
 import { TaskData, TaskStatus, TaskStatusMap, TaskStatusOption } from '../../../../interfaces/task.interface';
-import { switchMap, of } from 'rxjs';
+import { switchMap, of, forkJoin } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../../../services/shared/alert';
 
@@ -83,30 +83,35 @@ export class TasksForm implements OnInit {
   });
 
   ngOnInit(): void {
-    this.projectService
-      .list()
-      .subscribe((project) => this.projects.set(project));
-
-    this.memberService.list().subscribe((member) => this.members.set(member));
 
     const id = +this.route.snapshot.paramMap.get('id')!;
 
     if (id) {
       this.editing = true;
       this.taskId = id;
-      this.taskService.get(id).subscribe((task) => {
+      // Esperamos que los 3 llamados terminen al mismo tiempo
+      forkJoin({
+        projects: this.projectService.list(),
+        members:  this.memberService.list(),
+        task:     this.taskService.get(id),
+      }).subscribe(({ projects, members, task }) => {
+        this.projects.set(projects);
+        this.members.set(members);
         this.currentStatus.set(task.status as TaskStatus);
+
         this.form.patchValue({
-          title: task.title,
+          title:       task.title,
           description: task.description,
-          value: task.value,
-          projectId:
-            this.projects().find((p) => p.id === task.project?.id)?.id ?? null,
-          memberId:
-            this.members().find((m) => m.id === task.member?.id)?.id ?? null,
-          status: task.status as TaskStatus,
+          value:       task.value,
+          projectId:   projects.find((p) => p.id === task.project?.id)?.id ?? null,
+          memberId:    members.find((m) => m.id === task.member?.id)?.id ?? null,
+          status:      task.status as TaskStatus,
         });
       });
+    } else {
+      // Si es creación, solo cargamos proyectos y miembros
+      this.projectService.list().subscribe((p) => this.projects.set(p));
+      this.memberService.list().subscribe((m) => this.members.set(m));
     }
   }
 

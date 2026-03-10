@@ -41,8 +41,16 @@
         <td mat-cell *matCellDef="let task">
           <button mat-button (click)="edit(task)" class="alp-table-main-buttons">Editar</button>
           <button mat-button (click)="delete(task.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
-          @if (task.status === 'payment_pending') {
-            <button mat-button (click)="goToPayment(task.id)" class="alp-table-main-buttons">Ver pago</button>
+          @if (task.status === 'payment_pending' || task.status === 'paid') {
+            @if (getPaymentId(task.id) !== undefined) {
+              <button mat-button (click)="goToViewPayment(getPaymentId(task.id)!)" class="alp-table-main-buttons">
+                Ver pago
+              </button>
+            } @else {
+              <button mat-button (click)="goToCreatePayment(task.id)" class="alp-table-main-buttons">
+                Crear pago
+              </button>
+            }
           }
         </td>
       </ng-container>

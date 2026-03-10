@@ -1,10 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TaskStore } from '../../../../stores/task.store';
 import { Router, RouterLink } from '@angular/router';
 import { Loader } from '../../../shared/loader/loader';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PaymentStore } from '../../../../stores/payment.store';
+import { TaskData } from '../../../../interfaces/task.interface';
 
 @Component({
   selector: 'app-tasks-list',
@@ -14,42 +16,65 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class TasksList implements OnInit {
 
-  // tasks = signal<any | null>(null);
+  paymentStore = inject(PaymentStore);
   taksStore = inject(TaskStore);
   router = inject(Router);
 
   loading = this.taksStore.loading;
   tasks = this.taksStore.tasks;
+  payments = this.paymentStore.payments;
 
   displayedColumns: string[] = ['title', 'value', 'state', 'project', 'member', 'actions'];
 
+  // Map de taskId -> paymentId para búsqueda rápida en el template
+  taskPaymentMap = computed(() => {
+    const map = new Map<number, number>();
+    this.payments().forEach((payment) => {
+      payment.task?.forEach((task) => {
+        if (task.id !== undefined) {
+          map.set(task.id, payment.id);
+        }
+      });
+    });
+    return map;
+  });
+
   ngOnInit(): void {
     this.taksStore.load();
+    this.paymentStore.load();
   }
 
-  edit(task: any){
+  getPaymentId(taskId: number): number | undefined {
+    return this.taskPaymentMap().get(taskId);
+  }
+
+  edit(task: TaskData): void {
     this.router.navigateByUrl(`/admin/tasks/edit/${task.id}`);
   }
 
-  delete(id: number){
+  delete(id: number): void{
     if (!confirm('¿Deseas eliminar la tarea?')) return;
     this.taksStore.delete(id).subscribe();
   }
 
-  assignMember(taskId: number, memberId: number){
+  assignMember(taskId: number, memberId: number): void {
     this.taksStore.assignMember(taskId, Number(memberId)).subscribe();
   }
 
-  assignProject(taskId: number, projectId: number){
+  assignProject(taskId: number, projectId: number): void {
     this.taksStore.assignProject(taskId, Number(projectId)).subscribe();
   }
 
-  changeStatus(taskId: number, status: string){
+  changeStatus(taskId: number, status: string): void {
     this.taksStore.changeStatus(taskId, status).subscribe();
   }
 
-  goToPayment(taskId: number): void {
-    this.router.navigateByUrl(`/admin/payments/view/${taskId}`);
+  goToCreatePayment(taskId: number): void {
+    this.router.navigateByUrl(`/admin/payments/new/${taskId}`);
+  }
+
+  goToViewPayment(paymentId: number): void {
+    this.router.navigateByUrl(`/admin/payments/view/${paymentId}`);
   }
 
 }

@@ -7,10 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PaymentStore } from '../../../../stores/payment.store';
 import { TaskData } from '../../../../interfaces/task.interface';
+import { ModalPayment } from '../modal-payment/modal-payment';
+import { PaymentData } from '../../../../interfaces/payments.interface';
 
 @Component({
   selector: 'app-tasks-list',
-  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule, ModalPayment],
   templateUrl: './tasks-list.html',
   styleUrl: './tasks-list.scss'
 })
@@ -24,15 +26,17 @@ export class TasksList implements OnInit {
   tasks = this.taksStore.tasks;
   payments = this.paymentStore.payments;
 
+  selectedPayment = signal<PaymentData | null>(null);
+
   displayedColumns: string[] = ['title', 'value', 'state', 'project', 'member', 'actions'];
 
   // Map de taskId -> paymentId para búsqueda rápida en el template
   taskPaymentMap = computed(() => {
-    const map = new Map<number, number>();
+    const map = new Map<number, PaymentData>();
     this.payments().forEach((payment) => {
       payment.task?.forEach((task) => {
         if (task.id !== undefined) {
-          map.set(task.id, payment.id);
+          map.set(task.id, payment);
         }
       });
     });
@@ -44,8 +48,17 @@ export class TasksList implements OnInit {
     this.paymentStore.load();
   }
 
-  getPaymentId(taskId: number): number | undefined {
+  getPaymentId(taskId: number): PaymentData | undefined {
     return this.taskPaymentMap().get(taskId);
+  }
+
+  openPaymentModal(taskId: number): void {
+    const payment = this.getPaymentId(taskId);
+    if (payment) this.selectedPayment.set(payment);
+  }
+
+  closePaymentModal(): void {
+    this.selectedPayment.set(null);
   }
 
   edit(task: TaskData): void {
@@ -71,10 +84,6 @@ export class TasksList implements OnInit {
 
   goToCreatePayment(taskId: number): void {
     this.router.navigateByUrl(`/admin/payments/new/${taskId}`);
-  }
-
-  goToViewPayment(paymentId: number): void {
-    this.router.navigateByUrl(`/admin/payments/view/${paymentId}`);
   }
 
 }

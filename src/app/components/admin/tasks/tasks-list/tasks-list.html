@@ -42,8 +42,8 @@
           <button mat-button (click)="edit(task)" class="alp-table-main-buttons">Editar</button>
           <button mat-button (click)="delete(task.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
           @if (task.status === 'payment_pending' || task.status === 'paid') {
-            @if (getPaymentId(task.id) !== undefined) {
-              <button mat-button (click)="goToViewPayment(getPaymentId(task.id)!)" class="alp-table-main-buttons">
+            @if (getPaymentId(task.id)) {
+              <button mat-button (click)="openPaymentModal(task.id)" class="alp-table-main-buttons">
                 Ver pago
               </button>
             } @else {
@@ -63,3 +63,11 @@
     <h4>No hay tareas.</h4>
   }
 </div>
+
+<!-- Modal de pago  -->
+@if (selectedPayment()) {
+  <app-modal-payment
+    [payment]="selectedPayment()!"
+    (closed)="closePaymentModal()"
+  />
+}

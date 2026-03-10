@@ -1,0 +1,61 @@
+<div class="modal-backdrop" (click)="onClose()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+          <h3>Detalle del pago</h3>
+          <button class="modal-close" (click)="onClose()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-row">
+            <span class="modal-label">Miembro</span>
+            <span>{{ payment().member.name }}</span>
+          </div>
+
+          <div class="modal-row">
+            <span class="modal-label">Proyecto</span>
+            <span>{{ payment().project.name }}</span>
+          </div>
+
+          <div class="modal-row">
+            <span class="modal-label">Total</span>
+            <span>{{ payment().total | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="modal-row">
+            <span class="modal-label">Estado</span>
+            <span class="modal-status" [class]="payment().status">
+              {{ statusLabel() }}
+            </span>
+          </div>
+
+          <div class="modal-row">
+            <span class="modal-label">Fecha</span>
+            <span>{{ payment().createdAt | date:'medium' }}</span>
+          </div>
+
+          @if (payment().note) {
+            <div class="modal-row">
+              <span class="modal-label">Nota</span>
+              <span>{{ payment().note }}</span>
+            </div>
+          }
+
+          @if (payment().task && payment().task!.length > 0) {
+            <div class="modal-tasks">
+              <span class="modal-label">Tareas asociadas</span>
+              <ul>
+                @for (task of payment().task; track task.id) {
+                  <li>{{ task.title }} — {{ task.value | number:'1.2-2' }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button (click)="onClose()">Cerrar</button>
+        </div>
+
+      </div>
+    </div>

@@ -1,10 +1,7 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentStore } from '../../../../stores/payment.store';
-import { PaymentService } from '../../../../services/payment';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProjectService } from '../../../../services/project';
-import { N } from '@angular/cdk/keycodes';
 import { DecimalPipe } from '@angular/common';
 import { ProjectStore } from '../../../../stores/project.store';
 import { MemberStore } from '../../../../stores/member.store';
@@ -25,27 +22,32 @@ export class PaymentsForm {
   private projectStore = inject(ProjectStore);
   private membersStore = inject(MemberStore);
   private tasksStore = inject(TaskStore);
-  private paymentService = inject(PaymentService);
-  private projectService = inject(ProjectService);
-  route = inject(ActivatedRoute);
   router = inject(Router);
+  route = inject(ActivatedRoute);
 
   editing = false;
 
   projects = this.projectStore.projects;
+  teams = signal<{ id: number; name: string }[]>([]);
   members = signal<any[]>([]);
-  amounts = signal<number | null>(null);
+  amounts = signal<number>(0);
   tasksPreview = signal<any[]>([]);
 
 
   form = this.fb.group({
-    memberId: [null, Validators.required],
-    projectId: [null, Validators.required],
+    projectId: [null as number | null, Validators.required],
+    teamId:    [null as number | null, Validators.required],
+    memberId:  [null as number | null, Validators.required],
     note: [''],
   });
 
   projectIdSig = toSignal(
     this.form.controls.projectId.valueChanges,
+    { initialValue: null }
+  );
+
+  teamIdSig = toSignal(
+    this.form.controls.teamId.valueChanges,
     { initialValue: null }
   );
 
@@ -59,13 +61,20 @@ export class PaymentsForm {
     this.membersStore.load();
     this.tasksStore.load();
 
-    // Cuando cambia el proyecto → filtrar miembros por equipo
+    // Cuando cambia el proyecto → filtrar equipo
     effect(() => {
       const projectId = this.projectIdSig();
-      const allMembers = this.membersStore.members(); // Dependencia para re-ejecutar cuando cargan los miembros
-      console.log('Project changed:', projectId);
+
+      // Reseteo datos.
+      this.teams.set([]);
+      this.members.set([]);
+      this.amounts.set(0);
+      this.tasksPreview.set([]);
+
+      this.form.controls.teamId.setValue(null,   { emitEvent: false });
+      this.form.controls.memberId.setValue(null, { emitEvent: false });
+
       if (!projectId) {
-        this.members.set([]);
         return;
       }
 
@@ -73,42 +82,53 @@ export class PaymentsForm {
         .find(p => p.id === Number(projectId));
 
       if (!project?.team?.id) {
-        this.members.set([]);
         return;
       }
 
-      const teamId = project.team.id;
+      this.teams.set([{ id: project.team.id, name: project.team.name }]);
 
-      const filteredMembers = allMembers
-        .filter(m => m.teamId?.id === teamId);
+      this.form.controls.teamId.setValue(project.team.id, { emitEvent: true });
+    });
 
-      this.members.set(filteredMembers);
-      this.form.patchValue({ memberId: null });
+    // Cuando cambia equipo → filtrar miembros de ese equipo
+    effect(() => {
+      const teamId     = this.teamIdSig();
+      const allMembers = this.membersStore.members();
+
+      this.members.set([]);
+      this.amounts.set(0);
+      this.tasksPreview.set([]);
+      this.form.controls.memberId.setValue(null, { emitEvent: false });
+
+      if (!teamId) return;
+
+      const filtered = allMembers.filter(m => m.teamId?.id === Number(teamId));
+      this.members.set(filtered);
     });
 
     // Cuando cambia el miembro → calcular total
     effect(() => {
-      const projectId = Number(this.form.value.projectId);
-      const memberId = Number(this.form.value.memberId);
+      const projectId = Number(this.projectIdSig());
+      const memberId  = Number(this.memberIdSig());
 
       if (!projectId || !memberId) {
         this.amounts.set(0);
+        this.tasksPreview.set([]);
         return;
       }
 
-      const total = this.tasksStore.tasks()
-        .filter(t =>
-          t.project?.id === projectId &&
-          t.member?.id === memberId &&
-          t.status === 'completed'
-        )
-        .reduce((sum, t) => sum + Number(t.value), 0);
+      const completedTasks = this.tasksStore.tasks().filter(t =>
+        t.project?.id === projectId &&
+        t.member?.id  === memberId  &&
+        t.status      === 'completed' || t.status === 'payment_pending'
+      );
 
-      this.amounts.set(total);
+      this.amounts.set(completedTasks.reduce((sum, t) => sum + Number(t.value), 0));
+      this.tasksPreview.set(completedTasks);
     });
   }
 
-  OnSubmit(){
+  onSubmit(){
     if (this.form.invalid) return;
 
     const value = this.form.value;
@@ -123,7 +143,8 @@ export class PaymentsForm {
       next: () => {
         this.form.reset();
         this.router.navigateByUrl('admin/payments');
-      }
+      },
+      error: (err) => console.error('Error al crear el pago', err),
     });
   }
 

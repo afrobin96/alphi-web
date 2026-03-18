@@ -43,7 +43,13 @@
       </div>
     }
 
-     @if (memberIdSig()) {
+    <!-- Alerta: sin tareas para pago -->
+    @if (!hasTasksForPayment()) {
+      <app-alert></app-alert>
+    }
+
+    <!-- Valor calculado → solo visible si hay miembro y tiene tareas -->
+    @if (memberIdSig() && hasTasksForPayment()) {
       <div class="mb-3">
         <label>Valor calculado</label>
         <input class="form-control" [value]="amounts() | number:'1.2-2'" disabled />
@@ -55,9 +61,9 @@
     @if (tasksPreview().length > 0) {
       <div class="mb-3">
         <label>Tareas incluidas</label>
-        <ul class="list-group task-preview">
+        <ul class="list-group">
           @for (task of tasksPreview(); track task.id) {
-            <li class="list-group-item d-flex justify-content-between" disabled>
+            <li class="list-group-item d-flex justify-content-between">
               <span>{{ task.title }}</span>
               <span>{{ task.value | number:'1.2-2' }}</span>
             </li>

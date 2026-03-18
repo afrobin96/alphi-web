@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentStore } from '../../../../stores/payment.store';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -7,10 +7,12 @@ import { ProjectStore } from '../../../../stores/project.store';
 import { MemberStore } from '../../../../stores/member.store';
 import { TaskStore } from '../../../../stores/task.store';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Alert } from '../../../shared/alert/alert';
+import { AlertService } from '../../../../services/shared/alert';
 
 @Component({
   selector: 'app-payments-form',
-  imports: [ReactiveFormsModule, RouterLink, DecimalPipe],
+  imports: [ReactiveFormsModule, RouterLink, DecimalPipe, Alert],
   templateUrl: './payments-form.html',
   styleUrl: './payments-form.scss'
 })
@@ -22,6 +24,7 @@ export class PaymentsForm {
   private projectStore = inject(ProjectStore);
   private membersStore = inject(MemberStore);
   private tasksStore = inject(TaskStore);
+  private alertService = inject(AlertService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
@@ -55,6 +58,19 @@ export class PaymentsForm {
     this.form.controls.memberId.valueChanges,
     { initialValue: null }
   );
+
+  hasTasksForPayment = computed(() => {
+    const projectId = Number(this.projectIdSig());
+    const memberId  = Number(this.memberIdSig());
+
+    if (!projectId || !memberId) return true;
+
+    return this.tasksStore.tasks().some(t =>
+      t.project?.id === projectId &&
+      t.member?.id  === memberId  &&
+      (t.status === 'completed' || t.status === 'payment_pending')
+    );
+  });
 
   constructor() {
     this.projectStore.load();
@@ -108,6 +124,7 @@ export class PaymentsForm {
 
     // Cuando cambia el miembro → calcular total
     effect(() => {
+
       const projectId = Number(this.projectIdSig());
       const memberId  = Number(this.memberIdSig());
 
@@ -120,11 +137,15 @@ export class PaymentsForm {
       const completedTasks = this.tasksStore.tasks().filter(t =>
         t.project?.id === projectId &&
         t.member?.id  === memberId  &&
-        t.status      === 'completed' || t.status === 'payment_pending'
+        (t.status === 'completed' || t.status === 'payment_pending')
       );
 
       this.amounts.set(completedTasks.reduce((sum, t) => sum + Number(t.value), 0));
       this.tasksPreview.set(completedTasks);
+
+      if (completedTasks.length === 0) {
+        this.alertService.show('danger', 'Este miembro no tiene tareas completadas en el proyecto seleccionado. No es posible generar un pago.');
+      }
     });
   }
 

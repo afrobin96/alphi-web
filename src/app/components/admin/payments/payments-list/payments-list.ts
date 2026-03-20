@@ -30,7 +30,7 @@ export class PaymentsList implements OnInit{
   payments = this.paymentStore.payments;
   loading = this.paymentStore.loading;
 
-  displayedColumns: string[] = ['member', 'project', 'value', 'status', 'date', 'actions'];
+  displayedColumns: string[] = ['id', 'member', 'project', 'value', 'status', 'date', 'actions'];
 
   ngOnInit(): void {
     this.paymentStore.load();

@@ -8,6 +8,11 @@
 
         <div class="modal-body">
           <div class="modal-row">
+            <span class="modal-label">N° de pago</span>
+            <span># {{ payment().id }}</span>
+          </div>
+
+          <div class="modal-row">
             <span class="modal-label">Miembro</span>
             <span>{{ payment().member.name }}</span>
           </div>
@@ -41,11 +46,11 @@
             </div>
           }
 
-          @if (payment().task && payment().task!.length > 0) {
+          @if (payment().tasks && payment().tasks!.length > 0) {
             <div class="modal-tasks">
               <span class="modal-label">Tareas asociadas</span>
               <ul>
-                @for (task of payment().task; track task.id) {
+                @for (task of payment().tasks; track task.id) {
                   <li>{{ task.title }} — {{ task.value | number:'1.2-2' }}</li>
                 }
               </ul>

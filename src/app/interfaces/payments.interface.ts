@@ -7,7 +7,7 @@ export interface PaymentData {
   id: number,
   member: MemberData,
   project: ProjectData,
-  task?: TaskData[],
+  tasks?: TaskData[],
   total: number,
   status: 'pending' | 'paid' | 'cancelled',
   note?: string,

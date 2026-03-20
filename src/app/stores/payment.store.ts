@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { PaymentData } from "../interfaces/payments.interface";
 import { PaymentService } from "../services/payment";
+import { TaskStore } from './task.store';
 import { tap } from "rxjs";
 
 
@@ -15,6 +16,7 @@ export class PaymentStore {
   loading = this._loading.asReadonly();
 
   paymentService = inject(PaymentService);
+  taskStore = inject(TaskStore);
 
   load(){
     this._loading.set(true);
@@ -33,7 +35,10 @@ export class PaymentStore {
 
   add(payload:{projectId: number, memberId: number, note?: string}){
     return this.paymentService.create(payload).pipe(
-      tap((payment) => this._payments.update(current => [payment, ...current] ))
+      tap((payment) => {
+        this._payments.update(current => [payment, ...current] );
+        this.taskStore.load();
+      })
     );
   }
 

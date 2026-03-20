@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { TaskStore } from '../../../../stores/task.store';
 import { Router, RouterLink } from '@angular/router';
 import { Loader } from '../../../shared/loader/loader';
@@ -34,12 +34,13 @@ export class TasksList implements OnInit {
   taskPaymentMap = computed(() => {
     const map = new Map<number, PaymentData>();
     this.payments().forEach((payment) => {
-      payment.task?.forEach((task) => {
+      payment.tasks?.forEach((task) => {
         if (task.id !== undefined) {
           map.set(task.id, payment);
         }
       });
     });
+
     return map;
   });
 
@@ -82,8 +83,8 @@ export class TasksList implements OnInit {
     this.taksStore.changeStatus(taskId, status).subscribe();
   }
 
-  goToCreatePayment(taskId: number): void {
-    this.router.navigateByUrl(`/admin/payments/new/${taskId}`);
+  goToCreatePayment(): void {
+    this.router.navigateByUrl(`/admin/payments/new`);
   }
 
 }

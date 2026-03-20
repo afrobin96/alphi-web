@@ -10,6 +10,12 @@
   }
    <div class="alp-table-main">
     <table mat-table [dataSource]="payments()" class="mat-elevation-z8 alp-text-sm">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let payment"># {{ payment.id }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="member">
         <th mat-header-cell *matHeaderCellDef>Miembro</th>
         <td mat-cell *matCellDef="let payment">{{ payment.member.name }}</td>

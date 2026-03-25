@@ -5,11 +5,31 @@
     <a class="btn btn-primary my-4" routerLink="/admin/payments/new">+ Nuevo pago</a>
   </div>
 
+  <!-- Filtro por proyecto -->
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <div style="min-width: 280px">
+      <select class="form-select" (change)="onProjectFilter($event)">
+        <option value="">Todos los proyectos</option>
+        @for (project of projects(); track project.id) {
+          <option [value]="project.id">{{ project.name }}</option>
+        }
+      </select>
+    </div>
+    @if (selectedProjectId()) {
+      <button class="btn btn-outline-secondary btn-sm" (click)="clearFilter()">
+        Limpiar filtro
+      </button>
+      <span class="text-muted alp-text-sm">
+        {{ filteredPayments().length }} pago(s) encontrado(s)
+      </span>
+    }
+  </div>
+
   @if(loading()){
     <app-loader></app-loader>
   }
    <div class="alp-table-main">
-    <table mat-table [dataSource]="payments()" class="mat-elevation-z8 alp-text-sm">
+    <table mat-table [dataSource]="filteredPayments()" class="mat-elevation-z8 alp-text-sm">
 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>#</th>
@@ -55,8 +75,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-  @if(payments().length === 0 && !loading()){
-    <h4>No hay pagos registrados.</h4>
+  @if(filteredPayments().length === 0 && !loading()){
+    <h4>No hay pagos {{ selectedProjectId() ? 'para este proyecto' : 'registrados' }}.</h4>
   }
 
 </div>

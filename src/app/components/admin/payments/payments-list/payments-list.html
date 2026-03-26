@@ -5,19 +5,29 @@
     <a class="btn btn-primary my-4" routerLink="/admin/payments/new">+ Nuevo pago</a>
   </div>
 
-  <!-- Filtro por proyecto -->
-  <div class="d-flex align-items-center gap-3 mb-4">
-    <div style="min-width: 280px">
+  <!-- Filtros -->
+  <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
+    <div style="min-width: 240px">
       <select class="form-select" (change)="onProjectFilter($event)">
-        <option value="">Todos los proyectos</option>
+        <option value=""> Todos los proyectos </option>
         @for (project of projects(); track project.id) {
           <option [value]="project.id">{{ project.name }}</option>
         }
       </select>
     </div>
-    @if (selectedProjectId()) {
-      <button class="btn btn-outline-secondary btn-sm" (click)="clearFilter()">
-        Limpiar filtro
+
+    <div style="min-width: 240px">
+      <select class="form-select" (change)="onMemberFilter($event)">
+        <option value=""> Todos los miembros </option>
+        @for (member of members(); track member.id) {
+          <option [value]="member.id">{{ member.name }}</option>
+        }
+      </select>
+    </div>
+
+    @if (selectedProjectId() || selectedMemberId()) {
+      <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">
+        Limpiar filtros
       </button>
       <span class="text-muted alp-text-sm">
         {{ filteredPayments().length }} pago(s) encontrado(s)
@@ -76,7 +86,7 @@
     </table>
   </div>
   @if(filteredPayments().length === 0 && !loading()){
-    <h4>No hay pagos {{ selectedProjectId() ? 'para este proyecto' : 'registrados' }}.</h4>
+    <h4>No hay pagos {{ selectedProjectId() || selectedMemberId() ? 'para este proyecto' : 'registrados' }}.</h4>
   }
 
 </div>

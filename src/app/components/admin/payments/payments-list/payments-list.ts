@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ProjectStore } from '../../../../stores/project.store';
+import { MemberStore } from '../../../../stores/member.store';
 
 @Component({
   selector: 'app-payments-list',
@@ -29,19 +30,30 @@ export class PaymentsList implements OnInit{
 
   paymentStore = inject(PaymentStore);
   projectStore  = inject(ProjectStore);
+  memberStore  = inject(MemberStore);
   router = inject(Router);
 
   projects = this.projectStore.projects;
+  members = this.memberStore.members;
   loading = this.paymentStore.loading;
 
   // Señal del proyecto seleccionado para filtrar
   selectedProjectId = signal<number | null>(null);
 
+  // Señal del miembro seleccionado para filtrar
+  selectedMemberId = signal<number | null>(null);
+
   // Computed: filtra pagos según proyecto seleccionado
+  // Aplica ambos filtros simultáneamente
   filteredPayments = computed(() => {
     const projectId = this.selectedProjectId();
-    if (!projectId) return this.paymentStore.payments();
-    return this.paymentStore.payments().filter(p => p.project.id === projectId);
+    const memberId  = this.selectedMemberId();
+
+    return this.paymentStore.payments().filter(p => {
+      const matchProject = projectId ? p.project.id === projectId : true;
+      const matchMember  = memberId  ? p.member.id  === memberId  : true;
+      return matchProject && matchMember;
+    });
   });
 
   displayedColumns: string[] = ['id', 'member', 'project', 'value', 'status', 'date', 'actions'];
@@ -49,6 +61,7 @@ export class PaymentsList implements OnInit{
   ngOnInit(): void {
     this.paymentStore.load();
     this.projectStore.load();
+    this.memberStore.load();
   }
 
   onProjectFilter(event: Event): void {
@@ -56,8 +69,14 @@ export class PaymentsList implements OnInit{
     this.selectedProjectId.set(value ? Number(value) : null);
   }
 
-  clearFilter(): void {
+  onMemberFilter(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.selectedMemberId.set(value ? Number(value) : null);
+  }
+
+  clearFilters(): void {
     this.selectedProjectId.set(null);
+    this.selectedMemberId.set(null);
   }
 
   edit(payment: PaymentData) {

@@ -7,27 +7,62 @@
 
   <!-- Filtros -->
   <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
-    <div style="min-width: 240px">
+    <!-- Filtro proyecto -->
+    <div style="min-width: 200px">
       <select class="form-select" (change)="onProjectFilter($event)">
-        <option value=""> Todos los proyectos </option>
+        <option value="">-- Todos los proyectos --</option>
         @for (project of projects(); track project.id) {
           <option [value]="project.id">{{ project.name }}</option>
         }
       </select>
     </div>
 
-    <div style="min-width: 240px">
+    <!-- Filtro miembro -->
+    <div style="min-width: 200px">
       <select class="form-select" (change)="onMemberFilter($event)">
-        <option value=""> Todos los miembros </option>
+        <option value="">-- Todos los miembros --</option>
         @for (member of members(); track member.id) {
           <option [value]="member.id">{{ member.name }}</option>
         }
       </select>
     </div>
 
-    @if (selectedProjectId() || selectedMemberId()) {
+    <!-- Tipo de filtro de fecha -->
+    <div style="min-width: 140px">
+      <select class="form-select" (change)="onDateFilterType($event)">
+        <option value="day">Por día</option>
+        <option value="month">Por mes</option>
+        <option value="year">Por año</option>
+      </select>
+    </div>
+
+    <!-- Input de fecha según tipo -->
+    <div style="min-width: 180px">
+      @if (selectedDateFilter() === 'day') {
+        <input type="date" class="form-control"
+          [value]="selectedDate()"
+          (change)="onDateChange($event)"
+          placeholder="Seleccionar día" />
+      }
+      @if (selectedDateFilter() === 'month') {
+        <input type="month" class="form-control"
+          [value]="selectedDate()"
+          (change)="onDateChange($event)"
+          placeholder="Seleccionar mes" />
+      }
+      @if (selectedDateFilter() === 'year') {
+        <input type="number" class="form-control"
+          [value]="selectedDate()"
+          (change)="onDateChange($event)"
+          placeholder="Ej: 2025"
+          min="2000" max="2100" />
+      }
+    </div>
+
+    <!-- Limpiar y contador -->
+    @if (hasActiveFilters()) {
       <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">
-        Limpiar filtros
+        ✕ Limpiar filtros
       </button>
       <span class="text-muted alp-text-sm">
         {{ filteredPayments().length }} pago(s) encontrado(s)
@@ -86,7 +121,7 @@
     </table>
   </div>
   @if(filteredPayments().length === 0 && !loading()){
-    <h4>No hay pagos {{ selectedProjectId() || selectedMemberId() ? 'para este proyecto' : 'registrados' }}.</h4>
+    <h4>No hay pagos {{ hasActiveFilters() ? 'para los filtros seleccionados' : 'registrados' }}.</h4>
   }
 
 </div>

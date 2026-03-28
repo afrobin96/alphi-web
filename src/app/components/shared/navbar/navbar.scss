@@ -1,0 +1,83 @@
+/* Custom Navbar */
+.custom-nav {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  font-weight: 600;
+  color: #475569 !important;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--emerald) !important;
+}
+
+/* Logo styles */
+.logo-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container.sm {
+  width: 32px;
+  height: 32px;
+}
+
+.logo-bg-1 {
+  position: absolute;
+  inset: 0;
+  background: #34d399;
+  border-radius: 50%;
+  opacity: 0.7;
+  mix-blend-mode: multiply;
+  animation: pulse 2s infinite;
+}
+
+.logo-bg-2 {
+  position: absolute;
+  inset: 0;
+  background: #fbbf24;
+  border-radius: 50%;
+  opacity: 0.7;
+  transform: translateX(4px);
+  mix-blend-mode: multiply;
+}
+
+.logo-text {
+  position: relative;
+  color: var(--emerald-dark);
+  font-weight: 900;
+}
+
+/* Buttons */
+.btn-emerald {
+  background: var(--emerald);
+  color: white;
+  border: none;
+  font-weight: 700;
+}
+
+.btn-emerald:hover {
+  background: #059669;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+.btn-outline-emerald {
+  border: 1px solid var(--emerald);
+  color: var(--emerald);
+}
+
+.btn-outline-emerald:hover {
+  background: var(--emerald);
+  color: white;
+}

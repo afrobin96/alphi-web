@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Navbar } from "../navbar/navbar";
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink],
+  imports: [RouterLink, Navbar],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })

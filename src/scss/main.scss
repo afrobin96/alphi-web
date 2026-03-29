@@ -15,6 +15,7 @@
 @use 'components/icons';
 @use 'components/cards';
 @use 'components/tables';
+@use 'components/bubble-mask';
 
 // layouts
 @use 'layout/navigation';
@@ -36,4 +37,6 @@ html {
     density: 0,
   ));
 }
+
+
 

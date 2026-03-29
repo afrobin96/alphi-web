@@ -4,10 +4,11 @@ import { alphiServices } from '../../interfaces/alphiService.interface';
 import { Services } from '../../components/services/services';
 import { Contact } from "../../components/contact/contact";
 import { Footer } from "../../components/shared/footer/footer";
+import { Navbar } from "../../components/shared/navbar/navbar";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Services, Contact, Footer],
+  imports: [Header, Services, Contact, Footer, Navbar],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

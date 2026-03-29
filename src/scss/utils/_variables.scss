@@ -1,5 +1,4 @@
 /* Colors */
-$white: #fff;
 $white-opacity: #ffffff1a;
 $black: #3a3f43;
 $light-black: #1f2937;
@@ -10,20 +9,38 @@ $main-blue: #00407f;
 $secondary-blue: #3b83f5;
 $light-blue: #eaf5f5;
 $secondary-blue: #3a84eb;
-$main-green: #136c42;
 $light-green: #1fad6833;
-$secondary-green: #16a04d;
 $purple: #7616d0;
 $light-purple: #7616d033;
 $orange: #e06106;
 $light-orange: #e0610633;
-$yellow: #facc15;
+
 $red: #dc3545;
+
+/*** Custom Colors */
+$emerald: #10b981;
+$emerald-dark: #064e3b;
+$emerald-light: #ecfdf5;
+$amber-soft: #fffbeb;
+$blue-soft: #eff6ff;
+$font-family: 'Plus Jakarta Sans', sans-serif;
+$main-green: #059669;
+$secondary-green: #34d399;
+$white: #fff;
+$gray: #475569;
+$yellow: #fbbf24;
+
+/* colors with opacity */
+$white-85: rgba(255, 255, 255, 0.85);
+$green-10: rgba(16, 185, 129, 0.1);
 
 /* Box shadow */
 $shadow-soft: 0 4px 6px -1px rgb(0 0 0 / .3), 0 2px 4px -2px rgb(0 0 0 / .2);
 $shadow-medium: 0 10px 15px -3px rgb(0 0 0 / .4), 0 4px 6px -4px rgb(0 0 0 / .3);
 $shadow-contact: 0 1px 2px 0 rgb(0 0 0 / .05);
+/* custom shadows */
+$shadow-button: 0 10px 20px rgba(16, 185, 129, 0.2);
+
 /* degrade */
 $main-linear-gradient: linear-gradient(135deg, $main-blue, $main-green);
 $main-linear-gradient-2: linear-gradient(135deg, $secondary-blue, $secondary-green);

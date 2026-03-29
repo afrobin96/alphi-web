@@ -1,32 +1,26 @@
-@use "../utils/variables";
+@use "../utils/variables" as *;
 
-.alp-btn-principal{
-    color: variables.$white;
-    background-image: variables.$main-linear-gradient;
-    font-weight: 500;
-    padding: 1rem 1.5rem;
-    border-radius: .5rem;
-    &.alp-btn-gradient-2{
-      background-image: variables.$main-linear-gradient-2;
-    }
-    &:disabled{
-      border: none;
-      color: variables.$black;
-    }
-    &.login-button{
-      padding: .5rem 1.5rem;
-    }
+/* Buttons */
+.alp-btn-emerald {
+  background: $emerald;
+  color: white;
+  border: none;
+  font-weight: 700;
 }
 
-.alp-btn-menu{
-  border: none;
-  background-color: transparent;
-  color: variables.$black;
-  padding: .5rem;
-  border-radius: .5rem;
-  &:hover{
-    background-color: variables.$purple;
-    transition: all .3s ease-in-out;
-    color: variables.$white;
-  }
+.alp-btn-emerald:hover {
+  background: $main-green;
+  color: $white;
+  transform: translateY(-2px);
+  box-shadow: $shadow-button;
+}
+
+.alp-btn-outline-emerald {
+  border: 1px solid $emerald;
+  color: $emerald;
+}
+
+.alp-btn-outline-emerald:hover {
+  background: $emerald;
+  color: $white;
 }

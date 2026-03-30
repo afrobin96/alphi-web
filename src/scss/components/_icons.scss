@@ -1,47 +1,51 @@
-@use "../utils/variables";
+@use "../utils/variables" as *;
 
-.alp-icon{
-  width: 3rem;
-  height: 3rem;
+.alp-icon-box {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 0.75rem;
-  flex-shrink: 0;
-  i{
-    font-size: 1.5rem;
-  }
+  justify-content: center;
 }
+
 .alp-icon-size{
   font-size: 1.5rem;
 }
+/* Icon backgrounds */
 .alp-icon-blue{
-  background-color: variables.$light-blue;
+  background-color: $light-blue;
 }
 .alp-icon-green{
-  background-color: variables.$light-green;
+  background-color: $light-green;
 }
 .alp-icon-purple{
-  background-color: variables.$light-purple;
+  background-color: $light-purple;
 }
 .alp-icon-orange{
-  background-color: variables.$light-orange;
+  background-color: $light-orange;
 }
 .alp-icon-white{
-  background-color: variables.$black;
+  background-color: $black;
 }
+
+.alp-bg-emerald-light {
+  background-color: $emerald-light;
+}
+
+/* Icon colors */
 .alp-icon-color-blue{
-  color: variables.$secondary-blue;
+  color: $secondary-blue;
 }
 .alp-icon-color-green{
-  color: variables.$secondary-green;
+  color: $secondary-green;
 }
 .alp-icon-color-purple{
-  color: variables.$purple;
+  color: $purple;
 }
 .alp-icon-color-orange{
-  color: variables.$orange;
+  color: $orange;
 }
 .alp-icon-color-white{
-  color: variables.$white;
+  color: $white;
 }

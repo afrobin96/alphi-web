@@ -2,7 +2,8 @@ export interface alphiServices {
     id: number;
     name: string;
     icon: string;
-    iconColor: string,
+    hexBg: string;
+    hexText: string;
     description: string;
     availableServices: string[];
 }

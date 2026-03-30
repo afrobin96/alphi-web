@@ -1,0 +1,22 @@
+@use '../utils/variables' as *;
+
+
+.alp-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.alp-scroll-container {
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.alp-service-card {
+  width: 380px;
+  transition: transform 0.3s;
+}
+
+.alp-service-card:hover {
+  transform: translateY(-10px);
+}
+

@@ -1,14 +1,13 @@
 import { Component, ElementRef, viewChild } from '@angular/core';
 import { Header } from '../../components/shared/header/header';
 import { alphiServices } from '../../interfaces/alphiService.interface';
-import { Services } from '../../components/services/services';
 import { Contact } from '../../components/contact/contact';
 import { Footer } from '../../components/shared/footer/footer';
 import { Navbar } from '../../components/shared/navbar/navbar';
 
 @Component({
   selector: 'app-home',
-  imports: [Header, Services, Contact, Footer, Navbar],
+  imports: [Header, Contact, Footer, Navbar],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -17,6 +16,21 @@ export class Home {
   alphiServices: alphiServices[] = [
     {
       id: 1,
+      name: 'Consultoría especializada',
+      icon: 'bi bi-chat-left',
+      hexBg: '#fff7ed',
+      hexText: '#ea580c',
+      description:
+        'Asesoramiento estratégico en transformación digital educativa para maximizar el impacto de la tecnología.',
+      availableServices: [
+        'Análisis de necesidades',
+        'Planificación estratégica',
+        'Optimización de procesos',
+        'Evaluación de resultados',
+      ],
+    },
+    {
+      id: 2,
       name: 'Desarrollo e implementación de plataformas educativas',
       icon: 'bi bi-book',
       hexBg: '#ecfdf5',
@@ -31,7 +45,7 @@ export class Home {
       ],
     },
     {
-      id: 2,
+      id: 3,
       name: 'Desarrollo web profesional',
       icon: 'bi bi-globe',
       hexBg: '#fffbeb',
@@ -46,7 +60,7 @@ export class Home {
       ],
     },
     {
-      id: 3,
+      id: 4,
       name: 'Capacitación y formación tecnológica',
       icon: 'bi bi-people',
       hexBg: '#eff6ff',
@@ -61,7 +75,7 @@ export class Home {
       ],
     },
     {
-      id: 4,
+      id: 5,
       name: 'Soporte técnico y mantenimiento',
       icon: 'bi bi-gear',
       hexBg: '#f5f3ff',
@@ -73,21 +87,6 @@ export class Home {
         'Actualizaciones automáticas',
         'Backup y recuperación',
         'Mesa de ayuda especializada',
-      ],
-    },
-    {
-      id: 5,
-      name: 'Consultoría especializada',
-      icon: 'bi bi-chat-left',
-      hexBg: '#fff7ed',
-      hexText: '#ea580c',
-      description:
-        'Asesoramiento estratégico en transformación digital educativa para maximizar el impacto de la tecnología.',
-      availableServices: [
-        'Análisis de necesidades',
-        'Planificación estratégica',
-        'Optimización de procesos',
-        'Evaluación de resultados',
       ],
     },
   ];

@@ -1,21 +1,36 @@
-@use "../utils/variables";
+@use "../utils/variables" as *;
 
 .alp-cards{
   border-radius: .75rem;
   border-width: 1px;
-  background-color: variables.$white;
+  background-color: $white;
   padding: 1.5rem;
-  box-shadow: variables.$shadow-soft;
+  box-shadow: $shadow-soft;
   transition-property: all;
   transition-timing-function: cubic-bezier(.4,0,.2,1);
   transition-duration: .3s;
   animation-duration: .3s;
   height: 100%;
   &:hover{
-    box-shadow: variables.$shadow-medium;
+    box-shadow: $shadow-medium;
     .alp-card-animation-button{
       transform: translateX(.25rem);
     }
   }
 }
 
+.alp-testimonial-card {
+  background-color: $emerald-light;
+  border: 1px solid $green-10;
+  transition: all 0.3s;
+  &:hover{
+    background-color: white;
+    box-shadow: $shadow-card;
+  }
+}
+
+.alp-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+}

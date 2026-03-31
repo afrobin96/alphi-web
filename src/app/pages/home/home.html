@@ -48,7 +48,7 @@
 
 </div>
 
-<!-- Servicios (Slider adaptado a Bootstrap) -->
+<!-- Servicios -->
 <section id="servicios" class="py-5 bg-light reveal">
   <div class="container py-5 overflow-hidden">
     <div class="row align-items-end mb-5">
@@ -88,85 +88,66 @@
   </div>
 </section>
 
-<!-- servicios  -->
-<section class="alp-servicios-container alp-bg-section">
-  <div class="container mx-auto px-4">
-      <div class="text-center mb-5 d-flex flex-column align-items-center">
-        <h2 class="alp-text-4xl alp-bold alp-text-main-black mb-3">Nuestros Servicios</h2>
-        <div class="alp-bg-main-gradient mb-4" style="height: .3rem; width: 10rem;border-radius:10px"></div>
-        <p class="alp-text-xl alp-max-content-width-paragraph mx-auto alp-text-main-color">Ofrecemos soluciones integrales para la transformación digital en el sector educativo, desde el desarrollo hasta la implementación y mantenimiento.</p>
+<!-- Testimonios -->
+<section id="clientes" class="py-5 bg-white reveal">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="display-5 fw-bold mb-2">Lo que dicen nuestros clientes</h2>
+      <p class="text-muted fw-medium">Historias reales de transformación.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="alp-testimonial-card p-5 h-100 rounded-5">
+          <p class="fst-italic mb-4">"Alphi transformó nuestro colegio en menos de 3 meses. La capacitación fue la
+            clave."</p>
+          <div class="d-flex align-items-center gap-3">
+            <img
+              src="https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=150"
+              class="rounded-circle alp-thumb" alt="Ana">
+            <div>
+              <div class="fw-bold">Ana Lucía Torres</div>
+              <small class="text-muted text-uppercase fw-bold">Rectora Innova</small>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="alp-servicios-grid">
-        @for( service of alphiServices; track $index){
-          <app-services [services]="service"></app-services>
-        }
+      <!-- Repetir similar para otros -->
+      <div class="col-lg-4 col-md-6">
+        <div class="alp-testimonial-card p-5 h-100 rounded-5 bg-amber-soft">
+          <p class="fst-italic mb-4">"El soporte 24/7 nos da una tranquilidad increíble. Son socios estratégicos."</p>
+          <div class="d-flex align-items-center gap-3">
+            <img
+              src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=150"
+              class="rounded-circle alp-thumb" alt="Carlos">
+            <div>
+              <div class="fw-bold">Carlos Méndez</div>
+              <small class="text-muted text-uppercase fw-bold">Director IT</small>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="col-lg-4 d-none d-lg-block">
+        <div class="alp-testimonial-card p-5 h-100 rounded-5 bg-blue-soft">
+          <p class="fst-italic mb-4">"La plataforma es intuitiva y hermosa. Alumnos más comprometidos que nunca."</p>
+          <div class="d-flex align-items-center gap-3">
+            <img
+              src="https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=150"
+              class="rounded-circle alp-thumb" alt="Sofía">
+            <div>
+              <div class="fw-bold">Sofía Ramos</div>
+              <small class="text-muted text-uppercase fw-bold">Fundadora Talent</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- Comentarios de clientes  -->
-<section class="alp-clientes-comentarios-container alp-bg-section">
-  <div class="container mx-auto px-4">
-      <div class="text-center mb-5 d-flex flex-column align-items-center">
-        <h2 class="alp-text-4xl alp-bold alp-text-main-black mb-3">Algunos de Nuestros Clientes</h2>
-        <div class="alp-bg-main-gradient mb-4" style="height: .3rem; width: 10rem;border-radius:10px"></div>
-        <p class="alp-text-xl alp-max-content-width-paragraph mx-auto alp-text-main-color">La confianza de nuestros clientes respalda nuestro trabajo. Estas son algunas de las instituciones que han transformado su educación digital con nuestras soluciones.</p>
-      </div>
-      <div class="alp-clientes-comentarios-grid">
-          <div class="alp-cards">
-            <div class="d-flex align-items-center mb-3 alp-text-main-yellow alp-text-xl">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <p class="mb-4 fst-italic">"La plataforma desarrollada ha transformado completamente la experiencia educativa en nuestra institución. Los estudiantes están más comprometidos y el proceso de enseñanza es mucho más eficiente."</p>
-            <div class="border-top pt-3">
-              <h4 class="alp-semibold">María González</h4>
-              <p class="alp-text-sm">Directora Académica</p>
-              <p class="alp-text-sm alp-text-main-blue">Instituto Tecnológico Superior</p>
-            </div>
-          </div>
-
-          <div class="alp-cards">
-            <div class="d-flex align-items-center mb-3 alp-text-main-yellow alp-text-xl">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <p class="mb-4 fst-italic">"Excelente trabajo en el desarrollo de nuestra plataforma LMS. El equipo fue muy profesional y el resultado superó nuestras expectativas. La capacitación del personal fue excepcional."</p>
-            <div class="border-top pt-3">
-              <h4 class="alp-semibold">Carlos Herrera</h4>
-              <p class="alp-text-sm">Coordinador Digital</p>
-              <p class="alp-text-sm alp-text-main-blue">Universidad Privada</p>
-            </div>
-          </div>
-
-          <div class="alp-cards">
-            <div class="d-flex align-items-center mb-3 alp-text-main-yellow alp-text-xl">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <p class="mb-4 fst-italic">"La consultoría especializada nos ayudó a definir una estrategia digital clara. Los resultados han sido extraordinarios, mejorando significativamente la satisfacción de nuestros estudiantes."</p>
-            <div class="border-top pt-3">
-              <h4 class="alp-semibold">Ana Rodríguez</h4>
-              <p class="alp-text-sm">Decana de Innovación</p>
-              <p class="alp-text-sm alp-text-main-blue">Escuela de Negocios Avanzada</p>
-            </div>
-          </div>
-      </div>
-  </div>
-</section>
 
 <!-- información de proyectos y confianza banner  -->
-<section class="alp-banner-datos-container alp-bg-section">
-  <div class="container alp-banner-datos-grid alp-bg-main-gradient alp-rounded-1 p-5 alp-text-main-white">
+<section class="alp-banner-datos-container">
+  <div class="container alp-banner-datos-grid alp-bg-section alp-rounded-1 p-5 alp-text-main-white">
     <div class="alp-text-center">
       <div class="alp-stat-number mb-4">50+</div>
       <h4 class="alp-semibold">Proyectos Entregados</h4>

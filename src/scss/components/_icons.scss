@@ -1,5 +1,16 @@
 @use "../utils/variables" as *;
 
+
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .alp-icon-box {
   width: 64px;
   height: 64px;
@@ -8,6 +19,7 @@
   align-items: center;
   justify-content: center;
 }
+
 
 .alp-icon-size{
   font-size: 1.5rem;
@@ -28,7 +40,6 @@
 .alp-icon-white{
   background-color: $black;
 }
-
 .alp-bg-emerald-light {
   background-color: $emerald-light;
 }

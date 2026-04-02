@@ -1,0 +1,18 @@
+ .alp-custom-input {
+   background: rgba(255, 255, 255, 0.05);
+   border: 1px solid rgba(255, 255, 255, 0.2);
+   color: white;
+   border-radius: 1rem;
+   padding: 1rem;
+ }
+
+ .alp-custom-input:focus {
+   background: rgba(255, 255, 255, 0.1);
+   border-color: var(--emerald);
+   box-shadow: none;
+   color: white;
+ }
+
+ .alp-custom-input::placeholder {
+   color: rgba(255, 255, 255, 0.4);
+ }

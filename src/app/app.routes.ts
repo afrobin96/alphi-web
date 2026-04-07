@@ -16,12 +16,10 @@ import { TasksList } from './components/admin/tasks/tasks-list/tasks-list';
 import { TasksForm } from './components/admin/tasks/tasks-form/tasks-form';
 import { PaymentsList } from './components/admin/payments/payments-list/payments-list';
 import { PaymentsForm } from './components/admin/payments/payments-form/payments-form';
-import { PlantillaHome } from './pages/plantilla-home/plantilla-home';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: Login },
-  { path: 'plantilla', component: PlantillaHome },
   { path: 'admin', component: Admin,
     children:[
       { path: 'dashboard', component: Dashboard },

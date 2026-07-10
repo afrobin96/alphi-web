@@ -16,11 +16,19 @@ import { TasksList } from './components/admin/tasks/tasks-list/tasks-list';
 import { TasksForm } from './components/admin/tasks/tasks-form/tasks-form';
 import { PaymentsList } from './components/admin/payments/payments-list/payments-list';
 import { PaymentsForm } from './components/admin/payments/payments-form/payments-form';
+import { Learner } from './pages/learner/learner';
+import { Dashboard as LearnerDashboard } from './components/learner/dashboard/dashboard';
+import { learnerGuard } from './guards/learner.guard';
+import { InstructionalGenerator } from './components/learner/instructional-generator/instructional-generator';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: Login },
-  { path: 'admin', component: Admin,
+  // Admin
+  {
+    path: 'admin',
+    component: Admin,
+    canActivate: [authGuard],
     children:[
       { path: 'dashboard', component: Dashboard },
       { path: 'projects', component: ProjectsList},
@@ -41,8 +49,18 @@ export const routes: Routes = [
       { path: 'payments', component: PaymentsList },
       { path: 'payments/new', component: PaymentsForm },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    ]
+  },
+  // Learner
+  {
+    path: 'learner',
+    component: Learner,
+    canActivate: [learnerGuard],
+    children: [
+      { path: 'dashboard', component: LearnerDashboard },
+      { path: 'generator', component: InstructionalGenerator },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
-    canActivate: [authGuard]
   },
   { path: '**', redirectTo: '' }
 ];

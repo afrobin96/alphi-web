@@ -39,8 +39,13 @@ export class Login {
     this.authService.login(username!, password!).subscribe({
       next: (res) => {
         this.authStore.setAuth(res.access_token, res.user);
-        this.router.navigateByUrl('/admin');
         this.isLoading=false;
+        // Redirect según rol
+        if (res.user.role === 'learner') {
+          this.router.navigateByUrl('/learner');
+        } else {
+          this.router.navigateByUrl('/admin');
+        }
       },
       error: (err) => {
         this.error.set(err.error?.mesasage || 'Error al iniciar sesión');

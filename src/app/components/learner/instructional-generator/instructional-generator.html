@@ -1,0 +1,167 @@
+<div class="generator py-3">
+
+  <div class="mb-4">
+    <h4 class="alp-text-main-color mb-1">Generador de Diseño Instruccional</h4>
+    <p class="text-muted mb-0">
+      Completa los datos del curso y la IA generará un diseño instruccional
+      que podrás visualizar y descargar en PDF.
+    </p>
+  </div>
+
+  <!-- Error -->
+  @if (error()){
+    <div class="alert alert-danger d-flex align-items-center gap-2 mb-3">
+      <mat-icon>error_outline</mat-icon>
+      {{ error() }}
+    </div>
+  }
+
+
+  <!-- Formulario (se oculta cuando hay PDF listo) -->
+  @if(!pdfUrl()){
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+          <!-- Tema -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              Tema del curso <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="topic"
+              placeholder="Ej: Anatomía del corazón, Fundamentos de Python...">
+              @if(form.get('topic')?.invalid && form.get('topic')?.touched){
+                <div class="text-danger mt-1 small">
+                  El tema es requerido (mínimo 3 caracteres).
+                </div>
+              }
+          </div>
+
+          <!-- Nivel educativo -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              Nivel educativo <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" formControlName="educationLevel">
+              <option value="" disabled>Selecciona un nivel</option>
+              @for(lvl of educationLevels; track $index){
+                <option [value]="lvl.value">{{ lvl.label }}</option>
+              }
+            </select>
+            @if(form.get('educationLevel')?.invalid && form.get('educationLevel')?.touched){
+              <div class="text-danger mt-1 small">
+                Selecciona un nivel educativo.
+              </div>
+            }
+          </div>
+
+          <!-- Público objetivo -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              ¿A quién va dirigido? <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="targetAudience"
+              placeholder="Ej: Estudiantes de primer año de medicina...">
+              @if(form.get('targetAudience')?.invalid && form.get('targetAudience')?.touched){
+                <div class="text-danger mt-1 small">
+                  Indica el público objetivo.
+                </div>
+              }
+          </div>
+
+          <!-- Área de conocimiento -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">
+              Área de conocimiento <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" formControlName="knowledgeArea">
+              <option value="" disabled>Selecciona un área</option>
+              @for(area of knowledgeAreas; track $index){
+                <option [value]="area.value">
+                  {{ area.label }}
+                </option>
+              }
+            </select>
+            @if(form.get('knowledgeArea')?.invalid && form.get('knowledgeArea')?.touched){
+              <div class="text-danger mt-1 small">
+                Selecciona un área de conocimiento.
+              </div>
+            }
+          </div>
+
+          <!-- Botón generar -->
+          <button
+            type="submit"
+            class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
+            [disabled]="form.invalid || isLoading()">
+            @if(!isLoading()){
+              <ng-container>
+                <mat-icon>auto_awesome</mat-icon>
+                Generar diseño instruccional
+              </ng-container>
+            } @else {
+              <ng-container loading>
+                <mat-icon>auto_awesome</mat-icon>
+                Generar diseño instruccional
+              </ng-container>
+
+              <ng-template #loading>
+                <mat-icon class="spin">autorenew</mat-icon>
+                Generando, esto puede tardar unos segundos...
+              </ng-template>
+            }
+          </button>
+
+        </form>
+      </div>
+    </div>
+  }
+
+
+  <!-- Visor PDF  -->
+  @if(pdfUrl()){
+    <ng-container>
+
+      <!-- Barra de acciones sobre el visor -->
+      <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+        <span class="fw-semibold alp-text-main-color d-flex align-items-center gap-2">
+          <mat-icon>picture_as_pdf</mat-icon>
+          Diseño instruccional generado
+        </span>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" (click)="reset()">
+            <mat-icon style="font-size:16px;height:16px;width:16px;">refresh</mat-icon>
+            Generar otro
+          </button>
+          <button class="btn btn-primary btn-sm d-flex align-items-center gap-1" (click)="downloadPdf()">
+            <mat-icon style="font-size:16px;height:16px;width:16px;">download</mat-icon>
+            Descargar PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Iframe visor -->
+      <div class="pdf-viewer-wrap shadow-sm">
+        <iframe
+          [src]="pdfUrl()"
+          type="application/pdf"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          title="Diseño instruccional">
+          <p class="p-3 text-muted">
+            Tu navegador no soporta visualización de PDF.
+            <button class="btn btn-link p-0" (click)="downloadPdf()">Descárgalo aquí.</button>
+          </p>
+        </iframe>
+      </div>
+
+    </ng-container>
+  }
+</div>

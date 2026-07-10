@@ -1,0 +1,123 @@
+<div class="learner-dashboard py-3">
+
+  <!-- Loading -->
+  @if(isLoading()){
+    <div class="text-center py-5">
+      <mat-icon class="spin alp-text-main-color" style="font-size:40px;">autorenew</mat-icon>
+      <p class="mt-2 text-muted">Cargando tu perfil...</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if(error()){
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  <!-- Contenido principal -->
+  @if(profile(); as p){
+    <ng-container>
+      <!-- Cabecera de bienvenida -->
+      <div class="mb-4">
+        <h4 class="alp-text-main-color mb-1">Bienvenido, {{ p.username }}</h4>
+        <p class="text-muted mb-0">Aquí puedes ver el estado de tu plan y los tokens disponibles.</p>
+      </div>
+
+      <!-- Tarjeta del plan -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <div class="plan-icon-wrap">
+                <mat-icon>{{ planIcon }}</mat-icon>
+              </div>
+              <div>
+                <p class="text-muted mb-0" style="font-size:12px;">Plan actual</p>
+                <h5 class="mb-0 fw-bold alp-text-main-color">{{ planLabel }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <div class="plan-icon-wrap">
+                <mat-icon>calendar_today</mat-icon>
+              </div>
+              <div>
+                <p class="text-muted mb-0" style="font-size:12px;">Vence</p>
+                <h5 class="mb-0 fw-bold alp-text-main-color">
+                  {{ p.subscriptionExpiresAt
+                      ? (p.subscriptionExpiresAt | date:'dd MMM yyyy')
+                      : 'Sin expiración' }}
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+              <div class="plan-icon-wrap">
+                <mat-icon>auto_awesome</mat-icon>
+              </div>
+              <div>
+                <p class="text-muted mb-0" style="font-size:12px;">Tokens mensuales restantes</p>
+                <h5 class="mb-0 fw-bold alp-text-main-color">
+                  {{ p.monthlyLimit - p.monthlyTokensUsed | number }} / {{ p.monthlyLimit | number }}
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barras de uso -->
+      <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">Uso de tokens</h6>
+
+          <!-- Diario -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted" style="font-size:13px;">Hoy</span>
+              <span style="font-size:13px;" [class.text-danger]="dailyPercent >= 90">
+                {{ p.dailyTokensUsed | number }} / {{ p.dailyLimit | number }}
+              </span>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              [value]="dailyPercent"
+              [color]="dailyPercent >= 90 ? 'warn' : 'primary'">
+            </mat-progress-bar>
+          </div>
+
+          <!-- Mensual -->
+          <div>
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted" style="font-size:13px;">Este mes</span>
+              <span style="font-size:13px;" [class.text-danger]="monthlyPercent >= 90">
+                {{ p.monthlyTokensUsed | number }} / {{ p.monthlyLimit | number }}
+              </span>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              [value]="monthlyPercent"
+              [color]="monthlyPercent >= 90 ? 'warn' : 'primary'">
+            </mat-progress-bar>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA si está al límite -->
+      @if(monthlyPercent >= 100){
+        <div class="alert alert-warning d-flex align-items-center gap-2">
+          <mat-icon>warning</mat-icon>
+          Alcanzaste el límite mensual. Contacta al administrador para renovar tu plan.
+        </div>
+      }
+    </ng-container>
+  }
+
+</div>

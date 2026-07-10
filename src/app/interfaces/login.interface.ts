@@ -4,5 +4,6 @@ export interface LoginData {
     id: number,
     username: string,
     role: string,
+    subscriptionPlan?: string;
   }
 }

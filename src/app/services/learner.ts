@@ -17,6 +17,7 @@ export class LearnerService {
   }
 
   generatePdf(dto: GenerateInstructionalData): Observable<Blob> {
+    console.log(dto);
     return this.http.post(
       `${this.apiUrl}/instructional-designer/generate`,
       dto,

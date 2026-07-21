@@ -3,49 +3,69 @@
 <!-- Loader -->
 <app-loader [isLoading]="isLoading"></app-loader>
 
-<div class="container-fluid alp-bg-main-gradient d-flex justify-content-center align-items-center vh-100">
-    <div class="w-30">
-        <div class="alp-text-main-white text-center">
-          <h1 class="mb-2 alp-bold alp-text-4xl">Alphi</h1>
-          <p> Transformamos la Educación Digital </p>
-        </div>
-        <div class="alp-bg-white p-4 rounded-3 shadow mt-4">
-          <div class="d-flex flex-column">
-            <h2 class="alp-semibold alp-text-2xl">Accede a tu cuenta</h2>
-            <p class="alp-text-sm mt-2"> Ingresa tus credenciales para continuar </p>
-          </div>
-          <div class="my-4">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-              <!-- Usuario -->
-              <div class="mb-3">
-                <label for="username" class="form-label">Usuario</label>
-                <input id="username" type="text" class="form-control" formControlName="username" placeholder="Usuario">
-                @if( loginForm.get('username')?.touched && loginForm.get('username')?.invalid ) {
-                  <div class="text-danger small">
-                    El usuario es obligatorio
-                  </div>
-                }
-              </div>
+<div class="container-fluid alp-bg-main-gradient d-flex align-items-center justify-content-center p-3 vh-100">
+  <!-- Botón para regresar al home -->
+  <a routerLink="/" id="link-back-home" class="alp-btn-back-home shadow-sm" title="Volver a la página principal">
+    <i class="bi bi-arrow-left"></i>
+    <span id="txt-back-home">Regresar al sitio principal</span>
+  </a>
 
-              <!-- Contraseña -->
-              <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input id="password" type="password" class="form-control" formControlName="password" placeholder="Contraseña">
-                @if( loginForm.get('password')?.touched && loginForm.get('password')?.invalid ) {
-                  <div class="text-danger small">
-                    La contraseña es obligatoria
-                  </div>
-                }
-              </div>
-
-              <!-- Envío -->
-              <button type="submit" class="btn alp-btn-principal login-button alp-btn-gradient-2 w-100" [disabled]="loginForm.invalid">
-                Iniciar Sesión
-              </button>
-            </form>
-          </div>
-        </div>
+  <div class="alp-login-card">
+    <!-- Logo -->
+    <div class="d-flex justify-content-center mb-3">
+      <img src="/logo-minimal.svg" alt="Logo de Alphi" width="50" height="50"/>
     </div>
+    <!-- Encabezado de Bienvenida -->
+    <div class="text-center mb-4">
+      <h1 id="title-heading" class="h3 fw-bold text-dark mb-2 tracking-tight">
+        Bienvenido de nuevo
+      </h1>
+      <p id="subtitle-1" class="small text-muted fw-medium mb-0">
+        Transformamos la Educación Digital 👋
+      </p>
+      <p id="subtitle-2" class="small text-muted fw-medium mb-0">
+        Ingresa a tu cuenta para continuar
+      </p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+      <!-- Usuario -->
+      <div>
+        <label id="lbl-username" for="username" class="form-label small fw-semibold text-secondary mb-1">Usuario</label>
+        <input id="username" type="text" class="form-control alp-login-form-control-custom" formControlName="username"
+          placeholder="Usuario">
+        @if( loginForm.get('username')?.touched && loginForm.get('username')?.invalid ) {
+        <div class="text-danger small">
+          El usuario es obligatorio
+        </div>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-3">
+        <label id="lbl-password" for="password"
+          class="form-label small fw-semibold text-secondary mb-1">Contraseña</label>
+        <input id="password" type="password" class="form-control alp-login-form-control-custom"
+          formControlName="password" placeholder="Contraseña">
+        @if( loginForm.get('password')?.touched && loginForm.get('password')?.invalid ) {
+        <div class="text-danger small">
+          La contraseña es obligatoria
+        </div>
+        }
+      </div>
+
+      <!-- Envío -->
+      <button type="submit" id="btn-login" class="btn alp-login-btn" [disabled]="loginForm.invalid">
+        Iniciar Sesión
+      </button>
+    </form>
+
+    <!-- Enlace de Pie de Página (Registro) -->
+    <div class="mt-4 pt-2 text-center small text-muted font-medium">
+      <span id="txt-no-account">¿No tienes una cuenta?</span>
+      <a href="#" id="link-signup" class="alp-text-emerald ms-1">
+        Regístrate
+      </a>
+    </div>
+  </div>
 </div>
-
-

@@ -2,14 +2,14 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth } from '../../services/auth';
 import { AuthStore } from '../../stores/auth.store';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Loader } from '../../components/shared/loader/loader';
 import { Alert } from '../../components/shared/alert/alert';
 import { AlertService } from '../../services/shared/alert';
 
 @Component({
   selector: 'app-login',
-  imports: [Loader, Alert, ReactiveFormsModule],
+  imports: [Loader, Alert, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })

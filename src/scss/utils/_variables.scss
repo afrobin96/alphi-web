@@ -10,25 +10,28 @@ $light-blue: #eaf5f5;
 $secondary-blue: #3a84eb;
 $light-green: #1fad6833;
 $purple: #7616d0;
+$logo-purple: #4c35bd;
 $light-purple: #7616d033;
 $orange: #e06106;
 $light-orange: #e0610633;
-
 $red: #dc3545;
 
 /*** Custom Colors */
-$emerald: #10b981;
+$emerald: #4c35bd;
+$emerald-old: #10b981;
 $emerald-dark: #064e3b;
 $emerald-light: #ecfdf5;
 $amber-soft: #fffbeb;
 $blue-soft: #eff6ff;
-$font-family: 'Plus Jakarta Sans', sans-serif;
 $main-green: #059669;
 $secondary-green: #34d399;
 $white: #fff;
 $gray: #475569;
 $yellow: #fbbf24;
 $light-white: #fcfbfa;
+
+/* Borders colors */
+$border-color-main: #e5e7eb;
 
 /* colors with opacity */
 $white-85: rgba(255, 255, 255, 0.85);
@@ -45,3 +48,6 @@ $shadow-card: 0 20px 40px rgba(0, 0, 0, 0.05);
 /* degrade */
 $main-linear-gradient: linear-gradient(135deg, $main-blue, $main-green);
 $main-linear-gradient-2: linear-gradient(135deg, $secondary-blue, $secondary-green);
+
+/* font family */
+$font-family: 'Plus Jakarta Sans', sans-serif;

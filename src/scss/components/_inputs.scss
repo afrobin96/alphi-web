@@ -1,18 +1,46 @@
- .alp-custom-input {
-   background: rgba(255, 255, 255, 0.05);
-   border: 1px solid rgba(255, 255, 255, 0.2);
-   color: white;
-   border-radius: 1rem;
-   padding: 1rem;
- }
+@use '../utils/variables' as *;
 
- .alp-custom-input:focus {
-   background: rgba(255, 255, 255, 0.1);
-   border-color: var(--emerald);
-   box-shadow: none;
-   color: white;
- }
+.alp-custom-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: $white;
+  border-radius: 1rem;
+  padding: 1rem;
 
- .alp-custom-input::placeholder {
-   color: rgba(255, 255, 255, 0.4);
- }
+  &:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: $emerald;
+    box-shadow: none;
+    color: $white;
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  &#servicio{
+    option{
+      background: $emerald-light;
+      color: $black;
+    }
+  }
+}
+
+/* Estilos de inputs de login */
+.alp-login-form-control-custom {
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border: 1px solid $border-color-main;
+  font-size: 0.875rem;
+  color: $black;
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    border-color: $emerald;
+    box-shadow: 0 0 0 4px rgba(76, 53, 189, 0.12);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $main-gray;
+  }
+}

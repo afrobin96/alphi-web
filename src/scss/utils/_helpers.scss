@@ -8,7 +8,7 @@
   max-width: 48rem;
 }
 
-/* colors*/
+/* background colors */
 .alp-bg-white{
   background-color: $light-white;
 }
@@ -37,7 +37,7 @@
   background-image: $main-linear-gradient;
 }
 
-
+/* text colors */
 .alp-text-main-white{
   color: $white;
 }
@@ -56,6 +56,14 @@
 
 .alp-text-main-yellow{
   color: $yellow;
+}
+
+.alp-text-emerald{
+  color: $emerald;
+}
+
+.alp-text-purple{
+  color: $logo-purple;
 }
 
 
@@ -107,11 +115,6 @@
 .alp-text-6xl{
   font-size: 3.75rem;
   line-height: 1.2;
-}
-
-/* text colors */
-.alp-text-emerald{
-  color: $emerald;
 }
 
 /* borders */

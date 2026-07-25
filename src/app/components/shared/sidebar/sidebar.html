@@ -1,0 +1,72 @@
+<!-- Sidebar -->
+<aside class="sidebar" [class.collapsed]="sidebarService.isCollapsed()" id="sidebar">
+  <!-- Botón flotante para contraer/expandir -->
+  <button class="sidebar-toggle-btn d-none d-lg-flex" id="sidebarToggle" (click)="toggleSidebarCollapse()"
+    [title]="sidebarService.isCollapsed() ? 'Desplegar menú' : 'Plegar menú'">
+    <i
+    class="bi"
+    [class.bi-arrow-left]="!sidebarService.isCollapsed()"
+    [class.bi-arrow-right]="sidebarService.isCollapsed()"
+    id="toggleIcon"
+    style="font-size: 0.85rem;"></i>
+  </button>
+
+  <!-- Logo Header -->
+  <div class="sidebar-brand">
+    <img src="/logo-minimal.svg" alt="Logo de Alphi" width="40" height="40"/>
+    <div class="sidebar-brand-text">
+      <h5 class="fw-bold mb-0 leading-none tracking-wide">Alphi
+      </h5>
+      <small class="fw-semibold">Gestión Educativa</small>
+    </div>
+  </div>
+
+  <!-- Links Navigation -->
+  <div class="sidebar-section-title">Menú Principal</div>
+  <nav class="nav flex-column">
+    <a routerLink="dashboard" routerLinkActive="active" class="sidebar-link active">
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span>Dashboard</span>
+    </a>
+    <a routerLink="projects" routerLinkActive="active" class="sidebar-link">
+      <i class="bi bi-folder-fill"></i>
+      <span>Proyectos</span>
+    </a>
+    <a routerLink="clients" routerLinkActive="active" class="sidebar-link">
+      <i class="bi bi-building"></i>
+      <span>Clientes</span>
+    </a>
+
+    <div class="sidebar-section-title">Equipo y Tareas</div>
+    <a routerLink="teams" routerLinkActive="active" class="sidebar-link">
+      <i class="bi bi-people-fill"></i>
+      <span>Equipos</span>
+    </a>
+    <a routerLink="members" routerLinkActive="active" class="sidebar-link">
+      <i class="bi bi-person-badge-fill"></i>
+      <span>Miembros</span>
+    </a>
+    <a routerLink="tasks" routerLinkActive="active" class="sidebar-link">
+      <i class="bi bi-check2-square"></i>
+      <span>Tareas</span>
+    </a>
+
+    <div class="sidebar-section-title">Finanzas</div>
+    <a routerLink="payments" routerLinkActive="active" class="sidebar-link">
+      <i class="bi bi-credit-card-fill"></i>
+      <span>Pagos</span>
+    </a>
+  </nav>
+
+  <!-- Sidebar Footer / Quick Support -->
+  <div class="sidebar-footer mt-5 p-3 m-3 rounded-4 text-center">
+    <div class="mb-2">
+      <i class="bi bi-shield-check fs-4"></i>
+    </div>
+    <p class="small fw-medium mb-1">Sistema Actualizado</p>
+    <span class="badge rounded-pill">
+      Versión
+      0.0.1 Active
+    </span>
+  </div>
+</aside>

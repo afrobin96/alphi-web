@@ -2,7 +2,7 @@
 
 /* Buttons */
 .alp-btn-emerald {
-  background: $emerald;
+  background: $brand-purple;
   color: white;
   border: none;
   font-weight: 700;
@@ -16,18 +16,18 @@
 }
 
 .alp-btn-outline-emerald {
-  border: 1px solid $emerald;
-  color: $emerald;
+  border: 1px solid $brand-purple;
+  color: $brand-purple;
 }
 
 .alp-btn-outline-emerald:hover {
-  background: $emerald;
+  background: $brand-purple;
   color: $white;
 }
 
 /* Buttons for login */
 .alp-login-btn {
-  background-color: $emerald;
+  background-color: $brand-purple;
   color: $white;
   font-weight: 600;
   font-size: 0.875rem;
@@ -69,10 +69,31 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+
   &:hover {
     background-color: $white;
     color: $main-green;
     border-color: $main-green;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Logout btn */
+.alp-btn-logout {
+  background-color: $red-light;
+  color: $red;
+  border: 1px solid $red;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: $red;
+    color: $white;
+    border-color: $red;
   }
 }

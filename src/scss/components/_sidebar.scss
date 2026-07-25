@@ -1,0 +1,156 @@
+@use '../../scss/utils/variables' as *;
+
+/* Lateral - Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: $white;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  border-right: 1px solid $border-color-main;
+
+  .sidebar-brand {
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    border-bottom: 1px solid $border-color-secondary;
+    background-color: $white;
+    position: relative;
+  }
+
+  /* Botón circular para colapsar/expandir barra lateral */
+  .sidebar-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background-color: $white;
+    border: 1px solid $border-color-main;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $brand-purple;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1010;
+    transition: all 0.25s ease;
+    padding: 0;
+    &:hover {
+      background-color: $brand-purple-light;
+      color: $brand-purple;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(56, 28, 84, 0.15);
+    }
+  }
+
+  .sidebar-brand-text {
+    h5 {
+      font-size: 1.25rem;
+      color: $brand-purple;
+    }
+
+    small {
+      color: $emerald;
+      font-size: 0.72rem;
+    }
+  }
+
+  .sidebar-section-title {
+    color: $main-gray;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1.25rem 1.25rem 0.5rem;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 1.25rem;
+    color: $main-gray;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 12px;
+    margin: 0.15rem 0.75rem;
+    transition: all 0.2s ease;
+    position: relative;
+    &:hover {
+      background-color: $border-color-secondary;
+      color: $black;
+    }
+
+    &.active {
+      background: $brand-purple-light;
+      color: $brand-purple;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(56, 28, 84, 0.08);
+    }
+
+    .badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+    }
+  }
+
+  .sidebar-footer{
+    background-color: $light-white;
+    border: 1px solid $border-color-main;
+    i{
+      color: $emerald;
+    }
+    p{
+      font-size: 0.8rem;
+      color: $black;
+    }
+    .badge{
+      font-size: 0.65rem;
+      background-color: $green-10;
+      color: $main-green;
+      border: 1px solid rgba(91, 187, 164, 0.3);
+    }
+  }
+
+  /* Responsive Mobile Styles */
+  @media (max-width: 991.98px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+      transform: translateX(0);
+    }
+  }
+}
+
+/* Estado colapsado de la barra lateral (Desktop) */
+.sidebar.collapsed {
+  width: 80px;
+
+  .sidebar-brand-text,
+  .sidebar-section-title,
+  .sidebar-link span,
+  .sidebar-footer {
+    display: none !important;
+  }
+
+  .sidebar-brand {
+    justify-content: center;
+    padding: 1.25rem 0.5rem;
+  }
+
+  .sidebar-link {
+    i {
+      font-size: 1.25rem;
+      margin: 0;
+    }
+  }
+}

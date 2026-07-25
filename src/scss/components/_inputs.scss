@@ -9,7 +9,7 @@
 
   &:focus {
     background: rgba(255, 255, 255, 0.1);
-    border-color: $emerald;
+    border-color: $brand-purple;
     box-shadow: none;
     color: $white;
   }
@@ -35,7 +35,7 @@
   transition: all 0.2s ease-in-out;
 
   &:focus {
-    border-color: $emerald;
+    border-color: $brand-purple;
     box-shadow: 0 0 0 4px rgba(76, 53, 189, 0.12);
     outline: none;
   }

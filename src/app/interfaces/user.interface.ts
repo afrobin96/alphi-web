@@ -3,4 +3,5 @@ export interface UserData{
   username: string,
   role: string,
   subscriptionPlan?: string;
+  email?: string;
 }

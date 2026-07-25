@@ -1,0 +1,36 @@
+/* Top Navbar */
+.top-navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--card-border);
+  padding: 0.85rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 990;
+}
+
+.search-bar {
+  max-width: 320px;
+  position: relative;
+}
+
+.search-bar .form-control {
+  background-color: #f1f5f9;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding-left: 2.5rem;
+  font-size: 0.85rem;
+}
+
+.search-bar .form-control:focus {
+  background-color: #ffffff;
+  border-color: var(--brand-purple);
+  box-shadow: 0 0 0 4px rgba(76, 53, 189, 0.1);
+}
+
+.search-bar .bi-search {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}

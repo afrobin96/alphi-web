@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserData } from '../../../interfaces/user.interface';
 import { Auth } from '../../../services/auth';
+import { AuthStore } from '../../../stores/auth.store';
 
 @Component({
   selector: 'app-topnavbar',
@@ -11,6 +12,7 @@ import { Auth } from '../../../services/auth';
 export class Topnavbar implements OnInit{
     user: UserData | null =  null;
     userInitials = '';
+    private auth = inject(AuthStore);
 
   constructor(private authService: Auth) {}
 
@@ -22,5 +24,10 @@ export class Topnavbar implements OnInit{
   private getInitials(username?: string): string {
     if (!username) return '?';
     return username.substring(0, 2).toUpperCase();
+  }
+
+  logout() {
+    this.auth.logOut();
+    window.location.href = '/login';
   }
 }

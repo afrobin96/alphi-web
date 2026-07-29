@@ -1,3 +1,17 @@
+<!-- Encabezado Principal del Dashboard -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+  <div>
+    <h2 class="fw-bold text-dark mb-1 tracking-tight alp-heading-h2">Dashboard</h2>
+    <p class="text-muted small mb-0">Visión general y métricas clave de tu gestión de proyectos</p>
+  </div>
+  <div class="d-flex gap-2">
+    <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold" (click)="navigateTo( 'projects')">
+      <i class="bi bi-plus-lg me-1"></i> Nuevo Proyecto
+    </button>
+  </div>
+</div>
+
+
 <div class="container py-5">
   <div class="mb-4">
     <h2 class="display-4 font-weight-bold">Dashboard</h2>
@@ -5,26 +19,27 @@
   </div>
   @if(summary()){
   <div class="row g-4">
-     @for (item of [
-      {label: 'Proyectos Activos', value: summary().projectsActive, icon: 'folder_open', route: 'projects'},
-      {label: 'Clientes', value: summary().clients, icon: 'business', route: 'clients'},
-      {label: 'Miembros del Equipo', value: summary().members, icon: 'group', route: 'members'},
-      {label: 'Tareas Pendientes', value: summary().tasksPending, icon: 'assignment', route: 'tasks'},
-      {label: 'Tareas Completadas', value: summary().tasksCompleted, icon: 'check_circle', route: 'tasks'},
-      {label: 'Pagos Pendientes', value: summary().paymentsPending, icon: 'payment', route: 'payments'}
+    @for (item of [
+    {label: 'Proyectos Activos', value: summary().projectsActive, icon: 'folder_open', route: 'projects'},
+    {label: 'Clientes', value: summary().clients, icon: 'business', route: 'clients'},
+    {label: 'Miembros del Equipo', value: summary().members, icon: 'group', route: 'members'},
+    {label: 'Tareas Pendientes', value: summary().tasksPending, icon: 'assignment', route: 'tasks'},
+    {label: 'Tareas Completadas', value: summary().tasksCompleted, icon: 'check_circle', route: 'tasks'},
+    {label: 'Pagos Pendientes', value: summary().paymentsPending, icon: 'payment', route: 'payments'}
     ]; track $index) {
     <div class="col-lg-4 col-md-6">
       <div class="card shadow-sm cursor-pointer" (click)="navigateTo(item.route)">
         <div class="card-body d-flex justify-content-between align-items-center pb-2">
           <h3 class="card-title text-muted small">{{ item.label }}</h3>
-          <mat-icon aria-hidden="false" [attr.aria-label]="item.label" [fontIcon]="item.icon" class="text-primary"></mat-icon>
+          <mat-icon aria-hidden="false" [attr.aria-label]="item.label" [fontIcon]="item.icon"
+            class="text-primary"></mat-icon>
         </div>
         <div class="card-body pt-0">
-          <div class="h2 mb-0">{{ item.value  || 0}}</div>
+          <div class="h2 mb-0">{{ item.value || 0}}</div>
         </div>
       </div>
     </div>
-  }
+    }
   </div>
-}
+  }
 </div>

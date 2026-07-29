@@ -1,26 +1,26 @@
 @use "../utils/variables" as *;
 
 /* Buttons */
-.alp-btn-emerald {
+.alp-btn-brand {
   background: $brand-purple;
   color: white;
   border: none;
   font-weight: 700;
 }
 
-.alp-btn-emerald:hover {
+.alp-btn-brand:hover {
   background: $main-green;
   color: $white;
   transform: translateY(-2px);
   box-shadow: $shadow-button;
 }
 
-.alp-btn-outline-emerald {
+.alp-btn-outline-brand {
   border: 1px solid $brand-purple;
   color: $brand-purple;
 }
 
-.alp-btn-outline-emerald:hover {
+.alp-btn-outline-brand:hover {
   background: $brand-purple;
   color: $white;
 }

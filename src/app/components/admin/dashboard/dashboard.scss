@@ -1,3 +1,5 @@
+@use '../../../../scss/utils/variables' as *;
+
 .cursor-pointer {
   cursor: pointer;
   transition: all 0.3s ease;
@@ -7,3 +9,36 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
   }
 }
+
+.alphi-kpi-card {
+  background-color: #ffffff;
+  border: 1px solid $border-color-main;
+  border-radius: 20px;
+  padding: 1.35rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+  transition: all 0.25 ease;
+  height: 100%;
+}
+
+.alphi-kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
+  border-color: rgba(76, 53, 189, 0.2);
+}
+
+.alphi-kpi-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.alphi-icon-purple { background-color: #f0edff; color: $brand-purple; }
+.alphi-icon-blue { background-color: #e0f2fe; color: $secondary-blue; }
+.alphi-icon-emerald { background-color: #d1fae5; color: $main-green; }
+.alphi-icon-amber { background-color: #fef3c7; color: $yellow; }
+.alphi-icon-rose { background-color: #ffe4e6; color: $red; }
+.alphi-icon-indigo { background-color: #e0e7ff; color: $purple; }

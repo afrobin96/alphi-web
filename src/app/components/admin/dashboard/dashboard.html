@@ -5,41 +5,50 @@
     <p class="text-muted small mb-0">Visión general y métricas clave de tu gestión de proyectos</p>
   </div>
   <div class="d-flex gap-2">
-    <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold" (click)="navigateTo( 'projects')">
+    <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold"
+      (click)="navigateTo( 'projects')">
       <i class="bi bi-plus-lg me-1"></i> Nuevo Proyecto
     </button>
   </div>
 </div>
 
-
-<div class="container py-5">
-  <div class="mb-4">
-    <h2 class="display-4 font-weight-bold">Dashboard</h2>
-    <p class="text-muted">Visión general de tu gestión de proyectos</p>
-  </div>
-  @if(summary()){
-  <div class="row g-4">
-    @for (item of [
-    {label: 'Proyectos Activos', value: summary().projectsActive, icon: 'folder_open', route: 'projects'},
-    {label: 'Clientes', value: summary().clients, icon: 'business', route: 'clients'},
-    {label: 'Miembros del Equipo', value: summary().members, icon: 'group', route: 'members'},
-    {label: 'Tareas Pendientes', value: summary().tasksPending, icon: 'assignment', route: 'tasks'},
-    {label: 'Tareas Completadas', value: summary().tasksCompleted, icon: 'check_circle', route: 'tasks'},
-    {label: 'Pagos Pendientes', value: summary().paymentsPending, icon: 'payment', route: 'payments'}
-    ]; track $index) {
-    <div class="col-lg-4 col-md-6">
-      <div class="card shadow-sm cursor-pointer" (click)="navigateTo(item.route)">
-        <div class="card-body d-flex justify-content-between align-items-center pb-2">
-          <h3 class="card-title text-muted small">{{ item.label }}</h3>
-          <mat-icon aria-hidden="false" [attr.aria-label]="item.label" [fontIcon]="item.icon"
-            class="text-primary"></mat-icon>
-        </div>
-        <div class="card-body pt-0">
-          <div class="h2 mb-0">{{ item.value || 0}}</div>
+<!-- Grilla de Tarjetas KPI (KPI Cards) -->
+@if(summary()){
+<div class="row g-3 mb-4">
+  @for (item of [
+  {label: 'Proyectos Activos', value: summary().projectsActive, icon: 'bi bi-folder-fill', route: 'projects', tag:'En desarrollo', efficiency: null, color: 'purple'},
+  {label: 'Clientes', value: summary().clients, icon: 'bi bi-building', route: 'clients', tag:'Institución Activa', efficiency: null, color: 'blue'},
+  {label: 'Miembros del Equipo', value: summary().members, icon: 'bi bi-people-fill', route: 'members', tag:'', efficiency: null, color: 'indigo'},
+  {label: 'Tareas Pendientes', value: summary().tasksPending, icon: 'bi bi-clipboard-data-fill', route: 'tasks',
+  tag:'Requiere atención', efficiency: null, color: 'amber'},
+  {label: 'Tareas Completadas', value: summary().tasksCompleted, icon: 'bi bi-check-circle-fill', route: 'tasks',
+  tag:'' , efficiency: taskEfficiency(), color: 'emerald'},
+  {label: 'Pagos Pendientes', value: summary().paymentsPending, icon: 'bi bi-credit-card-2-front-fill', route:
+  'payments', tag:'Por Facturar', efficiency: null, color: 'rose'}
+  ]; track $index) {
+  <div class="col-12 col-sm-6 col-xl-4">
+    <div class="alphi-kpi-card cursor-pointer" (click)="navigateTo(item.route)">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <span class="text-muted small fw-semibold">{{ item.label }}</span>
+        <div class="alphi-kpi-icon-wrapper alphi-icon-{{item.color}}">
+          <i class="{{item.icon}}"></i>
         </div>
       </div>
+      <div class="d-flex align-items-baseline justify-content-between">
+        <h2 class="fw-bold text-dark mb-0">{{ item.value || 0}}</h2>
+        @if(item.tag != '') {
+          <span class="badge bg-success bg-opacity-10 text-success rounded-pill fw-medium" style="font-size: 0.75rem;">
+              {{item.tag}}
+            </span>
+          }
+        @if(item.efficiency !== null){
+            <span class="badge bg-success bg-opacity-10 text-{{efficiencyColor()}} rounded-pill fw-medium" style="font-size: 0.75rem;">
+              {{ item.efficiency }}% Eficiencia
+            </span>
+        }
+      </div>
     </div>
-    }
   </div>
   }
 </div>
+}

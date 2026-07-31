@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-projects-list',
-  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [Loader, MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './projects-list.html',
   styleUrl: './projects-list.scss'
 })

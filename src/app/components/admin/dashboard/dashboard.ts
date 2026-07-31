@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { dashboardData } from '../../../interfaces/dashboard.interface';
 import { DashboardService } from '../../../services/dashboard';
@@ -23,6 +23,24 @@ export class Dashboard implements OnInit {
 
   private dashboardService = inject(DashboardService);
   private router = inject(Router);
+
+  // Calcula el porcentaje de tareas completadas sobre el total
+  taskEfficiency = computed(() => {
+    const completed = this.summary().tasksCompleted;
+    const pending   = this.summary().tasksPending;
+    const total     = completed + pending;
+    if (total === 0) return 0;
+    return Math.round((completed / total) * 100);
+  });
+
+  // Color según el porcentaje
+  efficiencyColor = computed(() => {
+    const pct = this.taskEfficiency();
+    if (pct < 30) return 'danger';   // rojo
+    if (pct < 60) return 'warning';  // amarillo
+    if (pct < 80) return 'primary';  // azul
+    return 'success';                // verde
+  });
 
   ngOnInit(): void {
      this.dashboardService.getSummary().subscribe({

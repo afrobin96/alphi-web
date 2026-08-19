@@ -5,14 +5,19 @@
   background: $brand-purple;
   color: white;
   border: none;
-  font-weight: 700;
-}
 
-.alp-btn-brand:hover {
-  background: $main-green;
-  color: $white;
-  transform: translateY(-2px);
-  box-shadow: $shadow-button;
+  &:hover {
+    background: $main-green;
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: $shadow-button;
+  }
+
+  &:disabled {
+    background-color: $main-gray;
+    color: $black;
+    cursor: not-allowed;
+  }
 }
 
 .alp-btn-outline-brand {
@@ -91,9 +96,57 @@
   align-items: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
+
   &:hover {
     background-color: $red;
     color: $white;
     border-color: $red;
+  }
+}
+
+/* Buttons for tables */
+.table-responsive .alp-table-main-buttons {
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 10px;
+  padding: 0.35rem 0.85rem;
+  transition: all 0.2s ease;
+  &:hover {
+    cursor: pointer;
+  }
+  &.alp-table-success-btn {
+    background-color: $emerald-light;
+    color: $main-green;
+    border: 1px solid $emerald;
+
+    &:hover {
+      background-color: $secondary-green;
+      color: $white;
+      border-color: $secondary-green;
+    }
+  }
+
+  &.alp-table-edit-btn {
+    background-color: $light-blue;
+    color: $main-blue;
+    border: 1px solid $secondary-blue;
+
+    &:hover {
+      background-color: $secondary-blue;
+      color: $white;
+      border-color: $secondary-blue;
+    }
+  }
+
+  &.alp-table-delete-btn {
+    background-color: $red-light;
+    color: $red;
+    border: 1px solid $red;
+
+    &:hover {
+      background-color: $red;
+      color: $white;
+      border-color: $red;
+    }
   }
 }

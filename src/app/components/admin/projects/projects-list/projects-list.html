@@ -1,52 +1,138 @@
-<div class="container py-5">
-  <div class="mb-4">
-    <h2 class="display-4 font-weight-bold">Proyectos</h2>
-    <p class="text-muted">Visión general de los proyectos</p>
-    <a class="btn btn-primary my-4" routerLink="/admin/projects/new">+ Nuevo proyecto</a>
+<!-- Header de Proyectos -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+  <div>
+    <h2 class="fw-bold text-dark mb-1 tracking-tight alp-heading-h2">Proyectos</h2>
+    <p class="text-muted small mb-0">Visión general de los proyectos</p>
+  </div>
+  <div>
+    <button class="btn alp-btn-brand shadow-sm px-3 py-2 small fw-semibold d-inline-flex align-items-center gap-2"
+      (click)="openProjectModal()">
+      <i class="bi bi-plus-lg fs-6"></i>
+      <span>Nuevo proyecto</span>
+    </button>
+  </div>
+</div>
+
+@if(loading()){
+<app-loader></app-loader>
+}
+
+<div class="alp-table-card p-4">
+
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="fw-bold text-dark fs-6">Listado de Proyectos</span>
+      <span class="badge rounded-pill bg-light text-dark border" id="projects-table-badge">{{projects().length}}
+        activos</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="input-group input-group-sm style-search" style="width: 240px;">
+        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i
+            class="bi bi-search text-muted"></i></span>
+        <input type="text" id="project-filter-input" class="form-control bg-light border-start-0 rounded-end-3"
+          placeholder="Filtrar por nombre..." (keyup)="filterProjectsTable($event)" #input>
+      </div>
+    </div>
   </div>
 
-  @if(loading()){
-    <app-loader></app-loader>
-  }
-  <div class="alp-table-main">
-    <table mat-table [dataSource]="projects()" class="mat-elevation-z8 alp-text-sm">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="table table-hover align-middle mb-0 alp-table-new-main">
+      <ng-container matColumnDef="name" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Nombre</th>
+        <td mat-cell *matCellDef="let project" class="py-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="p-2 rounded-3 text-purple alp-bg-brand-light">
+              <i class="bi bi-mortarboard-fill text-primary"></i>
+            </div>
+            <div>
+              <span class="fw-bold text-dark d-block alp-text-md">{{ project.name }}</span>
+              <small class="text-muted alp-text-sm">{{ project.description || 'Sin descripción' }}</small>
+            </div>
+          </div>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="client">
-        <th mat-header-cell *matHeaderCellDef>Cliente</th>
-        <td mat-cell *matCellDef="let project">{{ project.client?.name || 'Sin cliente' }}</td>
+      <ng-container matColumnDef="client" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Cliente</th>
+        <td mat-cell *matCellDef="let project" class=" py-3">
+          <span class="fw-medium text-secondary">
+            <i class="bi bi-building me-1 text-muted"></i>{{ project.client?.name || 'Sin cliente' }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="team">
-        <th mat-header-cell *matHeaderCellDef>Equipo</th>
-        <td mat-cell *matCellDef="let project">{{ project.team?.name || 'Sin equipo' }}</td>
+      <ng-container matColumnDef="team" class="table-light text-muted ">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 small">Equipo</th>
+        <td mat-cell *matCellDef="let project" class="py-3 alp-text-md">
+          <span class="badge bg-light text-dark border px-2 py-1 fw-normal">
+            <i class="bi bi-people me-1 text-primary"></i>{{ project.team?.name || 'Sin equipo' }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Estado</th>
-        <td mat-cell *matCellDef="let project">{{ project.status }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let project">
-          @if(project.status !== 'completed'){
-            <button mat-button (click)="complete(project.id!)" class="alp-table-main-buttons alp-table-success-btn">Completar</button>
-            <button mat-button (click)="edit(project)" class="alp-table-main-buttons">Editar</button>
+      <ng-container matColumnDef="status" class="table-light text-muted ">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 small">Estado</th>
+        <td mat-cell *matCellDef="let project" class="py-3 alp-text-md">
+          @if(project.status === 'active'){
+          <span class="badge rounded-pill px-2.5 py-1 alp-badge-active">{{ project.status }}</span>
           }
-          <button mat-button (click)="remove(project.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
+          @else if(project.status === 'completed'){
+          <span
+            class="badge rounded-pill px-2.5 py-1 bg-success bg-opacity-10 text-success border border-success border-opacity-20">{{
+            project.status }}</span>
+          }
+          @else {
+          <span class="badge rounded-pill px-2.5 py-1 bg-secondary bg-opacity-10 text-secondary border">{{
+            project.status }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 text-center">Acciones</th>
+        <td mat-cell *matCellDef="let project" class=" py-3 text-center">
+          <div class="d-inline-flex gap-2">
+            @if(project.status !== 'completed'){
+            <button mat-button (click)="complete(project.id!)"
+              class="alp-table-main-buttons alp-table-success-btn">Completar</button>
+            <button mat-button (click)="editProjectModal(project)" class="alp-table-main-buttons alp-table-edit-btn">Editar</button>
+            }@else {
+            <button class="btn btn-sm btn-light border text-muted disabled">
+              <i class="bi bi-check2"></i> Listo
+            </button>
+            }
+            <button mat-button (click)="remove(project.id!)"
+              class="alp-table-main-buttons alp-table-delete-btn">Eliminar </button>
+          </div>
+
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center p-4 text-muted" colspan="5">
+          <i class="bi bi-folder-x fs-2 d-block mb-2 text-secondary"></i>
+          No se encuentran proyectos con el nombre "{{input.value}}"
+        </td>
+      </tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of projects">
+    </mat-paginator>
   </div>
 
-  @if(projects().length === 0 && !loading()){
-    <h4>No hay proyectos.</h4>
-  }
 </div>
+
+@if(projects().length === 0 && !loading()){
+<h4>No hay proyectos.</h4>
+}
+
+@if (isModalOpen()) {
+  <app-projects-form
+    [project]="selectedProject() ?? null"
+    (closed)="closeModal()"
+  />
+}

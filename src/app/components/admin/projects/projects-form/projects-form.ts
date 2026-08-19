@@ -1,27 +1,25 @@
-import { Component, inject, OnInit, computed } from '@angular/core';
+import { Component, inject, OnInit, computed, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../../../../services/project';
 import { ProjectStore } from '../../../../stores/project.store';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { subscribe } from 'diagnostics_channel';
 import { ClientStore } from '../../../../stores/client.store';
 import { TeamStore } from '../../../../stores/team.store';
+import { ProjectData } from '../../../../interfaces/project.interface';
 
 @Component({
   selector: 'app-projects-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './projects-form.html',
   styleUrl: './projects-form.scss'
 })
 export class ProjectsForm implements OnInit{
 
+  project = input<ProjectData | null>(null);
+  closed  = output<void>();
+
   fb = inject(FormBuilder);
   projectService = inject(ProjectService);
   projectStore = inject(ProjectStore);
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  httpClient = inject(HttpClient);
   clientStore = inject(ClientStore);
   teamStore = inject(TeamStore);
 
@@ -42,24 +40,23 @@ export class ProjectsForm implements OnInit{
     this.clientStore.loadAll();
     this.teamStore.loadAll();
 
-    const id = +this.route.snapshot.paramMap.get('id')!;
+    const project = this.project();
 
-    if(id){
+    if(project){
       this.editing = true;
-      this.projectId = id;
-      this.projectService.get(id).subscribe(project =>{
-          this.form.patchValue({
-            name: project.name,
-            description: project.description,
-            clientId: project.client?.id || null,
-            teamId: project.team?.id || null,
-
-          });
+      this.projectId = project.id;
+      this.form.patchValue({
+        name:        project.name,
+        description: project.description ?? '',
+        clientId:    project.client?.id ?? null,
+        teamId:      project.team?.id   ?? null,
       });
     }
   }
 
   save(){
+    if (this.form.invalid) return;
+
     const formValue = this.form.value;
     const payload = {
       ...formValue,
@@ -67,14 +64,16 @@ export class ProjectsForm implements OnInit{
       clientId: formValue.clientId ? Number(formValue.clientId) : null,
       teamId: formValue.teamId ? Number(formValue.teamId) : null
     };
-    
+
     if(this.editing && this.projectId){
-      this.projectStore.update(this.projectId, payload).subscribe(()=>{
-        this.router.navigateByUrl('admin/projects');
+      this.projectStore.update(this.projectId, payload).subscribe({
+        next: () => this.closed.emit(), // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
       });
     } else {
-      this.projectStore.add(payload).subscribe(() => {
-        this.router.navigateByUrl('admin/projects');
+      this.projectStore.add(payload).subscribe({
+        next: () => this.closed.emit(), // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
       })
     }
   }
@@ -91,6 +90,10 @@ export class ProjectsForm implements OnInit{
 
     const teamId = this.form.value.teamId;
     this.projectStore.assignTeam(this.projectId, teamId!).subscribe();
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 
 }

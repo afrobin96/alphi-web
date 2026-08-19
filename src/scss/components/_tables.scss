@@ -1,14 +1,20 @@
-@use "../utils/variables";
-
+@use "../utils/variables" as *;
+.alp-table-new-main{
+  tbody{
+    td{
+      border-bottom: 1px solid $border-color-main !important;
+    }
+  }
+}
 .alp-table-main{
   border-width: 1px;
   border-radius: .5rem;
-  box-shadow: variables.$shadow-soft;
+  box-shadow: $shadow-soft;
   overflow: hidden;
   table{
-    background-color: variables.$white;
+    background-color: $white;
     th{
-      color: variables.$main-gray;
+      color: $main-gray;
       font-weight: 500;
       vertical-align: middle;
       text-align: left;
@@ -17,7 +23,7 @@
       height: 3rem;
     }
     td{
-      color: variables.$light-black;
+      color: $light-black;
       font-size: 14px;
       padding: 1rem;
       &:first-child{
@@ -26,30 +32,7 @@
       &:last-child{
         font-weight: 500;
       }
-      .alp-table-main-buttons{
-        font-weight: 500;
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        border-radius: 0.5rem;
-        margin-right: 0.5rem;
-        border: 1px solid variables.$light-blue;
-        &:hover{
-          cursor: pointer;
-          background-color: variables.$purple;
-          transition: all .3s ease-in-out;
-          color: variables.$white;
-        }
-        &.alp-table-delete-btn{
-          &:hover{
-            background-color: variables.$red;
-          }
-        }
-        &.alp-table-success-btn{
-          &:hover{
-            background-color: variables.$secondary-green;
-          }
-        }
-      }
+
 
     }
   }

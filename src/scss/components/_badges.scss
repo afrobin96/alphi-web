@@ -1,0 +1,7 @@
+@use "../utils/variables" as *;
+
+.alp-badge-active{
+  background-color: $emerald-light;
+  color: $emerald-dark;
+  border: 1px solid rgba(91, 187, 164, 0.3);
+}

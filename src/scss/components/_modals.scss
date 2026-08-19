@@ -1,0 +1,40 @@
+@use "../utils/variables" as *;
+
+.alp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  .alp-modal-box {
+    max-width: 500px;
+    min-width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1.75rem * 2);
+    width: auto;
+    pointer-events: none;
+    position: relative;
+  }
+  .modal-content{
+    background-color: $white;
+    border-radius: 24px;
+    .modal-header{
+      border-top-left-radius: calc(0.5rem - (1px));
+      border-top-right-radius: calc(0.5rem - (1px));
+      justify-content: space-between;
+      .alp-project-icon{
+        background-color: $brand-purple-light;
+        color: $brand-purple;
+      }
+      .btn-close{
+        padding: calc(1rem * .5) calc(1rem * .5);
+        margin: calc(-.5 * 1rem) calc(-.5 * 1rem) calc(-.5 * 1rem) 1.75rem;
+      }
+    }
+  }
+}

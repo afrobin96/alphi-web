@@ -1,17 +1,22 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ClientStore } from '../../../../stores/client.store';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../../../services/client';
 import { HttpClient } from '@angular/common/http';
+import { ClientData } from '../../../../interfaces/client.interface';
 
 @Component({
   selector: 'app-client-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './client-form.html',
   styleUrl: './client-form.scss'
 })
 export class ClientForm implements OnInit{
+
+  project = input<ClientData | null>(null);
+  closed  = output<void>();
+
   private fb = inject(FormBuilder);
   clientStore = inject(ClientStore);
   clientService = inject(ClientService);
@@ -71,5 +76,9 @@ export class ClientForm implements OnInit{
         this.router.navigateByUrl('admin/clients');
       });
     }
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 }

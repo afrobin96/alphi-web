@@ -1,50 +1,123 @@
-<div class="container py-5">
-  <div class="mb-4">
-    <h2 class="display-4 font-weight-bold">Clientes</h2>
-    <p class="text-muted">Visión general de los clientes</p>
-    <a class="btn btn-primary my-4" routerLink="/admin/clients/new">+ Nuevo cliente</a>
+<!-- Header de clients -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+  <div>
+    <h2 class="fw-bold text-dark mb-1 tracking-tight alp-heading-h2">Clientes</h2>
+    <p class="text-muted small mb-0">Visión general de los clientes</p>
   </div>
+  <div>
+    <button class="btn alp-btn-brand shadow-sm px-3 py-2 small fw-semibold d-inline-flex align-items-center gap-2"
+      (click)="openClientModal()">
+      <i class="bi bi-plus-lg fs-6"></i>
+      <span>Nuevo cliente</span>
+    </button>
+  </div>
+</div>
 
 @if(loading()){
-    <app-loader></app-loader>
+<app-loader></app-loader>
 }
 
-<!-- Lista -->
-<div class="alp-table-main">
-    <table mat-table [dataSource]="clients()" class="mat-elevation-z8 alp-text-sm">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let client">{{ client.name }}</td>
+<div class="alp-table-card p-4">
+
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="fw-bold text-dark fs-6">Listado de Clientes</span>
+      <span class="badge rounded-pill bg-light text-dark border" id="clients-table-badge">{{clients().length}}
+        activos</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="input-group input-group-sm style-search" style="width: 240px;">
+        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i
+            class="bi bi-search text-muted"></i></span>
+        <input type="text" id="client-filter-input" class="form-control bg-light border-start-0 rounded-end-3"
+          placeholder="Filtrar por nombre..." (keyup)="filterClientsTable($event)" #input>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="table table-hover align-middle mb-0 alp-table-new-main">
+      <ng-container matColumnDef="name" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Nombre</th>
+        <td mat-cell *matCellDef="let client" class="py-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="p-2 rounded-3 text-purple alp-bg-brand-light">
+              <i class="bi bi-mortarboard-fill text-primary"></i>
+            </div>
+            <div>
+              <span class="fw-bold text-dark d-block alp-text-md">{{ client.name }}</span>
+            </div>
+          </div>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let client">{{ client.email }}</td>
+      <ng-container matColumnDef="email" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Email</th>
+        <td mat-cell *matCellDef="let client" class=" py-3">
+          <span class="fw-medium text-secondary">
+            <i class="bi bi-envelope me-1 text-muted"></i>{{ client.email || 'Sin email' }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
-        <td mat-cell *matCellDef="let client">{{ client.phone }}</td>
+      <ng-container matColumnDef="phone" class="table-light text-muted ">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 small">Teléfono</th>
+        <td mat-cell *matCellDef="let client" class="py-3 alp-text-md">
+          <span class="badge bg-light text-dark border px-2 py-1 fw-normal">
+            <i class="bi bi-telephone me-1 text-primary"></i>{{ client.phone || 'Sin teléfono' }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="company">
-        <th mat-header-cell *matHeaderCellDef>Empresa</th>
-        <td mat-cell *matCellDef="let client">{{ client.company }}</td>
+      <ng-container matColumnDef="company" class="table-light text-muted ">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 small">Empresa</th>
+        <td mat-cell *matCellDef="let client" class="py-3 alp-text-md">
+          <span class="badge bg-light text-dark border px-2 py-1 fw-normal">
+            <i class="bi bi-building me-1 text-primary"></i>{{ client.company || 'Sin empresa' }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let client">
-          <button mat-button (click)="edit(client)" class="alp-table-main-buttons">Editar</button>
-          <button mat-button (click)="remove(client.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
+      <ng-container matColumnDef="actions" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 text-center">Acciones</th>
+        <td mat-cell *matCellDef="let client" class=" py-3 text-center">
+          <div class="d-inline-flex gap-2">
+            <button mat-button (click)="editClientModal(client)" class="alp-table-main-buttons alp-table-edit-btn">Editar</button>
+            <button mat-button (click)="remove(client.id!)"
+              class="alp-table-main-buttons alp-table-delete-btn">Eliminar </button>
+          </div>
+
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center p-4 text-muted" colspan="5">
+          <i class="bi bi-folder-x fs-2 d-block mb-2 text-secondary"></i>
+          No se encuentran clientes con el nombre "{{input.value}}"
+        </td>
+      </tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of clients">
+    </mat-paginator>
   </div>
+
+</div>
+
+<div>
+
 @if(clients().length === 0 && !loading()){
     <h4>No hay clientes.</h4>
 }
 </div>
+
+@if (isModalOpen()) {
+    <app-client-form
+    [project]="selectedClient() ?? null"
+    (closed)="closeModal()"
+  />
+}

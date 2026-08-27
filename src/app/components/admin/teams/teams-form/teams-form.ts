@@ -1,16 +1,21 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TeamStore } from '../../../../stores/team.store';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TeamService } from '../../../../services/team';
+import { TeamData } from '../../../../interfaces/team.interface';
 
 @Component({
   selector: 'app-teams-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './teams-form.html',
   styleUrl: './teams-form.scss'
 })
 export class TeamsForm implements OnInit{
+
+  team = input<TeamData | null>(null);
+  closed  = output<void>();
+
   private fb = inject(FormBuilder);
   private teamStore = inject(TeamStore);
   teamService = inject(TeamService);
@@ -55,5 +60,9 @@ export class TeamsForm implements OnInit{
     }
 
     this.form.reset();
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 }

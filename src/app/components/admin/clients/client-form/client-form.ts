@@ -1,9 +1,7 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ClientStore } from '../../../../stores/client.store';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../../../services/client';
-import { HttpClient } from '@angular/common/http';
 import { ClientData } from '../../../../interfaces/client.interface';
 
 @Component({
@@ -14,19 +12,15 @@ import { ClientData } from '../../../../interfaces/client.interface';
 })
 export class ClientForm implements OnInit{
 
-  project = input<ClientData | null>(null);
+  client = input<ClientData | null>(null);
   closed  = output<void>();
 
   private fb = inject(FormBuilder);
   clientStore = inject(ClientStore);
   clientService = inject(ClientService);
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  httpClient = inject(HttpClient);
 
   editing = false;
   clientId?: number;
-  clients = this.clientService.clients;
 
   // Validador personalizado para solo números en el teléfono
   private numbersOnlyValidator(control: AbstractControl): ValidationErrors | null {
@@ -43,20 +37,18 @@ export class ClientForm implements OnInit{
   });
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id')!;
+    const client = this.client();
 
-    if(id){
+    if(client){
       this.editing = true;
-      this.clientId = id;
-      this.clientService.get(id).subscribe(client =>{
-          this.form.patchValue({
+      this.clientId = client.id;
+      this.form.patchValue({
             name: client.name,
             email: client.email,
             phone: client.phone,
             company: client.company
 
           });
-      });
     }
   }
 
@@ -65,16 +57,16 @@ export class ClientForm implements OnInit{
 
     const formValue = this.form.value;
 
-    if (this.editing && this.clientId) {
-      this.clientStore.update(this.clientId, formValue).subscribe(() => {
-        this.router.navigateByUrl('admin/clients');
+    if(this.editing && this.clientId){
+      this.clientStore.update(this.clientId, formValue).subscribe({
+        next: () => this.closed.emit(), // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
       });
-
-
     } else {
-      this.clientStore.create(formValue).subscribe(() => {
-        this.router.navigateByUrl('admin/clients');
-      });
+      this.clientStore.create(formValue).subscribe({
+        next: () => this.closed.emit(), // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
+      })
     }
   }
 

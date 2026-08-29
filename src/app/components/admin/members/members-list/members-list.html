@@ -1,47 +1,119 @@
-<div class="container py-5">
-  <div class="mb-4">
-    <h2 class="display-4 font-weight-bold">Miembros</h2>
-    <p class="text-muted">Visión general de los miembros</p>
-    <a class="btn btn-primary my-4" routerLink="/admin/members/new">+ Nuevo miembro</a>
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+  <div>
+    <h2 class="fw-bold text-dark mb-1 tracking-tight alp-heading-h2">Miembros</h2>
+    <p class="text-muted small mb-0">Visión general de los miembros</p>
   </div>
-  @if(loading()){
+  <div>
+    <button class="btn alp-btn-brand shadow-sm px-3 py-2 small fw-semibold d-inline-flex align-items-center gap-2"
+      (click)="openMemberModal()">
+      <i class="bi bi-plus-lg fs-6"></i>
+      <span>Nuevo miembro</span>
+    </button>
+  </div>
+</div>
+
+@if(loading()){
     <app-loader></app-loader>
   }
-  <div class="alp-table-main">
-    <table mat-table [dataSource]="members()" class="mat-elevation-z8 alp-text-sm">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let member">{{ member.name }}</td>
+<div class="alp-table-card p-4">
+
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="fw-bold text-dark fs-6">Listado de Miembros</span>
+      <span class="badge rounded-pill bg-light text-dark border" id="projects-table-badge">{{members().length}}
+        activos</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="input-group input-group-sm style-search" style="width: 240px;">
+        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i
+            class="bi bi-search text-muted"></i></span>
+        <input type="text" id="project-filter-input" class="form-control bg-light border-start-0 rounded-end-3"
+          placeholder="Filtrar por nombre..." (keyup)="filterProjectsTable($event)" #input>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" class="table table-hover align-middle mb-0 alp-table-new-main">
+      <ng-container matColumnDef="name" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Nombre</th>
+        <td mat-cell *matCellDef="let member" class="py-3">
+          <div class="d-flex align-items-center gap-2">
+            <div class="p-2 rounded-3 text-purple alp-bg-brand-light">
+              <i class="bi bi-mortarboard-fill text-primary"></i>
+            </div>
+            <div>
+              <span class="fw-bold text-dark d-block alp-text-md">{{ member.name }}</span>
+            </div>
+          </div>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="rol">
-        <th mat-header-cell *matHeaderCellDef>Rol</th>
-        <td mat-cell *matCellDef="let member">{{ member.rol }}</td>
+      <ng-container matColumnDef="rol" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Rol</th>
+        <td mat-cell *matCellDef="let member" class=" py-3">
+          <span class="fw-medium text-secondary">
+            {{ member.rol }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let member">{{ member.email }}</td>
+      <ng-container matColumnDef="email" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3">Email</th>
+        <td mat-cell *matCellDef="let member" class=" py-3">
+          <span class="fw-medium text-secondary">
+            {{ member.email }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="team">
-        <th mat-header-cell *matHeaderCellDef>Equipo</th>
-        <td mat-cell *matCellDef="let member">{{ member.teamId?.name || '—' }}</td>
+      <ng-container matColumnDef="team" class="table-light text-muted ">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 small">Equipo</th>
+        <td mat-cell *matCellDef="let member" class="py-3 alp-text-md">
+          <span class="badge bg-light text-dark border px-2 py-1 fw-normal">
+            <i class="bi bi-people me-1 text-primary"></i>{{ member.teamId?.name || '—' }}
+          </span>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let member">
-          <button mat-button (click)="edit(member)" class="alp-table-main-buttons">Editar</button>
-          <button mat-button (click)="delete(member.id!)" class="alp-table-main-buttons alp-table-delete-btn">Eliminar</button>
+
+      <ng-container matColumnDef="actions" class="table-light text-muted small">
+        <th mat-header-cell *matHeaderCellDef class="border-0 py-3 ps-3 text-center">Acciones</th>
+        <td mat-cell *matCellDef="let member" class=" py-3 text-center">
+          <div class="d-inline-flex gap-2">
+            <button mat-button (click)="editMemberModal(member)" class="alp-table-main-buttons alp-table-edit-btn">Editar</button>
+            <button mat-button (click)="remove(member.id!)"
+              class="alp-table-main-buttons alp-table-delete-btn">Eliminar </button>
+          </div>
+
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center p-4 text-muted" colspan="5">
+          <i class="bi bi-folder-x fs-2 d-block mb-2 text-secondary"></i>
+          No se encuentran mimebros con el nombre "{{input.value}}"
+        </td>
+      </tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of projects">
+    </mat-paginator>
   </div>
-  @if(members().length === 0 && !loading()){
+
+</div>
+
+@if(members().length === 0 && !loading()){
     <h4>No hay equipos.</h4>
   }
-</div>
+
+  @if (isModalOpen()) {
+  <app-members-form
+    [member]="selectedMember() ?? null"
+    (closed)="closeModal()"
+  />
+}

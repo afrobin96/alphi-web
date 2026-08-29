@@ -1,17 +1,18 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MemberStore } from '../../../../stores/member.store';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MemberData } from '../../../../interfaces/members.interface';
 import { Loader } from "../../../shared/loader/loader";
 import { TeamStore } from '../../../../stores/team.store';
-import { TeamData } from '../../../../interfaces/team.interface';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MembersForm } from "../members-form/members-form";
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-members-list',
-  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [Loader, MatTableModule, MatButtonModule, MatIconModule, MembersForm, MatPaginatorModule],
   templateUrl: './members-list.html',
   styleUrl: './members-list.scss'
 })
@@ -25,20 +26,60 @@ export class MembersList implements OnInit{
   members = this.memberStore.members;
   loading = this.memberStore.loading;
 
+  // null = modal cerrado | undefined = crear nuevo | ProjectData = editar
+  selectedMember = signal<MemberData | null | undefined>(undefined);
+
   displayedColumns: string[] = ['name', 'rol', 'email', 'team', 'actions'];
+
+  dataSource = new MatTableDataSource<MemberData>([]);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  constructor() {
+    effect(() => {
+      this.dataSource.data = this.members();
+    });
+
+    // Solo se filtra por nombre.
+    this.dataSource.filterPredicate = (member: MemberData, filter: string) => {
+      return (member.name ?? '').toLowerCase().includes(filter);
+    };
+  }
 
   ngOnInit(): void {
     this.memberStore.load()
     this.teamStore.loadAll()
   }
 
-  edit(member: MemberData) {
-    this.router.navigateByUrl(`/admin/members/edit/${member.id}`);
-  }
+  openMemberModal(): void {
+      this.selectedMember.set(null); // null = modo crear
+    }
 
-  delete(id: number) {
+    editMemberModal(member: MemberData): void {
+      this.selectedMember.set(member); // proyecto = modo editar
+    }
+
+    closeModal(): void {
+      this.selectedMember.set(undefined); // undefined = cerrado
+      this.memberStore.load();
+    }
+
+    isModalOpen(): boolean {
+      return this.selectedMember() !== undefined;
+    }
+
+  remove(id: number) {
     if (!confirm('¿Eliminar miembro?')) return;
     this.memberStore.remove(id).subscribe();
+  }
+
+  filterProjectsTable(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 

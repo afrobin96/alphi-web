@@ -1,7 +1,6 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TeamStore } from '../../../../stores/team.store';
-import { ActivatedRoute, Router } from '@angular/router';
 import { TeamService } from '../../../../services/team';
 import { TeamData } from '../../../../interfaces/team.interface';
 
@@ -20,8 +19,6 @@ export class TeamsForm implements OnInit{
   private teamStore = inject(TeamStore);
   teamService = inject(TeamService);
 
-  route = inject(ActivatedRoute);
-  router = inject(Router);
 
   editing = false;
   teamId?: number;
@@ -32,17 +29,16 @@ export class TeamsForm implements OnInit{
   });
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id')!;
 
-    if(id){
+    const team = this.team();
+
+    if(team){
       this.editing = true;
-      this.teamId = id;
-      this.teamService.get(id).subscribe(team =>{
+      this.teamId = team.id;
           this.form.patchValue({
             name: team.name,
             description: team.description
           });
-      });
     }
   }
 
@@ -51,12 +47,16 @@ export class TeamsForm implements OnInit{
 
     const formValue = this.form.value;
 
-    if (this.teamId) {
-      this.teamStore.update(this.teamId, formValue).subscribe();
-      this.router.navigateByUrl('admin/teams');
+    if(this.editing && this.teamId){
+      this.teamStore.update(this.teamId, formValue).subscribe({
+        next: () => this.closed.emit(), // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
+      });
     } else {
-      this.teamStore.create(formValue).subscribe();
-      this.router.navigateByUrl('admin/teams');
+      this.teamStore.create(formValue).subscribe({
+        next: () => this.closed.emit(), // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
+      })
     }
 
     this.form.reset();

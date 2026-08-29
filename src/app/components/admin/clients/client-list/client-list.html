@@ -95,7 +95,7 @@
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell text-center p-4 text-muted" colspan="5">
-          <i class="bi bi-folder-x fs-2 d-block mb-2 text-secondary"></i>
+          <i class="bi bi-building-x fs-2 d-block mb-2 text-secondary"></i>
           No se encuentran clientes con el nombre "{{input.value}}"
         </td>
       </tr>
@@ -116,8 +116,8 @@
 </div>
 
 @if (isModalOpen()) {
-    <app-client-form
-    [project]="selectedClient() ?? null"
+  <app-client-form
+    [client]="selectedClient() ?? null"
     (closed)="closeModal()"
   />
 }

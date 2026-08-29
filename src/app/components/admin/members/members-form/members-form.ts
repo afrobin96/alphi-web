@@ -1,6 +1,5 @@
-import { Component, effect, inject, input, OnChanges, signal, SimpleChange } from '@angular/core';
+import { Component, inject, input, output, signal, } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MemberStore } from '../../../../stores/member.store';
 import { MemberData } from '../../../../interfaces/members.interface';
 import { TeamService } from '../../../../services/team';
@@ -8,11 +7,14 @@ import { MemberService } from '../../../../services/member';
 
 @Component({
   selector: 'app-members-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './members-form.html',
   styleUrl: './members-form.scss'
 })
 export class MembersForm {
+
+  member = input<MemberData | null>(null);
+  closed  = output<void>();
 
   selectedMember = input<any | null>(null);
 
@@ -20,8 +22,6 @@ export class MembersForm {
   private memberStore = inject(MemberStore);
   private memberService = inject(MemberService);
   private teamService = inject(TeamService);
-  route = inject(ActivatedRoute);
-  router = inject(Router);
 
   editing = false;
   memberId?: number;
@@ -36,18 +36,17 @@ export class MembersForm {
 
   ngOnInit(): void {
     this.teamService.loadAll().subscribe((team) => this.teams.set(team));
-    const id = +this.route.snapshot.paramMap.get('id')!;
 
-    if(id){
+    const member = this.member();
+
+    if(member){
       this.editing = true;
-      this.memberId = id;
-      this.memberService.get(id).subscribe(member =>{
-          this.form.patchValue({
+      this.memberId = member.id;
+      this.form.patchValue({
             name: member.name,
             rol: member.rol,
             email: member.email,
             teamId: member.teamId?.id ?? null,
-          });
       });
     }
   }
@@ -61,35 +60,39 @@ export class MembersForm {
     const teamId = formValue.teamId ? Number(formValue.teamId) : null
 
     if (this.editing && this.memberId) {
-        this.memberStore.update(this.memberId, {
+      this.memberStore.update(this.memberId, {
           name: formValue.name!,
           rol: formValue.rol!,
           email: formValue.email!,
         }).subscribe({
-          next: () => {
-            if (formValue.teamId !== null){
-              this.memberStore.assignTeam(this.memberId!, teamId!).subscribe();
-            }
-          },
-        });
-
-        this.router.navigateByUrl('admin/members');
+        next: () => {
+          if (formValue.teamId !== null){
+            this.memberStore.assignTeam(this.memberId!, teamId!).subscribe();
+          }
+          this.closed.emit()
+        }, // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
+      });
     } else {
-        this.memberStore.add({
+      this.memberStore.add({
         name: formValue.name!,
         rol: formValue.rol!,
         email: formValue.email!,
         }).subscribe({
-          next: (newMember: MemberData) => {
-            if (formValue.teamId !== null){
+        next: (newMember: MemberData) => {
+          if (formValue.teamId !== null){
               this.memberStore.assignTeam(newMember.id!, teamId!).subscribe();
-            }
-          },
-        });
-      this.form.reset();
-      this.router.navigateByUrl('admin/members');
+          }
+          this.closed.emit()
+        }, // 👇 Cierra modal en lugar de navegar
+        error: (err) => console.error(err),
+      })
     }
 
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 
 }

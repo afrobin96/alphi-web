@@ -1,8 +1,8 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 import { TaskStore } from '../../../../stores/task.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../../../services/task';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ProjectService } from '../../../../services/project';
 import { MemberService } from '../../../../services/member';
@@ -23,11 +23,14 @@ const TASK_STATUS_MAP: TaskStatusMap = {
 
 @Component({
   selector: 'app-tasks-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './tasks-form.html',
   styleUrl: './tasks-form.scss',
 })
 export class TasksForm implements OnInit {
+  task = input<TaskData | null>(null);
+  closed  = output<void>();
+
   fb = inject(FormBuilder);
   taskService = inject(TaskService);
   taskStore = inject(TaskStore);
@@ -84,16 +87,17 @@ export class TasksForm implements OnInit {
 
   ngOnInit(): void {
 
-    const id = +this.route.snapshot.paramMap.get('id')!;
+    const task = this.task();
 
-    if (id) {
+
+    if (task) {
       this.editing = true;
-      this.taskId = id;
+      this.taskId = task.id;
       // Esperamos que los 3 llamados terminen al mismo tiempo
       forkJoin({
         projects: this.projectService.list(),
         members:  this.memberService.list(),
-        task:     this.taskService.get(id),
+        task:     this.taskService.get(task.id!),
       }).subscribe(({ projects, members, task }) => {
         this.projects.set(projects);
         this.members.set(members);
@@ -176,5 +180,9 @@ export class TasksForm implements OnInit {
         this.router.navigateByUrl('admin/tasks');
       });
     }
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 }

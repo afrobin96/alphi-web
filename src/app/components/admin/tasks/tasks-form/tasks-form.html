@@ -1,64 +1,118 @@
-<div class="container mt-4" style="max-width:800px">
-  <h2 class="display-4 font-weight-bold mb-4">{{ editing ? 'Editar' : 'Nueva' }} Tarea </h2>
+<div class="alp-modal-backdrop" id="modalNuevaTarea" tabindex="-1" aria-labelledby="modalNuevaTareaLabel"
+  aria-hidden="true" (click)="onClose()">
+  <div class="alp-modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-content border-0 shadow-lg">
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="border p-3 rounded mb-3">
-  <div class="mb-3">
-    <label>Título</label>
-    <input class="form-control" formControlName="title" />
-    @if (form.get('title')?.invalid && form.get('title')?.touched){
-        <div class="text-danger mt-1 small">
-          @if (form.get('title')?.hasError('required')){
-            <span>El título es obligatorio</span>
-          }
+      <div class="modal-header border-0 pb-0 pt-4 px-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-2 rounded-3 alp-project-icon">
+            <i class="bi bi-check2-square fs-4"></i>
+          </div>
+          <div>
+            <h4 class="modal-title fw-bold text-dark mb-0" id="modalNuevaTareaLabel">{{ editing ? 'Editar' : 'Nueva' }}
+              tarea</h4>
+            <p class="text-muted small mb-0">{{ editing ? 'Editar' : 'Nueva' }} tarea en Alphi</p>
+          </div>
         </div>
-      }
-  </div>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+      </div>
 
-  <div class="mb-3">
-    <label>Descripción</label>
-    <textarea class="form-control" formControlName="description"></textarea>
-  </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
 
-  <div class="mb-3">
-    <label>Valor</label>
-    <input type="number" class="form-control" formControlName="value" />
-  </div>
+          <!-- Campo: Título -->
+          <div>
+            <label for="tareaTitulo" class="form-label small fw-semibold text-secondary mb-1">
+              Título <span class="text-danger">*</span>
+            </label>
+            <input type="text" id="tareaTitulo" class="form-control form-control-custom"
+              placeholder="Ej. Plataforma Alphi v2.0" required formControlName="title">
+            @if(form.get('title')?.invalid && form.get('title')?.touched){
+            <div class="text-danger mt-1 small">
+              @if (form.get('title')?.hasError('required')){
+              <span>El título es obligatorio</span>
+              }
+            </div>
+            }
+          </div>
 
-  <div class="mb-3">
-    <label>Proyecto (opcional)</label>
-    <select class="form-select" formControlName="projectId">
-      <option [value]="null">-- Sin proyecto --</option>
-      @for(project of projects(); track $index){
-            <option [value]="project.id">{{ project.name }}</option>
-      }
-    </select>
-  </div>
 
-  <div class="mb-3">
-    <label>Miembro (opcional)</label>
-    <select class="form-select" formControlName="memberId">
-      <option [value]="null">-- Sin miembro --</option>
-      @for(member of members(); track $index){
-            <option [value]="member.id">{{ member.name }}</option>
-      }
-    </select>
-  </div>
+          <!-- Campo: Descripción -->
+          <div>
+            <label for="tareaDescripcion" class="form-label small fw-semibold text-secondary mb-1">
+              Descripción
+            </label>
+            <textarea id="tareaDescripcion" class="form-control form-control-custom" rows="3"
+              placeholder="Ingresa una breve descripción de los objetivos del proyecto..."
+              formControlName="description"></textarea>
+          </div>
 
-  <div class="mb-3">
-    <label>Estado</label>
-    <select class="form-select" id="status" formControlName="status">
-      @for (s of availableStatuses(); track s.value) {
-        <option [value]="s.value">{{ s.label }}</option>
-      }
-    </select>
-    @if (editing && !canChangeStatus()) {
-      <span class="text-danger small">Debes asignar un proyecto y un miembro para cambiar el estado</span>
-    }
-  </div>
+          <!-- Campo: Valor -->
+          <div>
+            <label for="tareaValor" class="form-label small fw-semibold text-secondary mb-1">
+              Valor
+            </label>
+            <input type="number" id="tareaValor" class="form-control form-control-custom" placeholder="Ej. 1000"
+              formControlName="value">
+          </div>
 
-  <div class="d-flex gap-2">
-    <button class="btn btn-primary" type="submit" [disabled]="form.invalid || loading()">Guardar</button>
-    <a class="btn btn-link" routerLink="/admin/tasks">Cancelar</a>
+          <!-- Campos en paralelo: Proyecto & Miembro -->
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="tareaProyecto" class="form-label small fw-semibold text-secondary mb-1">
+                Proyecto (opcional)
+              </label>
+              <select id="tareaProyecto" class="form-select form-select-custom" formControlName="projectId">
+                <option [ngValue]="null">-- Sin proyecto --</option>
+                @for(project of projects(); track project.id){
+                <option [value]="project.id">{{ project.name }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="tareaMiembro" class="form-label small fw-semibold text-secondary mb-1">
+                Miembro (opcional)
+              </label>
+              <select id="tareaMiembro" class="form-select form-select-custom" formControlName="memberId">
+                <option [ngValue]="null">-- Sin miembro --</option>
+                @for(member of members(); track member.id){
+                <option [value]="member.id">{{ member.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="tareaEstado" class="form-label small fw-semibold text-secondary mb-1">
+              Estado
+            </label>
+            <select id="tareaEstado" class="form-select form-select-custom" formControlName="status">
+              <option [ngValue]="null">-- Sin proyecto --</option>
+              @for (s of availableStatuses(); track s.value) {
+              <option [value]="s.value">{{ s.label }}</option>
+              }
+            </select>
+            @if (editing && !canChangeStatus()) {
+            <span class="text-danger small">Debes asignar un proyecto y un miembro para cambiar el estado</span>
+            }
+          </div>
+
+          <!-- Modal Actions -->
+          <div class="d-flex align-items-center justify-content-start gap-3 pt-3 mt-2">
+            <button type="submit" class="btn alp-btn-brand" [disabled]="form.invalid">
+              <i class="bi bi-check-lg me-1"></i> Guardar
+            </button>
+            <button type="button" class="btn btn-link text-decoration-none text-secondary fw-semibold small"
+              (click)="onClose()">
+              Cancelar
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
   </div>
-</form>
 </div>
+

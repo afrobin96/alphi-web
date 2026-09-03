@@ -1,23 +1,40 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { TaskStore } from '../../../../stores/task.store';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Loader } from '../../../shared/loader/loader';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PaymentStore } from '../../../../stores/payment.store';
 import { TaskData } from '../../../../interfaces/task.interface';
 import { ModalPayment } from '../modal-payment/modal-payment';
 import { PaymentData } from '../../../../interfaces/payments.interface';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { TasksForm } from '../tasks-form/tasks-form';
 
 @Component({
   selector: 'app-tasks-list',
-  imports: [Loader, RouterLink, MatTableModule, MatButtonModule, MatIconModule, ModalPayment],
+  imports: [
+    Loader,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    ModalPayment,
+    MatPaginatorModule,
+    TasksForm,
+  ],
   templateUrl: './tasks-list.html',
-  styleUrl: './tasks-list.scss'
+  styleUrl: './tasks-list.scss',
 })
 export class TasksList implements OnInit {
-
   paymentStore = inject(PaymentStore);
   taksStore = inject(TaskStore);
   router = inject(Router);
@@ -28,7 +45,36 @@ export class TasksList implements OnInit {
 
   selectedPayment = signal<PaymentData | null>(null);
 
-  displayedColumns: string[] = ['title', 'value', 'state', 'project', 'member', 'actions'];
+  // null = modal cerrado | undefined = crear nuevo | ProjectData = editar
+  selectedTask = signal<TaskData | null | undefined>(undefined);
+
+  displayedColumns: string[] = [
+    'title',
+    'value',
+    'state',
+    'project',
+    'member',
+    'actions',
+  ];
+
+  dataSource = new MatTableDataSource<TaskData>([]);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  constructor() {
+    effect(() => {
+      this.dataSource.data = this.tasks();
+    });
+
+    // Solo se filtra por nombre.
+    this.dataSource.filterPredicate = (task: TaskData, filter: string) => {
+      return (task.title ?? '').toLowerCase().includes(filter);
+    };
+  }
 
   // Map de taskId -> paymentId para búsqueda rápida en el template
   taskPaymentMap = computed(() => {
@@ -49,6 +95,23 @@ export class TasksList implements OnInit {
     this.paymentStore.load();
   }
 
+  openTaskModal(): void {
+    this.selectedTask.set(null); // null = modo crear
+  }
+
+  editTaskModal(task: TaskData): void {
+    this.selectedTask.set(task); // proyecto = modo editar
+  }
+
+  closeModal(): void {
+    this.selectedTask.set(undefined); // undefined = cerrado
+    this.paymentStore.load();
+  }
+
+  isModalOpen(): boolean {
+    return this.selectedTask() !== undefined;
+  }
+
   getPaymentId(taskId: number): PaymentData | undefined {
     return this.taskPaymentMap().get(taskId);
   }
@@ -62,11 +125,7 @@ export class TasksList implements OnInit {
     this.selectedPayment.set(null);
   }
 
-  edit(task: TaskData): void {
-    this.router.navigateByUrl(`/admin/tasks/edit/${task.id}`);
-  }
-
-  delete(id: number): void{
+  delete(id: number): void {
     if (!confirm('¿Deseas eliminar la tarea?')) return;
     this.taksStore.delete(id).subscribe();
   }
@@ -87,4 +146,8 @@ export class TasksList implements OnInit {
     this.router.navigateByUrl(`/admin/payments/new`);
   }
 
+  filterTasksTable(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }

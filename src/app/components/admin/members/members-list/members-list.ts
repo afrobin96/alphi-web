@@ -77,7 +77,7 @@ export class MembersList implements OnInit{
     this.memberStore.remove(id).subscribe();
   }
 
-  filterProjectsTable(event: Event) {
+  filterMembersTable(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }

@@ -1,86 +1,119 @@
-<div class="container mt-4" style="max-width:800px">
-  <h2 class="display-4 font-weight-bold mb-4">{{ editing ? 'Editar' : 'Nuevo' }} Pago </h2>
+<div class="alp-modal-backdrop" id="modalNuevoPago" tabindex="-1" aria-labelledby="modalNuevoPagoLabel"
+  aria-hidden="true" (click)="onClose()">
+  <div class="alp-modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-content border-0 shadow-lg">
 
-  <form
-    [formGroup]="form"
-    (ngSubmit)="onSubmit()"
-    class="border p-3 rounded mb-3"
-  >
+      <div class="modal-header border-0 pb-0 pt-4 px-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-2 rounded-3 alp-project-icon">
+            <i class="bi bi-folder-plus fs-4"></i>
+          </div>
+          <div>
+            <h4 class="modal-title fw-bold text-dark mb-0" id="modalNuevoPagoLabel">{{ editing ? 'Editar' : 'Nuevo' }} pago</h4>
+            <p class="text-muted small mb-0">{{ editing ? 'Editar' : 'Nuevo' }} pago en Alphi</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+      </div>
 
-    <div class="mb-3">
-      <label>Proyecto</label>
-      <select class="form-select" formControlName="projectId">
-        <option [ngValue]="null">-- Seleccione proyecto --</option>
-        @for (project of projects(); track project.id) {
-          <option [ngValue]="project.id">{{ project.name }}</option>
-        }
-      </select>
-    </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
 
-    <!-- Equipo solo visible si hay proyecto seleccionado -->
-    @if (teams().length > 0) {
-      <div class="mb-3">
-        <label>Equipo</label>
-        <select class="form-select" formControlName="teamId">
-          <option [ngValue]="null">-- Seleccione equipo --</option>
-          @for (team of teams(); track team.id) {
-            <option [ngValue]="team.id">{{ team.name }}</option>
+          <!-- Campo: proyecto -->
+          <div>
+            <label for="pagoProyecto" class="form-label small fw-semibold text-secondary mb-1">
+              Proyecto <span class="text-danger">*</span>
+            </label>
+            <select id="pagoProyecto" class="form-select form-select-custom" formControlName="projectId">
+                <option [ngValue]="null">-- Seleccione proyecto --</option>
+                @for(project of projects(); track project.id){
+                <option [value]="project.id">{{ project.name }}</option>
+                }
+              </select>
+          </div>
+
+           <!-- Equipo solo visible si hay proyecto seleccionado -->
+          @if (teams().length > 0) {
+            <div>
+              <label for="pagoEquipo" class="form-label small fw-semibold text-secondary mb-1">
+                Equipo <span class="text-danger">*</span>
+              </label>
+              <select id="pagoEquipo" class="form-select form-select-custom" formControlName="teamId">
+                  <option [ngValue]="null">-- Seleccione equipo --</option>
+                  @for (team of teams(); track team.id) {
+                  <option [ngValue]="team.id">{{ team.name }}</option>
+                  }
+                </select>
+            </div>
           }
-        </select>
-      </div>
-    }
 
-    <!-- Miembro → solo visible si hay equipo seleccionado -->
-    @if (members().length > 0) {
-      <div class="mb-3">
-        <label>Miembro</label>
-        <select class="form-select" formControlName="memberId">
-          <option [ngValue]="null">-- Seleccione miembro --</option>
-          @for (member of members(); track member.id) {
-            <option [ngValue]="member.id">{{ member.name }}</option>
+          <!-- Miembro solo visible si hay equipo seleccionado -->
+          @if (members().length > 0) {
+            <div>
+              <label for="pagoMiembro" class="form-label small fw-semibold text-secondary mb-1">
+                Miembro <span class="text-danger">*</span>
+              </label>
+              <select id="pagoMiembro" class="form-select form-select-custom" formControlName="memberId">
+                  <option [ngValue]="null">-- Seleccione miembro --</option>
+                  @for (member of members(); track member.id) {
+                  <option [ngValue]="member.id">{{ member.name }}</option>
+                  }
+                </select>
+            </div>
           }
-        </select>
-      </div>
-    }
 
-    <!-- Alerta: sin tareas para pago -->
-    @if (!hasTasksForPayment()) {
-      <app-alert></app-alert>
-    }
-
-    <!-- Valor calculado → solo visible si hay miembro y tiene tareas -->
-    @if (memberIdSig() && hasTasksForPayment()) {
-      <div class="mb-3">
-        <label>Valor calculado</label>
-        <input class="form-control" [value]="amounts() | number:'1.2-2'" disabled />
-        <div class="form-text">Suma de tareas completadas del miembro en el proyecto.</div>
-      </div>
-    }
-
-    <!-- Tareas incluidas -->
-    @if (tasksPreview().length > 0) {
-      <div class="mb-3">
-        <label>Tareas incluidas</label>
-        <ul class="list-group">
-          @for (task of tasksPreview(); track task.id) {
-            <li class="list-group-item d-flex justify-content-between">
-              <span>{{ task.title }}</span>
-              <span>{{ task.value | number:'1.2-2' }}</span>
-            </li>
+          <!-- Alerta: sin tareas para pago -->
+          @if (!hasTasksForPayment()) {
+            <app-alert></app-alert>
           }
-        </ul>
+
+          <!-- Valor calculado → solo visible si hay miembro y tiene tareas -->
+          @if (memberIdSig() && hasTasksForPayment()) {
+            <div>
+              <label for="pagoCalculatedValue" class="form-label small fw-semibold text-secondary mb-1">
+                Valor calculado <span class="text-danger">*</span>
+              </label>
+              <input type="text" id="pagoCalculatedValue" class="form-control form-control-custom"
+              [value]="amounts() | number:'1.2-2'" disabled >
+              <div class="form-text">Suma de tareas completadas del miembro en el proyecto.</div>
+            </div>
+          }
+
+          <!-- Tareas incluidas -->
+          @if (tasksPreview().length > 0) {
+            <div>
+              <label for="pagoTasks" class="form-label small fw-semibold text-secondary mb-1">Tareas incluidas</label>
+              <ul class="list-group">
+                @for (task of tasksPreview(); track task.id) {
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>{{ task.title }}</span>
+                    <span>{{ task.value | number:'1.2-2' }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          <div>
+            <label for="pagoNote" class="form-label small fw-semibold text-secondary mb-1">Nota (opcional)</label>
+            <input type="text" id="pagoNote" class="form-control" formControlName="note" />
+          </div>
+
+
+          <!-- Modal Actions -->
+          <div class="d-flex align-items-center justify-content-start gap-3 pt-3 mt-2">
+            <button type="submit" class="btn alp-btn-brand" [disabled]="form.invalid">
+              <i class="bi bi-check-lg me-1"></i> Crear pago
+            </button>
+            <button type="button" class="btn btn-link text-decoration-none text-secondary fw-semibold small"
+              (click)="onClose()">
+              Cancelar
+            </button>
+          </div>
+
+        </form>
       </div>
-    }
 
-    <div class="mb-3">
-      <label>Nota (opcional)</label>
-      <input class="form-control" formControlName="note" />
     </div>
-
-
-    <div class="d-flex gap-2">
-      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Crear Pago</button>
-      <a class="btn btn-link" routerLink="/admin/payments">Cancelar</a>
-    </div>
-  </form>
+  </div>
 </div>

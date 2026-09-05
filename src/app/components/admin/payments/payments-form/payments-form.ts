@@ -1,7 +1,7 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentStore } from '../../../../stores/payment.store';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ProjectStore } from '../../../../stores/project.store';
 import { MemberStore } from '../../../../stores/member.store';
@@ -9,14 +9,19 @@ import { TaskStore } from '../../../../stores/task.store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Alert } from '../../../shared/alert/alert';
 import { AlertService } from '../../../../services/shared/alert';
+import { PaymentData } from '../../../../interfaces/payments.interface';
 
 @Component({
   selector: 'app-payments-form',
-  imports: [ReactiveFormsModule, RouterLink, DecimalPipe, Alert],
+  imports: [ReactiveFormsModule, DecimalPipe, Alert],
   templateUrl: './payments-form.html',
   styleUrl: './payments-form.scss'
 })
 export class PaymentsForm {
+
+  payment = input<PaymentData | null>(null);
+  closed  = output<void>();
+
   selectedPayment = input<any | null>(null);
 
   private fb = inject(FormBuilder);
@@ -169,6 +174,8 @@ export class PaymentsForm {
     });
   }
 
-
+  onClose(): void {
+    this.closed.emit();
+  }
 
 }

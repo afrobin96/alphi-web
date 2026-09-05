@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { UserData } from '../../../interfaces/user.interface';
 import { Auth } from '../../../services/auth';
 import { AuthStore } from '../../../stores/auth.store';
@@ -13,6 +13,8 @@ export class Topnavbar implements OnInit{
     user: UserData | null =  null;
     userInitials = '';
     private auth = inject(AuthStore);
+
+    isAdmin = input<boolean>(false);
 
   constructor(private authService: Auth) {}
 

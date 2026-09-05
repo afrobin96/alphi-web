@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { SidebarService } from './sidebar-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -11,6 +11,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Sidebar {
 
   sidebarService = inject(SidebarService);
+
+  isAdmin = input<boolean>(false);
 
   toggleSidebarCollapse(): void {
     this.sidebarService.toggle();

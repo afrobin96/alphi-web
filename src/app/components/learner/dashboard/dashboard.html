@@ -1,3 +1,23 @@
+<!-- Encabezado Principal del Dashboard -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+  <div>
+    @if(profile(); as p){
+    <h2 class="fw-bold text-dark mb-1 tracking-tight alp-heading-h2">Bienvenido, {{ p.username }}</h2>
+    }
+    <p class="text-muted small mb-0">Aquí puedes ver el estado de tu plan y los tokens disponibles.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold"
+      >
+      <i class="bi bi-plus-lg me-1"></i> Mejorar plan
+    </button>
+    <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold"
+      >
+      <i class="bi bi-plus-lg me-1"></i> Renovar plan
+    </button>
+  </div>
+</div>
+
 <div class="learner-dashboard py-3">
 
   <!-- Loading -->
@@ -16,11 +36,6 @@
   <!-- Contenido principal -->
   @if(profile(); as p){
     <ng-container>
-      <!-- Cabecera de bienvenida -->
-      <div class="mb-4">
-        <h4 class="alp-text-main-color mb-1">Bienvenido, {{ p.username }}</h4>
-        <p class="text-muted mb-0">Aquí puedes ver el estado de tu plan y los tokens disponibles.</p>
-      </div>
 
       <!-- Tarjeta del plan -->
       <div class="row g-3 mb-4">

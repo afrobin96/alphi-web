@@ -8,5 +8,6 @@ export interface LearnerProfile {
   dailyLimit: number;
   monthlyTokensUsed: number;
   monthlyLimit: number;
+  monthlyPeriodStart: string | null;
   createdAt: string;
 }

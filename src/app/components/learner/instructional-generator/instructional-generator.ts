@@ -77,6 +77,7 @@ export class InstructionalGenerator {
       },
       error: (err) => {
         const code = err.error?.code;
+        console.log(err);
         if (code === 'DAILY_LIMIT_REACHED') {
           this.error.set('Alcanzaste el límite diario de tokens. Vuelve mañana.');
         } else if (code === 'MONTHLY_LIMIT_REACHED') {

@@ -11,10 +11,12 @@
       >
       <i class="bi bi-plus-lg me-1"></i> Mejorar plan
     </button>
-    <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold"
-      >
-      <i class="bi bi-plus-lg me-1"></i> Renovar plan
-    </button>
+    @if (canRenewFree){
+      <button class="btn alp-btn-brand text-white rounded-3 shadow-sm px-3 py-2 small fw-semibold">
+        <i class="bi bi-plus-lg me-1"></i> Renovar plan
+      </button>
+    }
+
   </div>
 </div>
 
@@ -132,7 +134,194 @@
           Alcanzaste el límite mensual. Contacta al administrador para renovar tu plan.
         </div>
       }
+
+      <!-- Plan FREE: renovar tokens o mejorar plan -->
+       @if (isFree){
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-bold mb-1">Gestionar suscripción</h6>
+            <p class="text-muted small mb-3">
+              Con el plan gratuito tienes {{ p.dailyLimit | number }} tokens diarios
+              y {{ p.monthlyLimit | number }} mensuales. Renuévalos cada mes o
+              mejora tu plan para obtener más capacidad.
+            </p>
+            <div class="d-flex gap-2 flex-wrap">
+
+              <!-- Renovar tokens FREE -->
+              <button
+                class="btn btn-outline-primary d-flex align-items-center gap-2"
+                (click)="renewFree()"
+                [disabled]="actionLoad() || !canRenewFree">
+                <mat-icon class="small-icon" [class.spin]="actionLoad()">
+                  {{ actionLoad() ? 'autorenew' : 'refresh' }}
+                </mat-icon>
+                {{ canRenewFree ? 'Renovar tokens del mes' : 'Ya renovaste este mes' }}
+              </button>
+
+              <!-- Mejorar plan -->
+              <button
+                class="btn btn-primary d-flex align-items-center gap-2"
+                (click)="showUpgradeForm()">
+                <mat-icon class="small-icon">rocket_launch</mat-icon>
+                Mejorar mi plan
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan pago vencido: renovar -->
+         @if(!isFree && isSubscriptionExpired){
+          <div class="card border-0 shadow-sm border-warning">
+            <div class="card-body">
+              <h6 class="fw-bold mb-1 text-warning d-flex align-items-center gap-2">
+                <mat-icon>warning</mat-icon> Tu suscripción venció
+              </h6>
+              <p class="text-muted small mb-3">
+                Renueva tu plan para seguir generando diseños instruccionales.
+              </p>
+              <button class="btn btn-primary d-flex align-items-center gap-2" (click)="showUpgradeForm()">
+                <mat-icon class="small-icon">credit_card</mat-icon>
+                Renovar suscripción
+              </button>
+            </div>
+          </div>
+        }
+      }
     </ng-container>
   }
+
+
+    <!-- VISTA: FORMULARIO DE PAGO -->
+     @if (view() === 'upgrade-form'){
+
+      <ng-container>
+
+        <div class="mb-4 d-flex align-items-center gap-2">
+          <button class="btn btn-link p-0 text-muted" (click)="cancelUpgrade()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <h4 class="alp-text-main-color mb-0">Selecciona tu plan</h4>
+        </div>
+
+        <!-- Comparativa de planes -->
+        <div class="row g-3 mb-4">
+
+          <!-- Starter -->
+          <div class="col-12 col-md-6">
+            <div class="plan-card" [class.selected]="paymentForm.get('plan')?.value === 'starter'"
+                (click)="paymentForm.get('plan')?.setValue('starter')">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <h5 class="mb-0 fw-bold">Starter</h5>
+                  <p class="text-muted small mb-0">Para usuarios frecuentes</p>
+                </div>
+                <mat-icon class="plan-check" *ngIf="paymentForm.get('plan')?.value === 'starter'">
+                  check_circle
+                </mat-icon>
+              </div>
+              <div class="price mb-2">$9.99 <span class="small text-muted fw-normal">/ mes</span></div>
+              <ul class="plan-features">
+                <li><mat-icon>check</mat-icon> 1.000 tokens diarios</li>
+                <li><mat-icon>check</mat-icon> 20.000 tokens mensuales</li>
+                <li><mat-icon>check</mat-icon> Descarga ilimitada de PDFs</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pro -->
+          <div class="col-12 col-md-6">
+            <div class="plan-card" [class.selected]="paymentForm.get('plan')?.value === 'pro'"
+                (click)="paymentForm.get('plan')?.setValue('pro')">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <h5 class="mb-0 fw-bold">Pro</h5>
+                  <p class="text-muted small mb-0">Para uso intensivo</p>
+                </div>
+                <mat-icon class="plan-check" *ngIf="paymentForm.get('plan')?.value === 'pro'">
+                  check_circle
+                </mat-icon>
+              </div>
+              <div class="price mb-2">$24.99 <span class="small text-muted fw-normal">/ mes</span></div>
+              <ul class="plan-features">
+                <li><mat-icon>check</mat-icon> 3.000 tokens diarios</li>
+                <li><mat-icon>check</mat-icon> 80.000 tokens mensuales</li>
+                <li><mat-icon>check</mat-icon> Descarga ilimitada de PDFs</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Datos de pago -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+              <mat-icon>credit_card</mat-icon> Datos de pago
+            </h6>
+
+            <form [formGroup]="paymentForm" (ngSubmit)="confirmUpgrade()">
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre en la tarjeta</label>
+                <input type="text" class="form-control" formControlName="cardHolder"
+                      placeholder="Como aparece en la tarjeta">
+                @if(paymentForm.get('cardHolder')?.invalid && paymentForm.get('cardHolder')?.touched){
+                  <div class="text-danger small mt-1">Campo requerido.</div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Número de tarjeta</label>
+                <input type="text" class="form-control" formControlName="cardNumber"
+                      placeholder="16 dígitos" maxlength="16">
+                @if(paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched){
+                  <div class="text-danger small mt-1">Ingresa 16 dígitos válidos.</div>
+                }
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-7">
+                  <label class="form-label fw-semibold">Vencimiento</label>
+                  <input type="text" class="form-control" formControlName="expiry"
+                        placeholder="MM/AA" maxlength="5">
+                  @if(paymentForm.get('expiry')?.invalid && paymentForm.get('expiry')?.touched){
+                    <div class="text-danger small mt-1">Formato MM/AA.</div>
+                  }
+                </div>
+                <div class="col-5">
+                  <label class="form-label fw-semibold">CVV</label>
+                  <input type="text" class="form-control" formControlName="cvv"
+                        placeholder="3-4 dígitos" maxlength="4">
+                  @if(paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched){
+                    <div class="text-danger small mt-1">CVV inválido.</div>
+                  }
+                </div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-secondary flex-grow-1"
+                        (click)="cancelUpgrade()">Cancelar</button>
+                <button type="submit"
+                        class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2"
+                        [disabled]="paymentForm.invalid || actionLoad()">
+                  <mat-icon class="small-icon" [class.spin]="actionLoad()">
+                    {{ actionLoad() ? 'autorenew' : 'lock' }}
+                  </mat-icon>
+                  {{ actionLoad() ? 'Procesando...' : 'Confirmar pago' }}
+                </button>
+              </div>
+
+              <p class="text-muted text-center small mt-2 mb-0">
+                <mat-icon style="font-size:12px;vertical-align:middle;">lock</mat-icon>
+                Pago seguro — MVP en pruebas, no se realizan cargos reales aún.
+              </p>
+
+            </form>
+          </div>
+        </div>
+
+      </ng-container>
+    }
 
 </div>
